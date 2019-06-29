@@ -1,0 +1,19 @@
+{
+
+    "Jan"     : { "avatar" : "gui_portrait-012" , "turret_speed" : "6.0", "max_speed" : "1.25" , "chase_distance" : "120.0", "shoot_chance" : "15"},
+    "Frank"   : { "avatar" : "gui_portrait-013" , "turret_speed" : "9.0", "max_speed" : "1.5" , "chase_distance" : "140.0", "shoot_chance" : "35"},
+    "Joseph"  : { "avatar" : "gui_portrait-014" , "turret_speed" : "6.0", "max_speed" : "1.2" , "chase_distance" : "130.0", "shoot_chance" : "18"},
+    "Kenny"   : { "avatar" : "gui_portrait-015" , "turret_speed" : "3.0", "max_speed" : "1.0" , "chase_distance" : "75.0", "shoot_chance" : "10"},
+    "Tonny"   : { "avatar" : "gui_portrait-016" , "turret_speed" : "6.0", "max_speed" : "1.27" , "chase_distance" : "100.0", "shoot_chance" : "16"},
+    "Nomad"   : { "avatar" : "gui_portrait-017" , "turret_speed" : "6.6", "max_speed" : "1.2" , "chase_distance" : "90.0", "shoot_chance" : "10"},
+    "Antonio" : { "avatar" : "gui_portrait-018" , "turret_speed" : "6.2", "max_speed" : "1.2" , "chase_distance" : "130.0", "shoot_chance" : "19"},
+    "Saga"    : { "avatar" : "gui_portrait-019" , "turret_speed" : "5.0", "max_speed" : "0.9" , "chase_distance" : "70.0", "shoot_chance" : "10"},
+    "Peter"   : { "avatar" : "gui_portrait-020" , "turret_speed" : "8.9", "max_speed" : "1.5" , "chase_distance" : "180.0", "shoot_chance" : "50"},
+    "Rainer"  : { "avatar" : "gui_portrait-021" , "turret_speed" : "6.0", "max_speed" : "1.2" , "chase_distance" : "123.0", "shoot_chance" : "18"},
+    "Olympus" : { "avatar" : "gui_portrait-022" , "turret_speed" : "6.9", "max_speed" : "1.2" , "chase_distance" : "115.0", "shoot_chance" : "20"},
+    "Remero"  : { "avatar" : "gui_portrait-023" , "turret_speed" : "6.8", "max_speed" : "1.2" , "chase_distance" : "110.0", "shoot_chance" : "12" },
+    "Nexus"   : { "avatar" : "gui_portrait-024" , "turret_speed" : "7.2", "max_speed" : "1.4" , "chase_distance" : "140.0", "shoot_chance" : "40" },
+    "Sven"    : { "avatar" : "gui_portrait-025" , "turret_speed" : "6.9", "max_speed" : "1.2" , "chase_distance" : "120.0", "shoot_chance" : "15" },
+    "Entity"  : { "avatar" : "gui_portrait-026" , "turret_speed" : "8.0", "max_speed" : "1.3" , "chase_distance" : "150.0", "shoot_chance" : "30"}
+
+}

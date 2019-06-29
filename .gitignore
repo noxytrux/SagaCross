@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+#vs
+
+.vs/
+Debug/
+Release/
+SagaCross/Debug/
+SagaCross/Release/
+SagaCross/*.dll
+SagaCross/resource/
