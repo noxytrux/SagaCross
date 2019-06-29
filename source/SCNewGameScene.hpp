@@ -22,5 +22,14 @@ namespace sc {
 
 	private:
 
+		GLuint _bgtex;
+		GLuint _btnntex;
+		GLuint _btnatex;
+		GLuint _btnbacktex;
+
+		struct nk_image _windowbg;
+		struct nk_image _buttonnormal;
+		struct nk_image _buttonactive;
+		struct nk_image _backbtn;
 	};
 }

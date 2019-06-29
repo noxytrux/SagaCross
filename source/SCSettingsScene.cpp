@@ -46,7 +46,7 @@ SCSceneType SCSettingsScene::Render() {
 
 	//background
 	ctx->style.window.fixed_background = nk_style_item_image(_windowbg);
-	if (nk_begin(ctx, "MainMenu", nk_rect(0, 0, screenSize.width, screenSize.height), NK_WINDOW_NO_INPUT)) {
+	if (nk_begin(ctx, "Settings", nk_rect(0, 0, screenSize.width, screenSize.height), NK_WINDOW_NO_INPUT)) {
 
 		auto fonts = _renderer->getFontList();
 		auto margin = 30;

@@ -72,22 +72,32 @@ SCSceneType SCMenuScene::Render() {
 		nk_spacing(ctx, 1);
         if (nk_button_label(ctx, "NEW GAME")) {
 
-            std::cout << "SKIRMISH" << std::endl;
             _type = SceneTypeNewGame;
         }
         nk_spacing(ctx, 1);
-		
-		nk_spacing(ctx, 1);
-		nk_spacing(ctx, 1);
-		nk_spacing(ctx, 1);
 
+		nk_spacing(ctx, 1);
+		if (nk_button_label(ctx, "MULTIPLAYER")) {
+
+			//TODO: implement multiplayer
+		}
+		nk_spacing(ctx, 1);
+		
         nk_spacing(ctx, 1);
         if (nk_button_label(ctx, "SETTINGS")) {
 
-            std::cout << "SETTINGS" << std::endl;
             _type = SceneTypeSettings;
         }
         nk_spacing(ctx, 1);
+
+#ifndef MOBILE
+		nk_spacing(ctx, 1);
+		if (nk_button_label(ctx, "EXIT")) {
+
+			_type = SceneTypeExit;
+		}
+		nk_spacing(ctx, 1);
+#endif
 
     }
     nk_end(ctx);

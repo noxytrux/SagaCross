@@ -128,6 +128,10 @@
 
 #endif
 
+#if defined(__ANDROID__) || defined(TARGET_OS_IPHONE)
+#define MOBILE 1
+#endif
+
 #define OFFSET(st, m) \
 ((size_t) ( (char *)&((st *)(0))->m - (char *)0 ))
 

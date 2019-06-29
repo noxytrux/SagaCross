@@ -14,6 +14,7 @@ namespace sc {
 		SceneTypeSettings,
 		SceneTypeRender,
 		SceneTypeMultiplayer,
+		SceneTypeExit,
 		SceneTypeNone
 	};
 

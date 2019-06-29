@@ -5,10 +5,6 @@
 
 using namespace sc;
 
-#if defined(__ANDROID__) || defined(TARGET_OS_IPHONE)
-#define MOBILE 1
-#endif
-
 static std::shared_ptr<SCDisplay> makeDisplay(const std::shared_ptr<SCSettings> &settings)
 {
 #ifdef MOBILE
@@ -123,32 +119,38 @@ void SCApplication::renderFrame()
 
 		_sceneManager->setCurrent("menu");
 	}
-						break;
+		break;
 
 	case SceneTypeNewGame: {
 
 		_sceneManager->setCurrent("newgame");
 	}
-						   break;
+		break;
 
 	case SceneTypeSettings: {
 
 		_sceneManager->setCurrent("settings");
 	}
-							break;
+		break;
 
 	case SceneTypeRender: {
 
 		_sceneManager->setCurrent("render");
-
 	}
-						  break;
+		break;
 
 	case SceneTypeNone: {
 
 		_sceneManager->getCurrentScenePointer()->handleMouse(-1, 0, x, y);
 	}
-						break;
+		break;
+
+	case SceneTypeExit: {
+	
+		_userunloop = false;
+	}
+		break;
+
 	default:
 		break;
 	}
