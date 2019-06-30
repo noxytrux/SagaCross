@@ -26,10 +26,20 @@ namespace sc {
 		GLuint _btnntex;
 		GLuint _btnatex;
 		GLuint _btnbacktex;
+		GLuint _leftbtntex;
+		GLuint _rightbtntex;
 
 		struct nk_image _windowbg;
 		struct nk_image _buttonnormal;
 		struct nk_image _buttonactive;
 		struct nk_image _backbtn;
+		struct nk_image _lhsbtn;
+		struct nk_image _rhsbtn;
+
+		std::vector<struct nk_image> _maps;
+		std::vector<std::string> _names;
+
+		int _selectedmap;
+		int _botscount;
 	};
 }

@@ -23,9 +23,25 @@ SCSceneType SCRenderScene::Render() {
 
 void SCRenderScene::Init() {
 
+	//clean up before loading game
+	textureLoader.releaseTextures();
+
+	//get game info 
+	auto settings = _renderer->getSettings();
+	auto &defaults = settings->userDefaults;
+
+	auto selectedmap = defaults.value<int>("map", 0);
+	auto botscount = defaults.value<int>("botscount", 0);
+
+	defaults.clear();
+
+
 }
 
 void SCRenderScene::Destroy() {
+
+	//clean up after game
+	textureLoader.releaseTextures();
 
     _type = SceneTypeNone;
 }

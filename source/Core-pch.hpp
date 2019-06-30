@@ -137,6 +137,15 @@
 
 extern bool FLT_EQUAL(float a, float b);
 
+//since c++17
+#if __cplusplus < 201703L
+template<class T>
+constexpr const T& clamp(const T& v, const T& lo, const T& hi)
+{
+	return std::min(std::max(v, lo), hi); 
+}
+#endif
+
 #include <cassert>
 #include <string>
 #include <vector>

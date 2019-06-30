@@ -158,6 +158,8 @@ void SCGLFWInput::sc_key_callback(GLFWwindow *window)
 		move = true;
 	}
 
+	//TODO: angle calculation
+
 	if (move && movementCallback) {
 
 		movementCallback(direction, angle);

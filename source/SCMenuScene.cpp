@@ -18,6 +18,7 @@ SCMenuScene::~SCMenuScene() {
 
 SCSceneType SCMenuScene::Render() {
 
+	//TODO: refactor this code, each scene use same bg logic with window this is not DRY
 	auto ctx = _renderer->getUIContext();
 	auto display = _renderer->getDisplay();
 	auto screenSize = display->getScreenSize();
@@ -45,18 +46,18 @@ SCSceneType SCMenuScene::Render() {
 
     //background
     ctx->style.window.fixed_background = nk_style_item_image(_windowbg);
-    if (nk_begin(ctx, "MainMenu", nk_rect(0, 0, screenSize.width, screenSize.height), NK_WINDOW_NO_INPUT)) {
+    if (nk_begin(ctx, "MainMenu", nk_rect(0, 0, screenSize.width, screenSize.height), NK_WINDOW_NO_INPUT | NK_WINDOW_NO_SCROLLBAR)) {
 		
 		auto fonts = _renderer->getFontList();
 		auto margin = 30;
 
 		//separator
-		nk_layout_row_static(ctx, 100, screenSize.width - margin, 1);
+		nk_layout_row_static(ctx, 80, screenSize.width - margin, 1);
 		nk_spacing(ctx, 1);
 
 		//logo
 		nk_style_set_font(ctx, &fonts[0]->handle);
-		nk_layout_row_static(ctx, 100, screenSize.width - margin, 1);
+		nk_layout_row_static(ctx, 90, screenSize.width - margin, 1);
 		nk_label(ctx, "SAGA CROSS", NK_TEXT_ALIGN_CENTERED);
 
 		//buttons
