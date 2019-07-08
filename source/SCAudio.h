@@ -26,7 +26,7 @@ namespace sc {
 			return channel == nullptr;
 		}
 
-		void Update(xVec3 & Pos, float pitch = 1.0f)
+		void Update(const xVec3 & Pos, float pitch = 1.0f)
 		{
 			xVec3 vel(0, 0, 0);
 
@@ -50,7 +50,7 @@ namespace sc {
 
 		typedef uint32_t SoundID;
 
-		SCAudio();
+		SCAudio(const std::string &path);
 		~SCAudio() noexcept;
 
 		FMOD::System *getSystem() const { return _system; }
@@ -79,6 +79,8 @@ namespace sc {
 
 		void unload();
 		void checkResult(FMOD_RESULT result) const;
+
+		std::string _path;
 
 		mutable bool             _muted;
 		mutable FMOD::System     *_system;

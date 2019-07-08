@@ -7,7 +7,7 @@
 
 namespace sc {
 
-	typedef PF_ENUM(unsigned int, SCSceneType) {
+	typedef SC_ENUM(unsigned int, SCSceneType) {
 
 		SceneTypeMenu,
 		SceneTypeNewGame,

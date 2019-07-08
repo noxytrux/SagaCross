@@ -2,7 +2,7 @@
 
 #include "Core-pch.hpp"
 
-enum NC_ARRAY_ATTRIBUTES_ENUM {
+typedef SC_ENUM(uint32_t, SC_ARRAY_ATTRIBUTES_ENUM) {
     ATTRIB_VERTEX,
     ATTRIB_COORDS,
     ATTRIB_COLOR,
@@ -13,7 +13,7 @@ enum NC_ARRAY_ATTRIBUTES_ENUM {
     NUM_ATTRIBUTES
 };
 
-enum NC_UNIFORM_ENUM {
+typedef SC_ENUM(uint32_t, SC_UNIFORM_ENUM) {
     UNI_PROJECTION_MAT,         //projection
     UNI_MODELVIEW_WORLD_MAT,    //modelview + world
     UNI_NORMAL_MAT,             //normal matrix
@@ -23,8 +23,6 @@ enum NC_UNIFORM_ENUM {
     UNI_TEX3,
     NUM_UNIFORM
 };
-
-//-------------------------------------------------------------------------
 
 class ShaderProgram {
   
@@ -60,6 +58,8 @@ public:
     void begin() const;
     void end() const;
     
+	GLuint uniforms[NUM_UNIFORM];
+
 protected:
     
     void deinitShader();

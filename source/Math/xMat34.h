@@ -21,6 +21,11 @@ homogenous transform class composed of a matrix and a vector.
 
 class xMat34
 	{
+
+	private:
+
+	float mat[16];
+
 	public:
 	/**
 	\brief [ M t ]
@@ -141,6 +146,12 @@ class xMat34
 		setColumnMajor44( m );
 	}
 
+	X_INLINE float* m()
+	{
+		getColumnMajor44(mat);
+
+		return mat;
+	}
 
 	/**
 	\brief convert from a matrix format appropriate for rendering
@@ -154,6 +165,7 @@ class xMat34
 	\brief convert to a matrix format appropriate for rendering
 	*/
 	X_INLINE void getColumnMajor44(xF32 *) const;
+	X_INLINE void getColumnMajor44D(xF64 *) const;
 	/**
 	\brief convert to a matrix format appropriate for rendering
 	*/
@@ -297,6 +309,16 @@ X_INLINE void xMat34::getColumnMajor44(xF32 * d) const
 	d[3] = d[7] = d[11] = 0.0f;
 	d[15] = 1.0f;
 	}
+
+X_INLINE void xMat34::getColumnMajor44D(xF64 * d) const
+{
+	M.getColumnMajorStride4(d);
+	d[12] = t.x;
+	d[13] = t.y;
+	d[14] = t.z;
+	d[3] = d[7] = d[11] = 0.0f;
+	d[15] = 1.0f;
+}
 
 X_INLINE void xMat34::getColumnMajor44(xF32 d[4][4]) const
 	{

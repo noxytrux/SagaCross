@@ -2,8 +2,6 @@
 
 #include "Core-pch.hpp"
 
-using json = nlohmann::json;
-
 namespace sc {
 
 	class SCSettings final : public SCNonCopyable {

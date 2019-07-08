@@ -131,7 +131,7 @@ void SCGLFWInput::sc_text_callback(GLFWwindow *win, unsigned int codepoint)
 void SCGLFWInput::sc_key_callback(GLFWwindow *window)
 {
 	xVec2 direction = xVec2(0, 0);
-	float angle = 0;
+	float angle = 180;
 	bool move = false;
 
 	if (glfwGetKey(window, GLFW_KEY_A) || glfwGetKey(window, GLFW_KEY_LEFT)) {
@@ -158,7 +158,11 @@ void SCGLFWInput::sc_key_callback(GLFWwindow *window)
 		move = true;
 	}
 
-	//TODO: angle calculation
+	double x, y;
+	glfwGetCursorPos(window, &x, &y);
+
+	float rad = std::atan2(x, y);
+	angle = -(rad * 180.0 / M_PI) + 180.0;
 
 	if (move && movementCallback) {
 

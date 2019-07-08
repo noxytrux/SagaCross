@@ -133,9 +133,7 @@ void SCMenuScene::Init() {
 
 	auto audio = _audio;
 
-	auto musicPath = _rootPath + "music/menu.mp3";
-
-	audio->loadMusic(musicPath);
+	audio->loadMusic("music/menu.mp3");
 	audio->playMusic();
 }
 

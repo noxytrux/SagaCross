@@ -383,6 +383,8 @@ class xVec3
 	*/
 	xVec3 cross(const xVec3& v) const;
 
+	static xVec3 reflect(const xVec3& I, const xVec3& N);
+
 	/**
 	\brief cross product
 	*/

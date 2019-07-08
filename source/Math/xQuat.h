@@ -105,6 +105,8 @@ class xQuat
 	X_INLINE void getWXYZ(xF64 *) const;
 	X_INLINE void getXYZW(xF64 *) const;
 
+	X_INLINE void fromEulerAngles(xReal _x, xReal _y, xReal _z);
+
 	/**
 	\brief returns true if all elements are finite (not NAN or INF, etc.)
 	*/
@@ -390,6 +392,23 @@ X_INLINE void xQuat::getXYZW(xF64 *d) const
 
 //const methods
  
+X_INLINE void xQuat::fromEulerAngles(xReal _x, xReal _y, xReal _z)
+{
+	// Compute sine and cosine of the half angles
+	xReal sr = sinf(_x * 0.5);
+	xReal cr = cosf(_x * 0.5);
+	xReal sp = sinf(_y * 0.5);
+	xReal cp = cosf(_y * 0.5);
+	xReal sy = sinf(_z * 0.5);
+	xReal cy = cosf(_z * 0.5);
+
+	// Compute values
+	w = (cy * cp * cr) + (sy * sp * sr);
+	x = -(sy * sp * cr) + (cy * cp * sr);
+	y = (cy * sp * cr) + (sy * cp * sr);
+	z = -(cy * sp * sr) + (sy * cp * cr);
+}
+
 X_INLINE bool xQuat::isFinite() const
 	{
 	return xMath::isFinite(x) 

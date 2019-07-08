@@ -3,7 +3,7 @@
 
 using namespace sc;
 
-SCAudio::SCAudio() {
+SCAudio::SCAudio(const std::string &path) : _path(path) {
 	_muted = false;
 
 	_result = FMOD::System_Create(&_system);
@@ -90,7 +90,7 @@ SCAudio::SoundID SCAudio::loadSound(const std::string & path) const {
 		return (SoundID)std::distance(_paths.begin(), it);
 	}
 
-	_result = _system->createSound(path.c_str(), FMOD_DEFAULT, 0, &sound);
+	_result = _system->createSound((_path + path).c_str(), FMOD_DEFAULT, 0, &sound);
 	this->checkResult(_result);
 
 	_result = sound->setMode(FMOD_LOOP_OFF);
@@ -147,7 +147,7 @@ void SCAudio::loadMusic(const std::string & path) const {
 		_stream->release();
 	}
 
-	_result = _system->createStream(path.c_str(), FMOD_LOOP_NORMAL | FMOD_2D, 0, &_stream);
+	_result = _system->createStream((_path + path).c_str(), FMOD_LOOP_NORMAL | FMOD_2D, 0, &_stream);
 	this->checkResult(_result);
 
 	_result = _stream->getNumSubSounds(&_numsubsounds);

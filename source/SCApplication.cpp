@@ -42,13 +42,13 @@ SCApplication::SCApplication()
 	display->makeWindow();
 	display->setVsync(_settings->isVsyncEnabled());
 
-	auto renderer = std::make_shared<SCOpenGLRenderable>(display, _settings);
+	auto renderer = std::make_shared<SCOpenGLRenderable>(display, _settings, getResourcePath());
 	renderer->loadFonts(getResourcePath());
 
 	_renderer = renderer;
 
 	_input = makeInput(display);
-	_audio = std::make_shared<SCAudio>();
+	_audio = std::make_shared<SCAudio>(getResourcePath());
 
 	_audio->setVolume(_settings->getVolue());
 

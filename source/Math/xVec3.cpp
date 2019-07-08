@@ -382,6 +382,11 @@ void xVec3::cross(const xVec3 &left, const xVec3 & right)	//prefered version, w/
 	z = c;
 }
 
+xVec3 xVec3::reflect(const xVec3& I, const xVec3& N) {
+
+	return I - N * (2.0 * N.dot(I));
+}
+
 
 bool xVec3::equals(const xVec3 & v, xReal epsilon) const
 {

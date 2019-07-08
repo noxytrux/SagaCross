@@ -128,7 +128,7 @@
 
 #endif
 
-#if defined(__ANDROID__) || defined(TARGET_OS_IPHONE)
+#if defined(__ANDROID__) || defined(TARGET_OS_IPHONE) || defined(__EMSCRIPTEN__)
 #define MOBILE 1
 #endif
 
@@ -137,13 +137,8 @@
 
 extern bool FLT_EQUAL(float a, float b);
 
-//since c++17
-#if __cplusplus < 201703L
-template<class T>
-constexpr const T& clamp(const T& v, const T& lo, const T& hi)
-{
-	return std::min(std::max(v, lo), hi); 
-}
+#ifdef _WIN32
+#define _USE_MATH_DEFINES
 #endif
 
 #include <cassert>
@@ -159,12 +154,24 @@ constexpr const T& clamp(const T& v, const T& lo, const T& hi)
 #include <functional>
 #include <map>
 #include <set>
+#include <cstdint>
 
-#include "json.hpp"
 #include "EnumOptionMacro.hpp"
-#include "CFrustum.hpp"
 #include "MathTypes.h"
 #include "SCNonCopyable.hpp"
 
+//since c++17
+#if __cplusplus < 201703L
+template<class T>
+constexpr const T& clamp(const T& v, const T& lo, const T& hi)
+{
+	return std::min(std::max(v, lo), hi);
+}
+#endif
+
+extern std::vector<std::string> split(const std::string& s, char delimiter);
+
+#include "json.hpp"
+using json = nlohmann::json;
 
 

@@ -169,7 +169,6 @@ Copy /Y $(ProjectDir)..\libraries\glfw\bin\* $(ProjectDir)</Command>
     <ClCompile Include="..\source\SCApplication.cpp" />
     <ClCompile Include="..\source\SCAudio.cpp" />
     <ClCompile Include="..\source\SCDisplay.cpp" />
-    <ClCompile Include="..\source\SCEntity.cpp" />
     <ClCompile Include="..\source\SCGLFWDisplay.cpp" />
     <ClCompile Include="..\source\SCGLFWInput.cpp" />
     <ClCompile Include="..\source\SCMenuScene.cpp" />
@@ -179,6 +178,7 @@ Copy /Y $(ProjectDir)..\libraries\glfw\bin\* $(ProjectDir)</Command>
     <ClCompile Include="..\source\SCSceneManager.cpp" />
     <ClCompile Include="..\source\SCSettings.cpp" />
     <ClCompile Include="..\source\SCSettingsScene.cpp" />
+    <ClCompile Include="..\source\SCSparkles.cpp" />
     <ClCompile Include="..\source\ShaderProgram.cpp" />
     <ClCompile Include="..\source\Timer\GameTimer.cpp" />
     <ClCompile Include="..\source\Timer\WindowsTimer.cpp" />
@@ -186,7 +186,6 @@ Copy /Y $(ProjectDir)..\libraries\glfw\bin\* $(ProjectDir)</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\BasePathExtraction.hpp" />
-    <ClInclude Include="..\source\CFrustum.hpp" />
     <ClInclude Include="..\source\Core-pch.hpp" />
     <ClInclude Include="..\source\EnumOptionMacro.hpp" />
     <ClInclude Include="..\source\glMatrix4x4.hpp" />
@@ -209,21 +208,40 @@ Copy /Y $(ProjectDir)..\libraries\glfw\bin\* $(ProjectDir)</Command>
     <ClInclude Include="..\source\SCApplication.h" />
     <ClInclude Include="..\source\SCAudio.h" />
     <ClInclude Include="..\source\SCBaseScene.hpp" />
+    <ClInclude Include="..\source\SCBonus.h" />
+    <ClInclude Include="..\source\SCBulletManager.h" />
+    <ClInclude Include="..\source\SCCamera.h" />
     <ClInclude Include="..\source\SCDisplay.h" />
-    <ClInclude Include="..\source\SCEntity.h" />
+    <ClInclude Include="..\source\SCFastAnimatedMesh.h" />
+    <ClInclude Include="..\source\SCFastCutoffMesh.h" />
+    <ClInclude Include="..\source\SCFastMesh.h" />
+    <ClInclude Include="..\source\SCFastOceanMesh.h" />
+    <ClInclude Include="..\source\SCFastWaterMesh.h" />
+    <ClInclude Include="..\source\SCFrustum.hpp" />
     <ClInclude Include="..\source\SCGLFWDisplay.h" />
     <ClInclude Include="..\source\SCGLFWInput.h" />
+    <ClInclude Include="..\source\SCGround.h" />
+    <ClInclude Include="..\source\SCHeightMap.h" />
     <ClInclude Include="..\source\SCInputInterface.h" />
     <ClInclude Include="..\source\SCMenuScene.hpp" />
+    <ClInclude Include="..\source\SCMeshInstanceManager.h" />
     <ClInclude Include="..\source\SCNewGameScene.hpp" />
     <ClInclude Include="..\source\SCNonCopyable.hpp" />
     <ClInclude Include="..\source\SCOpenGLRenderer.h" />
+    <ClInclude Include="..\source\SCParticleLayer.h" />
+    <ClInclude Include="..\source\SCRandomMeshPoint.h" />
     <ClInclude Include="..\source\SCRenderable.h" />
+    <ClInclude Include="..\source\SCRenderer.h" />
     <ClInclude Include="..\source\SCRendererInterface.h" />
     <ClInclude Include="..\source\SCRenderScene.hpp" />
     <ClInclude Include="..\source\SCSceneManager.h" />
     <ClInclude Include="..\source\SCSettings.h" />
     <ClInclude Include="..\source\SCSettingsScene.hpp" />
+    <ClInclude Include="..\source\SCSparkles.h" />
+    <ClInclude Include="..\source\SCSphere.h" />
+    <ClInclude Include="..\source\SCTank.h" />
+    <ClInclude Include="..\source\SCVegetation.h" />
+    <ClInclude Include="..\source\SCVehicle.hpp" />
     <ClInclude Include="..\source\ShaderProgram.hpp" />
     <ClInclude Include="..\source\stb_image.h" />
     <ClInclude Include="..\source\Timer\GameTimer.hpp" />
