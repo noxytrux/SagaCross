@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SCRenderer.h"
-#include "SCBulletManager.h"
 
 namespace sc {
 
@@ -10,6 +9,9 @@ namespace sc {
 		float Pos[3];
 		float R;
 	};
+
+    class SCBullet;
+    class SCBulletManager;
 
 	class SCVehicleObj {
 
@@ -60,97 +62,17 @@ namespace sc {
 		static std::vector<std::shared_ptr<SCVehicleObj>> all;
 		static std::vector<SCCollisionModel> col;
 
-		static void MakeCollide(const std::shared_ptr<SCBulletManager> &Bullets)
-		{
+        static void MakeCollide(const std::shared_ptr<SCBulletManager> &Bullets);
 
-			for (int i = 0; i < all.size(); ++i) {
-	
-				all[i]->Collide(all, col, Bullets->bullets);
-			}
+        SCVehicle(const std::shared_ptr<SCVehicleObj> &o, const std::shared_ptr<SCOpenGLRenderable> &renderer);
+        ~SCVehicle() noexcept;
 
-			for (int i = 0; i < Bullets->bullets.size(); ++i) {
+        static std::shared_ptr<SCVehicleObj> GetRandom();
+        static void Damage(xVec3 P);
 
-				for (int a = 0; a < col.size(); ++a)
-				{
+        virtual void Render() override;
+        virtual void Simulate(float dt) override;
+        virtual void DrawStatus(float dt);
 
-					SCCollisionModel * other = &col[a];
-
-					xVec3 G(Bullets->bullets[i]->Pos);
-					xVec3 P(other->Pos);
-
-					float L = (P - G).magnitude();
-
-					if (L < (other->R + 4.0f))
-					{
-						Bullets->bullets[i]->Destroy();
-
-						break;
-					}
-				}
-			}
-		}
-
-		SCVehicle(const std::shared_ptr<SCVehicleObj> &o, const std::shared_ptr<SCOpenGLRenderable> &renderer) : SCRenderObj(renderer)
-		{
-
-			all.push_back(o);
-			obj = o;
-		}
-
-		~SCVehicle() noexcept
-		{
-			for (int i = 0; i < all.size(); ++i) {
-				
-				if (all[i] == obj)
-				{
-
-					all.erase(all.begin() + i);
-					return;
-				}
-			}
-		}
-
-		static std::shared_ptr<SCVehicleObj> GetRandom() {
-
-			return all[rand() % all.size()];
-		}
-
-		static void Damage(xVec3 P) {
-
-			for (int i = 0; i < all.size(); ++i) {
-
-				if (all[i]->active && all[i]->live > 0)
-				{
-
-					xVec3 p(all[i]->Pos);
-
-					float distance = (p - P).magnitude();
-
-					if (distance < 10) {
-
-						all[i]->Damage((int)(50 - distance * 5));
-
-					}
-				}
-			}
-		}
-
-		virtual void Render() override
-		{
-			obj->Render();
-		}
-
-		virtual void Simulate(float dt) override
-		{
-
-			obj->Steer(this, dt);
-
-		}
-
-		virtual void DrawStatus(float dt)
-		{
-			obj->DrawStatus(dt);
-		}
-
-	};
+    };
 }

@@ -13,7 +13,7 @@ SCNewGameScene::SCNewGameScene(const std::string &name,
 	_botscount = 3;
 }
 
-SCNewGameScene::~SCNewGameScene() {
+SCNewGameScene::~SCNewGameScene() noexcept {
 
 }
 
@@ -66,8 +66,8 @@ SCSceneType SCNewGameScene::Render() {
 			_type = SceneTypeMenu;
 		}
 
-		auto mapsize = 400.0 / screenSize.width;
-		auto sepsize = (1.0 - mapsize) * 0.5;
+		const float mapsize = 400.0f / screenSize.width;
+        float sepsize = (1.0f - mapsize) * 0.5f;
 	
 		static const float selectmapratio[] = { sepsize, mapsize };
 		nk_layout_row(ctx, NK_DYNAMIC, 300, 2, selectmapratio);
@@ -82,9 +82,9 @@ SCSceneType SCNewGameScene::Render() {
 		nk_spacing(ctx, 1);
 		nk_button_label(ctx, "");
 	
-		auto labelsize = 200.0 / screenSize.width;
-		auto btnsize = 64.0 / screenSize.width;
-		auto margin = (1.0 - (labelsize + (2.0 * btnsize))) * 0.5;
+		const float labelsize = 200.0f / screenSize.width;
+		const float btnsize = 64.0f / screenSize.width;
+		const float margin = (1.0f - (labelsize + (2.0f * btnsize))) * 0.5f;
 
 		static const float selectlabelratio[] = { margin, btnsize, labelsize , btnsize };
 		nk_layout_row(ctx, NK_DYNAMIC, 64, 4, selectlabelratio);
@@ -152,8 +152,8 @@ SCSceneType SCNewGameScene::Render() {
 		ctx->style.button.hover = nk_style_item_image(_buttonactive);
 		ctx->style.button.active = nk_style_item_image(_buttonactive);
 
-		auto startsize = 212.0 / screenSize.width;
-		sepsize = (1.0 - startsize) * 0.5;
+		const float startsize = 212.0f / screenSize.width;
+		sepsize = (1.0f - startsize) * 0.5f;
 
 		static const float startratio[] = { sepsize, startsize };
 		nk_layout_row(ctx, NK_DYNAMIC, 42, 2, startratio);

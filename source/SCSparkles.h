@@ -215,7 +215,7 @@ namespace sc {
 			glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, 0, 0, SparcleRotation);
 			glEnableVertexAttribArray(ATTRIB_NORMAL);
 
-			glDrawArrays(GL_POINTS, 0, S.size());
+            glDrawArrays(GL_POINTS, 0, S.size());
 
 			glDisable(GL_BLEND);
 			glLineWidth(1.0f);

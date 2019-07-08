@@ -8,7 +8,7 @@ SCDisplay::SCDisplay(const uint32_t width, const uint32_t height, const bool ful
 { 
 }
 
-SCDisplay::~SCDisplay() 
+SCDisplay::~SCDisplay() noexcept
 { 
 }
 

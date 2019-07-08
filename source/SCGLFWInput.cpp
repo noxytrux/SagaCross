@@ -5,17 +5,17 @@ using namespace sc;
 constexpr float NK_GLFW_DOUBLE_CLICK_LO  = 0.02;
 constexpr float NK_GLFW_DOUBLE_CLICK_HI = 0.2;
 
-static void sc::scroll_callback(GLFWwindow *win, double xoff, double yoff)
+void sc::scroll_callback(GLFWwindow *win, double xoff, double yoff)
 {
 	static_cast<SCGLFWInput*>(glfwGetWindowUserPointer(win))->sc_scroll_callback(win, xoff, yoff);
 }
 
-static void sc::mouse_callback(GLFWwindow *win, int button, int action, int mods)
+void sc::mouse_callback(GLFWwindow *win, int button, int action, int mods)
 {
 	static_cast<SCGLFWInput*>(glfwGetWindowUserPointer(win))->sc_mouse_callback(win, button, action, mods);
 }
 
-static void sc::text_callback(GLFWwindow *win, unsigned int codepoint)
+void sc::text_callback(GLFWwindow *win, unsigned int codepoint)
 {
 	static_cast<SCGLFWInput*>(glfwGetWindowUserPointer(win))->sc_text_callback(win, codepoint);
 }

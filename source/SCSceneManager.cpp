@@ -23,7 +23,7 @@ SCSceneManager::SCSceneManager(const std::string rootPath, const std::shared_ptr
 	this->setCurrent("menu");
 }
 
-SCSceneManager::~SCSceneManager()
+SCSceneManager::~SCSceneManager() noexcept
 {
 	for (auto it = _scenes.begin(); it != _scenes.end(); it++) {
 

@@ -30,6 +30,8 @@
 
 #ifdef __APPLE__
 
+    #define GL_SILENCE_DEPRECATION
+
     #if TARGET_OS_IPHONE
 
         #ifdef __OBJC__
@@ -50,23 +52,8 @@
 
     #else
 
-    #ifndef MAP_EDITOR
-        #ifdef __OBJC__
-            #import <AppKit/AppKit.h>
-            #import <Cocoa/Cocoa.h>
-            #import <QuartzCore/CVDisplayLink.h>
-        #endif
-    #endif
-
-        #include <OpenGL/gl3.h>
-        #include <OpenGL/gl3ext.h>
-
-    #ifndef MAP_EDITOR
-        #define glBindVertexArray glBindVertexArray
-        #define glGenVertexArrays glGenVertexArrays
-        #define glDeleteVertexArrays glDeleteVertexArrays
-        #define GL_RED_EXT GL_RED
-    #endif
+        #include <GL/glew.h>
+        #include <GLFW/glfw3.h>
 
     #endif
 

@@ -11,7 +11,7 @@ SCSettingsScene::SCSettingsScene(const std::string &name,
 {
 }
 
-SCSettingsScene::~SCSettingsScene() {
+SCSettingsScene::~SCSettingsScene() noexcept {
 
 }
 

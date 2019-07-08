@@ -27,7 +27,7 @@ namespace sc {
 			_terrain = meshInstance->GetMesh(base + "_terrain", path, SCMeshTypeNormal);
 			_terrain->setScale(1.0f);
 
-			_water = std::make_unique<SCFastWaterMesh>(path + "models/object_level001-water-stream-fx.gmf");
+			_water = std::make_unique<SCFastWaterMesh>(path + "models/object_level001-water-stream-fx.gmf", renderer);
 			_water->setScale(1.0f);
 		}
 

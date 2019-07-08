@@ -4,10 +4,9 @@
 #include "SCAudio.h"
 #include "SCRandomMeshPoint.h"
 #include "SCVehicle.hpp"
+#include "SCTank.h"
 
 namespace sc {
-
-	class SCTank;
 
 	class SCBonus {
 
@@ -135,7 +134,7 @@ namespace sc {
 			return false;
 		}
 
-		virtual bool Give(const std::shared_ptr<SCVehicleObj> &obj, const std::shared_ptr<SCAudio> &audio)
+		virtual bool Give(const std::shared_ptr<SCVehicleObj> &obj, const std::shared_ptr<SCAudio> &audio) override
 		{
 
 			char & L = std::dynamic_pointer_cast<SCTank>(obj)->live;
@@ -229,7 +228,7 @@ namespace sc {
 			return false;
 		}
 
-		virtual bool Give(const std::shared_ptr<SCVehicleObj> &obj, const std::shared_ptr<SCAudio> &audio)
+		virtual bool Give(const std::shared_ptr<SCVehicleObj> &obj, const std::shared_ptr<SCAudio> &audio) override
 		{
 
 			std::dynamic_pointer_cast<SCTank>(obj)->mines++;
@@ -317,7 +316,7 @@ namespace sc {
 
 		}
 
-		virtual bool Give(const std::shared_ptr<SCVehicleObj> &obj, const std::shared_ptr<SCAudio> &audio) 
+		virtual bool Give(const std::shared_ptr<SCVehicleObj> &obj, const std::shared_ptr<SCAudio> &audio) override
 		{
 
 			if (T < 0.2 || obj == ptr) {
@@ -438,7 +437,7 @@ namespace sc {
 
 	private:
 
-		float deltaTime;
+        float deltaTime;
 		std::shared_ptr<SCAudio> _audio;
 	};
 }

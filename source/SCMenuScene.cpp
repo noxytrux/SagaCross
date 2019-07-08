@@ -12,7 +12,7 @@ SCMenuScene::SCMenuScene(const std::string &name,
 
 }
 
-SCMenuScene::~SCMenuScene() {
+SCMenuScene::~SCMenuScene() noexcept {
 
 }
 

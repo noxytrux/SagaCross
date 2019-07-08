@@ -2,6 +2,8 @@
 
 #include <mach/mach_time.h>
 
+using namespace sc;
+
 void DarwinTimer::update() {
 
     this->m_lastTime = mach_absolute_time();

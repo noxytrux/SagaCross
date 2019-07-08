@@ -446,7 +446,7 @@ namespace sc {
 			std::sort(mainModelQueue.begin(), mainModelQueue.end(), pred());
 		}
 
-		virtual void Render()
+		virtual void Render() override
 		{
 			glEnable(GL_BLEND);
 
