@@ -2,6 +2,8 @@
 
 #include "SCBaseScene.hpp"
 
+
+
 namespace sc {
 
 	class SCRenderScene final : public SCBaseScene {
@@ -28,5 +30,7 @@ namespace sc {
 
 	private:
 
+        GLuint _btnbacktex;
+        struct nk_image _backbtn;
 	};
 }

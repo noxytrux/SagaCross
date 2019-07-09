@@ -157,7 +157,7 @@ SCOpenGLRenderable::SCOpenGLRenderable(const std::shared_ptr<SCDisplay> &display
 	WaterShader->uniforms[UNI_TEX3] = WaterShader->uniformLocation("time");
 }
 
-SCOpenGLRenderable::~SCOpenGLRenderable()
+SCOpenGLRenderable::~SCOpenGLRenderable() noexcept
 {
 	nk_glfw3_shutdown();
 	glUseProgram(0);

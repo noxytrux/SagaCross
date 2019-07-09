@@ -16,12 +16,9 @@ namespace sc {
 
 		static SCObjectRenderer *manager;
 
-		SCRenderObj(const std::shared_ptr<SCOpenGLRenderable> &renderer) 
-			: _renderer(renderer) 
-		{
-		}
+        SCRenderObj(const std::shared_ptr<SCOpenGLRenderable> &renderer);
 
-		virtual ~SCRenderObj() noexcept = default;
+		virtual ~SCRenderObj() noexcept;
 
 		virtual void Render()
 		{
@@ -56,12 +53,12 @@ namespace sc {
 			}
 		}
 
-		void AddObj(const std::shared_ptr<SCRenderObj> &o)
+		void AddObj(SCRenderObj *o)
 		{
 			_objs.push_back(o);
 		}
 
-		void DelObj(const std::shared_ptr<SCRenderObj> &o)
+		void DelObj(SCRenderObj *o)
 		{
 			for (int i = 0; i < _objs.size(); ++i) {
 
@@ -81,7 +78,7 @@ namespace sc {
 
 	private:
 		
-		std::vector<std::shared_ptr<SCRenderObj>> _objs;
+		std::vector<SCRenderObj*> _objs;
 	};
 }
 

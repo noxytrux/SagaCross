@@ -41,6 +41,7 @@
 		1C88EEC222D3C7D500A2EF7A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C88EEC122D3C7D500A2EF7A /* Cocoa.framework */; };
 		1C88EEC422D3C7E300A2EF7A /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C88EEC322D3C7E300A2EF7A /* IOKit.framework */; };
 		1C88EEC622D3C7EB00A2EF7A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C88EEC522D3C7EB00A2EF7A /* CoreVideo.framework */; };
+		1C88EEC822D3EED500A2EF7A /* SCRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C88EEC722D3EED500A2EF7A /* SCRenderer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -154,6 +155,7 @@
 		1C88EEC122D3C7D500A2EF7A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		1C88EEC322D3C7E300A2EF7A /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		1C88EEC522D3C7EB00A2EF7A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		1C88EEC722D3EED500A2EF7A /* SCRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SCRenderer.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,6 +278,7 @@
 				1C88EE8E22D3A91400A2EF7A /* SCNewGameScene.hpp */,
 				1C88EEB922D3B9E100A2EF7A /* SCVehicle.cpp */,
 				1C88EEBB22D3C17200A2EF7A /* SCTank.cpp */,
+				1C88EEC722D3EED500A2EF7A /* SCRenderer.cpp */,
 			);
 			name = source;
 			path = ../../../source;
@@ -389,6 +392,7 @@
 				1C88EEA022D3A91400A2EF7A /* SCSceneManager.cpp in Sources */,
 				1C88EEAF22D3A91400A2EF7A /* SCApplication.cpp in Sources */,
 				1C88EEB122D3A9A200A2EF7A /* SagaCross.cpp in Sources */,
+				1C88EEC822D3EED500A2EF7A /* SCRenderer.cpp in Sources */,
 				1C88EE9822D3A91400A2EF7A /* BasePathExtraction.cpp in Sources */,
 				1C88EE9F22D3A91400A2EF7A /* GameTimer.cpp in Sources */,
 				1C88EEA622D3A91400A2EF7A /* SCGLFWDisplay.cpp in Sources */,
@@ -530,6 +534,7 @@
 		1C88EE2422D39F9800A2EF7A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_COMMA = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5TSZE6ES9Y;
@@ -549,6 +554,7 @@
 		1C88EE2522D39F9800A2EF7A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_COMMA = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5TSZE6ES9Y;

@@ -107,7 +107,9 @@ namespace sc {
 	public:
 
 		std::vector< SCSparcle > S;
-		
+        std::shared_ptr<SCGround> ground;
+        std::shared_ptr<SCOpenGLRenderable> renderer;
+
 		float graviti;
 		float Wind[3];
 		float p_size_min;
@@ -117,12 +119,8 @@ namespace sc {
 
 		GLuint texture;
 
-		SCSparclesManager(const std::shared_ptr<SCGround> &ground, 
-						  const std::shared_ptr<SCOpenGLRenderable> &renderer,
-						  int t = 255, float g = -10, int s = 3, float w1 = 0, float w2 = 0, float w3 = 0) 
-			: _ground(ground)
-			, _renderer(renderer)
-			, graviti(g)
+		SCSparclesManager(int t = 255, float g = -10, int s = 3, float w1 = 0, float w2 = 0, float w3 = 0)
+            : graviti(g)
 			, p_size_min(s)
 			, p_size_max(s)
 		{
@@ -142,7 +140,7 @@ namespace sc {
 		void Add(float x, float y, float z, float vx, float vy, float vz, int num, GLubyte r, GLubyte g, GLubyte b, float MaxTime = 4 + rand() % 10 * 0.2f)
 		{
 
-			SCSparcle s(_ground, rotated);
+			SCSparcle s(ground, rotated);
 
 			s.Pos[0] = x;
 			s.Pos[1] = y;
@@ -179,7 +177,7 @@ namespace sc {
 
 		void Render(float dt)
 		{
-			auto current = _renderer->ParticleShader;
+			auto current = renderer->ParticleShader;
 
 			glActiveTexture(GL_TEXTURE0);
 			glUniform1i(current->uniforms[UNI_TEX0], 0);
@@ -191,8 +189,8 @@ namespace sc {
 
 			glEnable(GL_BLEND);
 
-			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, _renderer->Projection.m());
-			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, _renderer->ModelView.m());
+			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, renderer->Projection.m());
+			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, renderer->ModelView.m());
 
 			for (int i = 0; i < S.size(); ) {
 			
@@ -215,16 +213,11 @@ namespace sc {
 			glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, 0, 0, SparcleRotation);
 			glEnableVertexAttribArray(ATTRIB_NORMAL);
 
-            glDrawArrays(GL_POINTS, 0, S.size());
+            glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(S.size()));
 
 			glDisable(GL_BLEND);
 			glLineWidth(1.0f);
 		}
-
-	private:
-			
-		std::shared_ptr<SCGround> _ground;
-		std::shared_ptr<SCOpenGLRenderable> _renderer;
 	};
 
 	extern SCSparclesManager

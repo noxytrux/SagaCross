@@ -1,4 +1,4 @@
-﻿#include "SCRenderScene.hpp"
+#include "SCRenderScene.hpp"
 #include "glTextureLoader.hpp"
 
 #include "SCTank.h"
@@ -7,6 +7,20 @@
 #include "SCMeshInstanceManager.h"
 
 using namespace sc;
+
+SCObjectRenderer RenderManager;
+SCObjectRenderer* SCRenderObj::manager = &RenderManager;
+
+SCSparclesManager
+
+sc::Sparcles,
+sc::LightSparcles,
+sc::ParticleSmoke(64 , 0.0f , 14 , 6, 0 , 3 ),
+sc::TankSmoke(255, 0.0f, 14, 0, 0, 0),
+sc::TreeParticles,
+sc::HouseParticles,
+sc::TankSmokeWater(255, 0.0f, 14, 0, 0, 0),
+sc::TankSmokeGrass(255, 0.0f, 14, 0, 0, 0);
 
 std::vector<std::string> split(const std::string& s, char delimiter)
 {
@@ -44,7 +58,7 @@ SCRenderScene::SCRenderScene(const std::string &name,
 
 }
 
-SCRenderScene::~SCRenderScene() {
+SCRenderScene::~SCRenderScene() noexcept {
 
 }
 
@@ -63,10 +77,42 @@ SCSceneType SCRenderScene::Render() {
 
 	//frustum.calculateFrustum();
 
+    auto ctx = _renderer->getUIContext();
+    auto display = _renderer->getDisplay();
+    auto screenSize = display->getScreenSize();
+
+    ctx->style.window.fixed_background = nk_style_item_color(nk_rgba(0, 0, 0, 0));
+
+    if (nk_begin(ctx, "Render", nk_rect(0, 0, screenSize.width, screenSize.height), NK_WINDOW_NO_INPUT | NK_WINDOW_NO_SCROLLBAR)) {
+
+        auto fonts = _renderer->getFontList();
+
+        //buttons
+        nk_style_set_font(ctx, &fonts[1]->handle);
+
+        //backbutton
+        ctx->style.button.normal = nk_style_item_image(_backbtn);
+        ctx->style.button.hover = nk_style_item_image(_backbtn);
+        ctx->style.button.active = nk_style_item_image(_backbtn);
+
+        nk_layout_row_static(ctx, 32, 32, 1);
+        if (nk_button_label(ctx, "")) {
+
+            _type = SceneTypeMenu;
+        }
+
+        //TODO: add here pads for mobile UI
+    }
+    nk_end(ctx);
+
     return _type;
 }
 
 void SCRenderScene::Init() {
+
+    auto btnbackpath = _rootPath + "textures/menubtn.png";
+    _btnbacktex = textureLoader.loadFile(btnbackpath, GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
+    _backbtn = nk_subimage_id(_btnbacktex, 32, 32, nk_rect(0, 0, 32, 32));
 
 	//clean up before loading game
 	textureLoader.releaseTextures();
@@ -80,11 +126,13 @@ void SCRenderScene::Init() {
 
 	defaults.clear();
 
-
+    
 }
 
 void SCRenderScene::Destroy() {
 
+    _btnbacktex = 0;
+    
 	//clean up after game
 	textureLoader.releaseTextures();
 
@@ -116,96 +164,8 @@ cMeshInstanceManager * MeshManager;
 cSoundManager * SoundManager;
 cListener * Listener;
 
-SparclesManager
-
-Sparcles,
-LightSparcles,
-ParticleSmoke( 64 , 0.0f , 14 , 6, 0 , 3 ),
-TankSmoke(255, 0.0f, 14, 0, 0, 0),
-TreeParticles,
-HouseParticles,
-TankSmokeWater(255, 0.0f, 14, 0, 0, 0),
-TankSmokeGrass(255, 0.0f, 14, 0, 0, 0);
-
-
-vector< VehicleObj * > Vehicle :: all;
-vector< CollisonModel > Vehicle :: col;
-
-//ACHIEVEMENTS SCORES ////////////////////
-
-NSString * const kTicTacToeStringKey = @"kTicTacToeStringKey";
-NSString * const kWinGamesValueStringKey = @"kWinGamesValueStringKey";
-NSString * const kLoseGamesValueStringKey = @"kLoseGamesValueStringKey";
-
-int modelStruct::housesDestroyed;
-int modelStruct::treesDestroyed;
-
-int kTicTacToeValue = 0;
-int kWinGamesValue = 0;
-int kLoseGamesValue = 0;
-
-//////////////////////////////////////////
-
-struct ScoreSortForLeaderBoards
-{
-	bool operator()(Vehicle const * a, Vehicle const * b) const
-	{
-		Tank *currA = ((Tank*)a->obj);
-		Tank *currB = ((Tank*)b->obj);
-
-		float aAcuracy = currA->hitsPerformed / MAX(currA->shootsPerformed, 50.0);
-		float bAcuracy = currB->hitsPerformed / MAX(currB->shootsPerformed, 50.0);
-
-		currA->overfallScore = (1000 * MAX(currA->live, 0)/60.0) + (currA->damageTaken) + (aAcuracy*100.0f) + currA->score * 50;
-		currB->overfallScore = (1000 * MAX(currB->live, 0)/60.0) + (currB->damageTaken) + (bAcuracy*100.0f) + currB->score * 50;
-
-		return currA->overfallScore > currB->overfallScore;
-	}
-};
-
-struct DamageSortForAchievement
-{
-	bool operator()(Vehicle const * a, Vehicle const * b) const
-	{
-		return ((Tank*)a->obj)->damageTaken > ((Tank*)b->obj)->damageTaken;
-	}
-};
-
-//=====================================================
-
-RendererClass * RenderObj :: manager = & RenderManager;
-
-RenderObj :: RenderObj ()
-{
-
-	memset( Pos, 0 , 12 );
-	memset( Rot, 0 , 12 );
-
-	manager -> AddObj( this );
-	enable_shadows = false;
-
-	vDir[ 0 ] = 0;
-	vDir[ 1 ] = 1;
-	vDir[ 2 ] = 0;
-
-}
-
-//=====================================================
-
-RenderObj :: ~RenderObj ()
-{
-
-	manager -> DelObj( this );
-
-}
-
-//=====================================================
-
-//LightSource Light[ 8 ];
 Camera camera( 80, 60, 0 );
-//Vehicle * tank_player;
 Ground *ground;
-//glSphereES *mainSphereES;
 RandomMeshPoint *mapRandomPoint = NULL;
 STParticleLayer *mapParticleLayer = NULL;
 
@@ -214,28 +174,6 @@ LoadPNG*        TexMenager = nil;
 
 Texture * blank = NULL;
 CFrustum        Frustum;
-
-VelocityPointer *directionPointer;
-VelocityPointer *turretPointer;
-
-inline float GetHeight( float x , float z )
-{
-
-	return ground -> GetHeight( x , z );
-
-}
-
-inline float * GetNormal( float x , float z )
-{
-
-	static float n[ 3 ];
-	ground -> GetNormal( x , z , n );
-
-	return n;
-
-}
-
-float RETINA_SCALE = 1.0;
 
 @interface ViewController () <STInGameChatViewDelegate,STSummaryScreenDelegate>{
 	float Timer;

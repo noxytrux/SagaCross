@@ -59,7 +59,7 @@ SCApplication::SCApplication()
 	_sceneManager = std::make_unique<SCSceneManager>(getResourcePath(), _renderer, _audio);
 }
 
-SCApplication::~SCApplication()
+SCApplication::~SCApplication() noexcept
 {
 
 }
