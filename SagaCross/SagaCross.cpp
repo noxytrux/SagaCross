@@ -8,6 +8,7 @@
 #pragma comment(lib, "glfw3")
 #pragma comment(lib, "glfw3dll")
 #pragma comment(lib, "opengl32")
+#pragma comment(lib, "glu32")
 
 //#pragma comment(lib, "freetype")
 
