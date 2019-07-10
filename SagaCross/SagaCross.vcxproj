@@ -174,6 +174,7 @@ Copy /Y $(ProjectDir)..\libraries\glfw\bin\* $(ProjectDir)</Command>
     <ClCompile Include="..\source\SCMenuScene.cpp" />
     <ClCompile Include="..\source\SCNewGameScene.cpp" />
     <ClCompile Include="..\source\SCOpenGLRenderer.cpp" />
+    <ClCompile Include="..\source\SCRenderer.cpp" />
     <ClCompile Include="..\source\SCRenderScene.cpp" />
     <ClCompile Include="..\source\SCSceneManager.cpp" />
     <ClCompile Include="..\source\SCSettings.cpp" />
