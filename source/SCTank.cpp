@@ -899,7 +899,7 @@ void SCTank::Steer(SCRenderObj * o, float dt)
 
     listenerForward = xVec3(cos(Rot * PiOver180) * acc * dt * maxTanksSpeed,
                             0,
-                            sin(Rot * PiOver180) * acc * dt  * maxTanksSpeed);
+                            sin(Rot * PiOver180) * acc * dt * maxTanksSpeed);
 
     Pos[0] -= listenerForward.x;
     Pos[2] += listenerForward.z;
@@ -1001,7 +1001,7 @@ void SCTank::Steer(SCRenderObj * o, float dt)
     turn_to = 0.0f;
     acc_to = 0.0f;
 
-    if (reload_time == 4 && !ai) {
+    if ((int)reload_time == 4 && !ai) {
         std::string filename = "missilex";
         filename[7] = '0' + rand() % 3;
 
@@ -1009,7 +1009,7 @@ void SCTank::Steer(SCRenderObj * o, float dt)
         audio->playSound(readyID, Pos, 1.0f);
     }
 
-    if (reload_time > 0) reload_time -= 4;
+    if (reload_time > 0) reload_time -= 8.0 * dt;
 
     rifle_angle = std::min(std::max(rifle_angle, -6.0f), 24.0f); //MAX VAL -12!
 }

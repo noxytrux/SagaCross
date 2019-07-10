@@ -6,6 +6,8 @@ using namespace sc;
 SCAudio::SCAudio(const std::string &path) : _path(path) {
 	_muted = false;
 
+    FMOD::Debug_Initialize(FMOD_DEBUG_LEVEL_NONE);
+
 	_result = FMOD::System_Create(&_system);
 	this->checkResult(_result);
 

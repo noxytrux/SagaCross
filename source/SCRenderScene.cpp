@@ -74,9 +74,11 @@ SCSceneType SCRenderScene::Render() {
     accumulator += xMath::max(sec, MAX_FRAME_TIME);
     accumulator = xMath::clamp(accumulator, (xF32)1.0, (xF32)0.0);
 
+    RenderManager.Simulate(sec);
+
     while (accumulator >= MAX_FRAME_TIME) {
 
-        RenderManager.Simulate(MAX_FRAME_TIME);
+    //    RenderManager.Simulate(MAX_FRAME_TIME);
         Bullets->Simulate(MAX_FRAME_TIME);
 
         SCVehicle::MakeCollide(Bullets);
@@ -577,15 +579,15 @@ void SCRenderScene::Init() {
     _audio->playSound(ready, xVec3(0.0), 1.0f);
 
     mhit = 0.0f;
-    Timer = 0.0f;
+    Timer = 5.0f;
 }
 
 void SCRenderScene::Destroy() {
 
-    Bullets->RemoveAllObjects();
+    if (Bullets) Bullets->RemoveAllObjects();
     botsInfo.clear();
 
-    Bonuses->Clear();
+    if (Bonuses) Bonuses->Clear();
 
     Sparcles.Clear();
     ParticleSmoke.Clear();

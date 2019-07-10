@@ -37,8 +37,6 @@ SCOpenGLRenderable::SCOpenGLRenderable(const std::shared_ptr<SCDisplay> &display
 #else 
 	auto shaderPath = path + "shaders/desktop/";
 #endif
-
-    glBindVertexArray(0);
     
 	//==================================================================
 

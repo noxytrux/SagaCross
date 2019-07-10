@@ -46,7 +46,7 @@ GLuint glTextureLoader::loadFile(const std::string & filepath,
     GLuint tex = this->isUsed(filename.c_str());
 
     if (tex != 0) {
-        std::cout << "[INFO] Reusing texture: " << filename << std::endl;
+
         return tex;
     }
     
@@ -76,8 +76,6 @@ GLuint glTextureLoader::loadFile(const std::string & filepath,
     }
     
     int width = 0, height = 0, comp = 0;
-
-    std::cout << "[INFO] Loading texture: " << filename << std::endl;
 
     unsigned char *imageData = stbi_load(filepath.c_str(), &width, &height, &comp, 4);
 

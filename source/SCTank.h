@@ -96,7 +96,7 @@ namespace sc {
 		float rifle_rot;
 		float rifle_angle;
 
-		int reload_time;
+		float reload_time;
 		float bullet_speed;
 
 		float turn_to;
