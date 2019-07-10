@@ -106,7 +106,7 @@ namespace sc {
 
 	public:
 
-		std::vector< SCSparcle > S;
+		std::vector<SCSparcle> S;
         std::shared_ptr<SCGround> ground;
         std::shared_ptr<SCOpenGLRenderable> renderer;
 

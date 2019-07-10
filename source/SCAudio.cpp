@@ -246,3 +246,15 @@ void SCAudio::unload() {
 	_result = _system->release();
 	this->checkResult(_result);
 }
+
+void SCAudio::unloadSounds() {
+
+    for (auto sound : _sounds) {
+
+        _result = sound->release();
+        this->checkResult(_result);
+    }
+
+    _sounds.clear();
+    _paths.clear();
+}

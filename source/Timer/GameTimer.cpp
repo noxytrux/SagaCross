@@ -30,27 +30,19 @@ using namespace sc;
     #include "AndroidTimer.hpp"
 #endif
 
-extern GameTimer *getPlatformTimerInstance() {
+std::shared_ptr<GameTimer> sc::getPlatformTimerInstance() {
 
-#ifdef __linux__
-    return new AndroidTimer();
+#if defined(__linux__) || defined(__ANDROID__) || defined(__EMSCRIPTEN__)
+    return std::make_shared<AndroidTimer>();
 #endif
 
 #ifdef _WIN32
-	return new WindowsTimer();
+	return std::make_shared<WindowsTimer>();
 #endif
 
 #ifdef __APPLE__
-    return new DarwinTimer();
+    return std::make_shared<DarwinTimer>();
 #endif
-
-#ifdef __ANDROID__
-    return new AndroidTimer();
-#endif
-
-#ifdef __EMSCRIPTEN__
-    return new AndroidTimer();
-#endif 
 
     return nullptr;
 }

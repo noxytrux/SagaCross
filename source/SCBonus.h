@@ -274,6 +274,7 @@ namespace sc {
 				memcpy(Pos, ptr->Pos, 12);
 			}
 			else {
+                
 				Pos[1] = 5;
 			}
 

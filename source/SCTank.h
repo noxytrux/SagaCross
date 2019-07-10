@@ -63,6 +63,8 @@ namespace sc {
         virtual void Collide(std::vector<std::shared_ptr<SCVehicleObj>> &rest, std::vector<SCCollisionModel> &col, std::vector<std::shared_ptr<SCBullet>> &bullets) override;
         void DropMine();
 
+        xVec3& getListenerForward() { return listenerForward; }
+
 	public:
 
 		int mines;

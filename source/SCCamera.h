@@ -17,11 +17,10 @@ namespace sc {
 			shake = std::max(force, shake);
 		}
 
-		SCCamera(const std::shared_ptr<SCSettings> &settings, 
-				 const std::shared_ptr<SCRendererInterface> &renderer, 
+		SCCamera(const std::shared_ptr<SCRendererInterface> &renderer,
 				 float cx, float cy, float cz) 
 			: LookAt(nullptr)
-			, _settings(settings)
+			, _settings(renderer->getSettings())
 			, _renderer(renderer)
 		{
 			cameraRoatation.id();
@@ -143,6 +142,8 @@ namespace sc {
 
 		xMat33 cameraRoatation;
 		float yPosAddition;
+        xVec3 gDir;
+        xVec3 gEye;
 
 	private:
 
@@ -163,10 +164,8 @@ namespace sc {
 		float  s_fFacing;
 		xVec3 k_v3fLookAtPos;
 		xVec3 k_v3LookFromPos;
-	
-		xVec3 gDir;
-		xVec3 gEye;
-	};
+
+    };
 
 }
 

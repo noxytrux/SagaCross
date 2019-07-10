@@ -295,7 +295,7 @@ namespace sc {
 		}
 
 		SCBuilding(const std::shared_ptr<SCOpenGLRenderable> &renderer, 
-				   const std::shared_ptr< SCMeshInstance> &meshInstance,
+				   const std::shared_ptr<SCMeshInstance> &meshInstance,
 				   const std::string &path,
 				   const std::string &mapname) 
 			: SCRenderObj(renderer)
@@ -307,12 +307,14 @@ namespace sc {
 			std::ifstream i((path + mapname).c_str());
 			json dictObjects;
 			i >> dictObjects;
+            i.close();
 
 			std::vector<json> objects = dictObjects.value<std::vector<json>>("objects", {});
 
 			std::ifstream ii((path + "models/Prefabs.json").c_str());
 			json prefabDict;
 			ii >> prefabDict;
+            ii.close();
 	
 			for (const auto &objDict : objects)
 			{

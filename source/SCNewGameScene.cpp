@@ -164,7 +164,7 @@ SCSceneType SCNewGameScene::Render() {
 
 			auto &defaults = settings->userDefaults;
 
-			defaults["map"] = _selectedmap;
+			defaults["map"] = _selectedmap + 1;
 			defaults["botscount"] = _botscount;
 
 			_type = SceneTypeRender;

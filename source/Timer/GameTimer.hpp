@@ -8,10 +8,7 @@
 
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <math.h>
+#include <memory>
 
 namespace sc {
 
@@ -25,5 +22,5 @@ namespace sc {
 		virtual double getElapsedSeconds() = 0;
 	};
 
-	extern GameTimer *getPlatformTimerInstance();
+    extern std::shared_ptr<GameTimer> getPlatformTimerInstance();
 }

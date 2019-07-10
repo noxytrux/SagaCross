@@ -75,6 +75,8 @@ namespace sc {
 		//required by webGL
 		void update();
 
+        void unloadSounds();
+
 	private:
 
 		void unload();

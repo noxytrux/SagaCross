@@ -159,15 +159,37 @@ namespace sc {
 
 	class SCBulletManager final {
 
-	public:
+    private:
 
-		std::vector<std::shared_ptr<SCBullet>> bullets;
 		std::shared_ptr<SCGround> ground;
 		std::shared_ptr<SCBuilding> mapObjects;
 		std::shared_ptr<SCBonusManager> Bonuses;
 		std::shared_ptr<SCMeshInstance> meshInstance;
 		std::shared_ptr<SCAudio> audio;
 		std::string path;
+
+    public:
+
+        std::vector<std::shared_ptr<SCBullet>> bullets;
+
+        SCBulletManager(const std::shared_ptr<SCGround> &g,
+                        const std::shared_ptr<SCBuilding> &mo,
+                        const std::shared_ptr<SCBonusManager> &b,
+                        const std::shared_ptr<SCMeshInstance> &mi,
+                        const std::shared_ptr<SCAudio> &a,
+                        const std::string &p)
+            : ground(g)
+            , mapObjects(mo)
+            , Bonuses(b)
+            , meshInstance(mi)
+            , audio(a)
+            , path(p)
+        {
+
+
+        }
+
+        ~SCBulletManager() noexcept = default;
 
 		class SCExplode final {
 
