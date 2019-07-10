@@ -266,7 +266,7 @@ namespace sc {
 		{
 
 			texture = textureLoader.loadFile(path + "textures/mesh_tank_anti-tank-mine.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
-			mineMesh = meshInstance->GetMesh("models/tank_anti-tank-min", path, SCMeshTypeNormal);
+			mineMesh = meshInstance->GetMesh("models/tank_anti-tank-mine", path, SCMeshTypeNormal);
 			mineMesh->setScale(0.025);
 
 			if (ptr)

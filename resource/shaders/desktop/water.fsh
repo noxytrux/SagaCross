@@ -1,10 +1,4 @@
-//
-//  Shader.fsh
-//  Untitled
-//
-//  Created by Marcin Pedzimaz on 12/3/10.
-//  Copyright 2010 PRS. All rights reserved.
-//
+#version 150
 
 uniform sampler2D texWater;
 uniform sampler2D texWaterCaustics;

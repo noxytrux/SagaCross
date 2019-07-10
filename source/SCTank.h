@@ -35,13 +35,17 @@ namespace sc {
 
         SCTank(const json &botsData,
                const std::string &p,
-               const std::shared_ptr<SCMeshInstance> &meshInstance,
+               const std::shared_ptr<SCGround> &g,
                const std::shared_ptr<SCOpenGLRenderable> &r,
                const std::shared_ptr<SCAudio> &a,
-               const std::shared_ptr<SCCamera> c,
+               const std::shared_ptr<SCCamera> &c,
+               const std::shared_ptr<SCParticleLayer> &pl,
+               const std::shared_ptr<SCBonusManager> &bm,
+               const std::shared_ptr<SCRandomMeshPoint> &rmp,
+               const std::shared_ptr<SCMeshInstance> &mi,
+               const std::shared_ptr<SCBulletManager> bum,
                bool ai,
                float x, float y, float z,
-               const std::shared_ptr<SCGround> &g = nullptr,
                int peerID = 0, SCGameTankType TankModel = TankTypeNormal, bool isAIHard = true);
 
         void ResetTank();
@@ -55,7 +59,7 @@ namespace sc {
         virtual void Score() override;
         virtual void Render() override;
         virtual void DrawTray();
-        virtual void Steer(SCRenderObj * o);
+        virtual void Steer(SCRenderObj * o, float dt) override;
         virtual void Simulate(float dt) override;
         void Input();
         void handleMineDrop();
@@ -68,13 +72,15 @@ namespace sc {
 	public:
 
 		int mines;
+        float hit;
+        bool tankDie;
+        bool ai;
 
 	private:
 
 		bool HARD_AI;
 		std::string path;
 		float emoTime;
-		bool ai;
 		float acc, turn_acc;
 
 		std::shared_ptr<SCGround> ground;
@@ -97,10 +103,8 @@ namespace sc {
 		float acc_to;
 		float timer;
 
-		float hit;
 		int goal_count;
 		bool render_info;
-		bool tankDie;
 		bool isSterable;
 		int traceNum;
 		float tracePoints[100 * 3];

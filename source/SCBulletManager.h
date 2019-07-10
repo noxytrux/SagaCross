@@ -234,7 +234,7 @@ namespace sc {
 				glUniform1i(current->uniforms[UNI_TEX0], 0);
 
 				float alpha = (float)std::min((int)(400 - Time * 4), 255) / 255.0;
-				float color[4] = { 1.0f * alpha, 1.0f * alpha, 1.0f * alpha, alpha };
+				float color[4] = { 1.0f, 1.0f, 1.0f, alpha };
 				glUniform4fv(current->uniforms[UNI_TEX1], 1, color);
 
 				const int S = 6;
@@ -272,7 +272,7 @@ namespace sc {
 				if (Time < 3.0)
 				{
 					alpha = (3.0f - Time) / 3.0f;
-					glUniform4f(current->uniforms[UNI_TEX1], 1.0 * alpha, 1.0 * alpha, 1.0 * alpha, alpha);
+					glUniform4f(current->uniforms[UNI_TEX1], 1.0, 1.0, 1.0, alpha);
 					glBindTexture(GL_TEXTURE_2D, textureExpGround);
 					
 					xMat34 &UserMatrix = explosionFirst->getUserMatrix();

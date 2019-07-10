@@ -7,6 +7,7 @@
 #include "SCVegetation.h"
 #include "SCCamera.h"
 #include "SCGround.h"
+#include "glMatrix4x4.hpp"
 
 using namespace sc;
 
@@ -66,7 +67,77 @@ SCRenderScene::~SCRenderScene() noexcept {
 
 SCSceneType SCRenderScene::Render() {
 
-    //set modelview and projection
+    timer->update();
+    sec = timer->getElapsedSeconds();
+    sec = xMath::max((xF32)0.0, sec);
+
+    accumulator += xMath::max(sec, MAX_FRAME_TIME);
+    accumulator = xMath::clamp(accumulator, (xF32)1.0, (xF32)0.0);
+
+    while (accumulator >= MAX_FRAME_TIME) {
+
+        RenderManager.Simulate(MAX_FRAME_TIME);
+        Bullets->Simulate(MAX_FRAME_TIME);
+
+        SCVehicle::MakeCollide(Bullets);
+
+        accumulator -= MAX_FRAME_TIME;
+    }
+
+    auto wsk = std::dynamic_pointer_cast<SCTank>(ai[0]->obj);
+
+    if (wsk->tankDie) Timer -= sec;
+
+    float & hit = wsk->hit;
+    hit -= sec;
+    mhit = hit;
+
+    if ( !wsk -> live && Timer < 0 )
+    {
+        wsk = std::dynamic_pointer_cast<SCTank>(ai[select]->obj);
+
+        for (int i = 0; i < ai.size(); i++) {
+
+            if (wsk->live) {
+
+                camera->LookAt = wsk -> Pos;
+                Timer = 5;
+                break;
+            }
+            else {
+
+                select = ( select + 1 ) % ai.size();
+                wsk = std::dynamic_pointer_cast<SCTank>(ai[select]->obj);
+            }
+        }
+    }
+
+    if (wsk) {
+
+        xVec3 cPos = xVec3(wsk->Pos);
+        Listener->Update( wsk->getListenerForward(), cPos );
+    }
+    else{
+
+        Listener->Update( camera->gDir , camera->gEye );
+    }
+
+    //render all
+    auto ctx = _renderer->getUIContext();
+    auto display = _renderer->getDisplay();
+    auto screenSize = display->getScreenSize();
+
+    //game
+    glEnable( GL_TEXTURE_2D );
+    glDisable( GL_BLEND );
+    glEnable( GL_DEPTH_TEST );
+    glDepthMask( 1 );
+
+    glMatrix4x4 projection;
+    projection.setPerspective(( 45.0f * M_PI  ) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.1f, 6000.0f);
+
+    _renderer->Projection.setColumnMajor44(projection.getMatrix());
+    camera->Apply();
 
     auto frustum = _renderer->getFrustum();
 
@@ -75,13 +146,205 @@ SCSceneType SCRenderScene::Render() {
 
     frustum.calculateFrustum();
 
-    //render all
+    auto renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
+
+    renderer->SimpleShader->begin();
+
+    RenderManager.Render();
+    Bonuses->Draw( SCVehicle :: all );
+    Bullets->Render();
+
+    wsk->DrawTray();
+
+    renderer->ParticleShader->begin();
+
+    glDepthMask( 0 );
+
+    Sparcles.Render(sec);
+    ParticleSmoke.Render(sec);
+    TankSmoke.Render(sec);
+    TankSmokeWater.Render(sec);
+    TankSmokeGrass.Render(sec);
+    TreeParticles.Render(sec);
+    HouseParticles.Render(sec);
+
+    glBlendFunc( GL_ONE, GL_ONE );
+    LightSparcles.Render(sec);
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+    glDepthMask( 1 );
+
+    renderer->GuiShader->begin();
+
+    Bullets->DrawExplodes();
+
+    renderer->SimpleShader->begin();
+
+    Bullets->DrawClouds(sec);
+
+    renderer->GuiShader->begin();
+
+    auto current = renderer->GuiShader;
+
+    glEnable( GL_BLEND );
+    glDisable( GL_DEPTH_TEST );
+    glDepthMask( 0 );
+    glEnable(GL_TEXTURE_2D);
+
+    for (const auto &v : SCVehicle::all) {
+
+        v->DrawStatus(sec);
+    }
+
+    int live = wsk -> live;
+
+    static float mTimer = 0.0f;
+    mTimer += (( 20 - live ) / 60.0f) * sec * 30.0f;
+
+    if ( live == 0 ) {
+
+        renderer->RectFill( 0, 0, screenSize.width , screenSize.height, 128, 128, 128 , 64);
+    }
+    else if( live < 10 )
+    {
+        renderer->RectFill( 0, 0, screenSize.width , screenSize.height, 128, 32, 32 , ( 64 + 32 * sin( mTimer ) ) * ( 10 - live ) * 0.1f );
+    }
+
+    if ( mhit > 0.0 )
+    {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, blood);
+        glUniform1i(current->uniforms[UNI_TEX0],0);
+
+        renderer->RectFillGradientH( 0, 0, screenSize.width, screenSize.height, 255, 255, 255 , mhit * 3.0 , 0, 0, 0, 0 );
+    }
+
+    {
+        glUniform4f(current->uniforms[UNI_TEX1], 1.0f, 1.0f, 1.0f, 1.0f);
+
+        int active_count = 0;
+
+        for (int i = 0; i < SCVehicle::all.size(); ++i) {
+
+            auto veh = std::dynamic_pointer_cast<SCTank>(SCVehicle::all[i]);
+
+            if (veh->active) {
+
+                if (veh->ai) {
+
+                    glBindTexture(GL_TEXTURE_2D, ico[4]);
+                }
+                else {
+
+                    glBindTexture(GL_TEXTURE_2D, ico[i]);
+                }
+
+                active_count++;
+
+            } else {
+
+                glBindTexture(GL_TEXTURE_2D, ico[5]);
+            }
+
+            renderer->DebugBlit( screenSize.width / 2.0 - SCVehicle::all.size() * 16 + i * 32 , 0 , 32, 32 );
+        }
+
+        float ax, ay;
+
+        for ( int i = 0; i < SCVehicle::all.size(); ++i ) {
+
+            glBindTexture(GL_TEXTURE_2D, aiAvatar[i]);
+
+            auto veh = std::dynamic_pointer_cast<SCTank>(SCVehicle::all[i]);
+
+            if ( veh -> active ) {
+
+                renderer->Get2DOGLPos( veh->Pos[ 0 ] , veh->Pos[ 1 ] + 12.0f, veh->Pos[ 2 ] , ax , ay );
+
+                if (ax > screenSize.width) ax = screenSize.width - 32;
+                if (ax < 64) ax = 64;
+                if (ay > screenSize.height) ay = screenSize.height - 32;
+                if (ay < 0) ay = 0;
+
+                renderer->DebugBlit( ax - 64, ay - 4, 32, 32 );
+            }
+        }
+
+        if ( live == 0 ) {
+
+            if (!playerWinGame) {
+
+                if (showLooserImage) {
+
+                    glBindTexture(GL_TEXTURE_2D, looser);
+                    renderer->DebugBlit( screenSize.width / 2.0 - 128 , 50 , 256, 256 );
+                }
+
+                if (!loseSound) {
+
+                    loseSound = true;
+
+                    _audio->pauseMusic();
+                    _audio->loadMusic("music/lose.mp3");
+                    _audio->playMusic();
+                }
+            }
+
+        } else if ( active_count == 1 ) {
+
+            if (!loseSound) {
+
+                if (showWinImage) {
+
+                    glBindTexture(GL_TEXTURE_2D, win);
+                    renderer->DebugBlit( screenSize.width / 2.0 - 256 , 0 , 512, 512 );
+                }
+
+                wsk -> ai = true;
+
+                if (!playerWinGame) {
+
+                    playerWinGame = true;
+
+                    _audio->pauseMusic();
+                    _audio->loadMusic("music/win.mp3");
+                    _audio->playMusic();
+                }
+
+            }
+        }
+
+        glBindTexture(GL_TEXTURE_2D, bomb);
+
+        for (int i = 0; i < wsk -> mines; ++i) {
+
+            renderer->DebugBlit((screenSize.width + (i * 32)) - 230 - 96, screenSize.height - 34, 32, 32 );
+        }
+    }
 
 
-    auto ctx = _renderer->getUIContext();
-    auto display = _renderer->getDisplay();
-    auto screenSize = display->getScreenSize();
+    glDisable( GL_BLEND );
+    glEnable( GL_DEPTH_TEST );
+    glDepthMask( 1 );
+    glDisable(GL_TEXTURE_2D);
 
+    int bonus = rand() % 1500;
+
+    if ( bonus < 4 ) {
+
+        auto healthBonus = std::make_shared<SCHeathPack>(_rootPath, mapRandomPoint, ground, MeshManager);
+
+        Bonuses->AddBonus(healthBonus);
+
+    }
+    else if ( bonus == 4 ) {
+
+        auto mineBonus = std::make_shared<SCMineBonus>(_rootPath, mapRandomPoint, ground, MeshManager);
+
+        Bonuses->AddBonus(mineBonus);
+    }
+
+    //ui
     ctx->style.window.fixed_background = nk_style_item_color(nk_rgba(0, 0, 0, 0));
 
     if (nk_begin(ctx, "Render", nk_rect(0, 0, screenSize.width, screenSize.height), NK_WINDOW_NO_INPUT | NK_WINDOW_NO_SCROLLBAR)) {
@@ -142,7 +405,6 @@ void SCRenderScene::Init() {
     rocks = std::make_shared<SCBuilding>(std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer), MeshManager, _rootPath, map + level + "_objects.json");
     Bullets = std::make_shared<SCBulletManager>(ground, rocks, Bonuses, MeshManager, _audio, _rootPath);
 
-    deltaTime = 0.0f;
     timer = getPlatformTimerInstance();
 
     select = 0;
@@ -186,7 +448,7 @@ void SCRenderScene::Init() {
     _audio->loadSound("sounds/missile2.wav");
     _audio->loadSound("sounds/last_mine.wav");
     _audio->loadSound("sounds/no_mine.wav");
-    SCAudio::SoundID ready = _audio->loadSound("sounds/ready.wav");
+    SCAudio::SoundID ready = _audio->loadSound("sounds/ready0.wav");
 
     Sparcles.texture = textureLoader.loadFile(_rootPath + "textures/particle0.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     Sparcles.p_size_min = 20;
@@ -264,13 +526,17 @@ void SCRenderScene::Init() {
 
         auto tank = std::make_shared<SCTank>(info,
                                              _rootPath,
-                                             MeshManager,
+                                             ground,
                                              renderer,
                                              _audio,
                                              camera,
+                                             mapParticleLayer,
+                                             Bonuses,
+                                             mapRandomPoint,
+                                             MeshManager,
+                                             Bullets,
                                              (i == 0 ? false : true),
                                              rnd.x, 0, rnd.z,
-                                             ground,
                                              0,
                                              TankTypeNormal,
                                              settings->hardAIEnabled());
@@ -279,7 +545,7 @@ void SCRenderScene::Init() {
 
         ai.push_back(vehicle);
 
-        auto avatar = i == 0 ? "textures/Statistics/gui_portrait-003_tiny.png" : info["avatar"].get<std::string>() + "_tiny.png";
+        auto avatar = i == 0 ? "textures/Statistics/gui_portrait-003_tiny.png" : "textures/Statistics/" + info["avatar"].get<std::string>() + "_tiny.png";
 
         aiAvatar[i] = textureLoader.loadFile(_rootPath + avatar, GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     }
@@ -309,6 +575,9 @@ void SCRenderScene::Init() {
     select = 0;
 
     _audio->playSound(ready, xVec3(0.0), 1.0f);
+
+    mhit = 0.0f;
+    Timer = 0.0f;
 }
 
 void SCRenderScene::Destroy() {
@@ -430,585 +699,11 @@ void SCRenderScene::changePlayer() {
 }
 
 
+//TODO: enable this later on (multiplayer)
 /*
-- (void) handleEmoticonForPlayer:(int)ID forEmoticon:(int)emID
+void emoticon(uint32_t ID, uint32_t emID);
 {
-	Tank * mainplayer = (Tank*)ai[ID]->obj;
-	mainplayer->emoticon(emID);
-}
-
-
-
-#pragma mark - GLKView and GLKViewController delegate methods
-
-- (void)update
-{
-	if (_gameLoaded){
-
-		globalDT = MAX(self.timeSinceLastUpdate, 0.00001);
-
-		[directionPointer Update:globalDT];
-		[turretPointer Update:globalDT];
-
-		RenderManager . Simulate();
-		Bullets . Simulate();
-
-		Vehicle :: MakeCollide();
-
-		Tank *wsk = NULL;
-
-		if(self.gameMode == STGameModeSinglePlayer){
-			wsk = ((Tank*)ai[0]->obj );
-		}
-		else {
-			wsk = ((Tank*)ai[USER_MULTI_ID]->obj);
-		}
-
-		if(wsk->tankDie) Timer -= globalDT;
-
-		float & hit = wsk -> hit;
-		hit -= globalDT;
-		mhit = hit;
-
-		if( !wsk -> live && Timer < 0 )
-		{
-			wsk = (Tank*)ai[ select ]->obj;
-
-			for (int i = 0; i < _maxBotsCount; i++) {
-				if(wsk->live){
-					camera . LookAt = wsk -> Pos;
-					Timer = 5;
-					break;
-				}
-				else{
-					select = ( select + 1 ) % _maxBotsCount;
-					wsk = (Tank*)ai[ select ]->obj;
-				}
-			}
-		}
-
-		if(wsk){
-			xVec3 cPos = xVec3(wsk->Pos);
-			Listener -> Update( wsk->listenerForward , cPos );
-		}
-		else{
-			Listener -> Update( camera.gDir , camera.gEye );
-		}
-
-	}
-}
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
-{
-
-	glViewport(0, 0, rect.size.width*RETINA_SCALE, rect.size.height*RETINA_SCALE);
-
-	ScreenX = rect.size.width*RETINA_SCALE;
-	ScreenY = rect.size.height*RETINA_SCALE;
-
-	if(_gameLoaded) {
-
-		if(self.summary){
-			if (self.framesDisplayed % 30) {
-
-				std::vector<Vehicle*> tanks;
-
-				for(int i=0; i<_maxBotsCount; i++){
-					tanks.push_back(ai[i]);
-				}
-
-				[self.summary updateStatistics:tanks
-								  currentCount:_maxBotsCount
-									  withInfo:self.botsInfo
-									  withKeys:self.botsSortedKeys
-							 isMultiplayerGame: (self.gameMode == STGameModeMultiPlayer)
-							  playerAvatarList:self.gameAvatars
-									playersIDS:playersAvatarsIDS];
-			}
-		}
-
-
-		glClearColor( 107/255.0 , 130/255.0 , 146/255.0 , 1.0 );
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
-
-		glEnable( GL_TEXTURE_2D );
-
-		glDisable( GL_BLEND );
-		glEnable( GL_DEPTH_TEST );
-		glDepthMask( 1 );
-		MainMatrix3D->Projection = GLKMatrix4MakePerspective(( 45.0 * M_PI  ) / 180.0, rect.size.width/rect.size.height, 0.1f, 6000.0f);
-		camera . Apply();
-
-		viewport[0] = 0;
-		viewport[1] = 0;
-		viewport[2] = ScreenX;
-		viewport[3] = ScreenY;
-
-		Frustum.modelview = MainMatrix3D->ModelView.m; //podpiamy macierze do ucianania widoku
-		Frustum.projection = MainMatrix3D->Projection.m;
-
-		Frustum.calculateFrustum();
-
-		glUseProgram(MainMatrix3D->SimpleShader->ShaderProgram);
-
-		// - - - - - - - - -
-
-		RenderManager . Render();
-
-		Bonuses . Draw( Vehicle :: all );
-
-		Bullets . Render();
-
-
-		Tank *wsk = NULL;
-
-		if(self.gameMode == STGameModeSinglePlayer){
-			wsk = ((Tank*) ai[0]->obj);
-		}
-		else {
-			wsk = ((Tank*)ai[USER_MULTI_ID]->obj);
-		}
-
-
-		wsk->DrawTray();
-
-		glUseProgram(MainMatrix3D->ParticleShader->ShaderProgram);
-		glDepthMask( 0 );
-
-		//SparclesManager :: Start();
-
-		Sparcles . Render();
-		ParticleSmoke . Render();
-		TankSmoke . Render();
-		TankSmokeWater . Render();
-		TankSmokeGrass . Render();
-		TreeParticles . Render();
-		HouseParticles . Render();
-
-		glBlendFunc( GL_ONE, GL_ONE );
-		LightSparcles . Render();
-		glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
-
-		//SparclesManager :: End();
-
-		glDepthMask( 1 );
-
-		// - - - - - - --
-
-		glUseProgram(MainMatrix3D->guiShader->ShaderProgram);
-
-		Bullets . DrawExplodes();
-
-		glUseProgram(MainMatrix3D->SimpleShader->ShaderProgram);
-
-		Bullets . DrawClouds();
-
-		glUseProgram(MainMatrix3D->guiShader->ShaderProgram);
-		cShader *current = MainMatrix3D->guiShader;
-
-		glEnable( GL_BLEND );
-		glDisable( GL_DEPTH_TEST );
-		glDepthMask( 0 );
-		glEnable(GL_TEXTURE_2D);
-
-
-		for( int i = 0; i < Vehicle :: all . size(); ++i )
-			Vehicle :: all[ i ] -> DrawStatus();
-
-
-		int live = wsk -> live ;
-
-		static float mTimer = 0.0f;
-		mTimer += (( 20 - live ) / 60.0f) * globalDT * 30.0f;
-
-		if( live == 0 )
-			RectFill( 0, 0, ScreenX , ScreenY , 128, 128, 128 , 64 );
-		else if( live < 10 )
-		{
-			RectFill( 0, 0, ScreenX , ScreenY , 128, 32, 32 , ( 64 + 32 * sin( mTimer ) ) * ( 10 - live ) * 0.1f );
-		}
-
-		if( mhit > 0.0 )
-		{
-
-			glActiveTexture(GL_TEXTURE0);
-			blood->Bind();
-			glUniform1i(current->uniforms[UNI_TEX0],0);
-
-			RectFillGradientH( 0 , 0 , ScreenX , ScreenY , 255, 255, 255 , mhit*3.0 , 0, 0, 0 , 0 );
-		}
-
-		{
-
-			//draw Vehicles poisition
-			glUniform4f(current->uniforms[UNI_TEX1], 1.0f, 1.0f, 1.0f, 1.0f);
-
-			int active_count = 0;
-
-			for( int i = 0; i < Vehicle :: all . size(); ++i ){
-
-				Tank *veh = (Tank*)Vehicle :: all[ i ];
-
-				if( veh -> active ){
-
-					if (veh->ai) {
-						ico[4] -> Bind();
-					}
-					else{
-						ico[i] -> Bind();
-					}
-
-					active_count ++;
-				} else {
-					ico[5] -> Bind();
-				}
-
-				DebugBlit( ScreenX/2 - Vehicle :: all . size() * 16 + i * 32 , 0 , 32, 32 );
-			}
-
-			float ax, ay;
-
-			for( int i = 0; i < Vehicle :: all . size(); ++i ){
-
-				aiAvatar[i]->Bind();
-
-				Tank *veh = (Tank*)Vehicle :: all[ i ];
-
-				if( veh -> active ){
-
-					Get2DOGLPos( veh->Pos[ 0 ] , veh->Pos[ 1 ] + 12.0f, veh->Pos[ 2 ] , ax , ay );
-
-					if(ax > ScreenX) ax = ScreenX-32;
-					if(ax < 64) ax = 64;
-					if(ay > ScreenY) ay = ScreenY-32;
-					if(ay < 0) ay = 0;
-
-					DebugBlit( ax - 64, ay - 4, 32, 32 );
-					nicks[i].hidden = NO;
-					nicks[i].frame = CGRectMake((ax-32)/RETINA_SCALE + 5, (ay + 10)/RETINA_SCALE, 100/RETINA_SCALE, 16/RETINA_SCALE);
-				}
-				else{
-					nicks[i].hidden = YES;
-				}
-			}
-
-
-			if ((wsk->shootsPerformed == 0) && (wsk->score > 0) && (wsk->minesUsed > 0)) {
-				[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber14
-															percentage:100.0];
-			}
-
-			if( live == 0 ){
-
-				if(!playerWinGame){
-					directionPointer.alpha = 0.0f;
-					turretPointer.alpha = 0.0f;
-					mineButton.alpha = 0.0f;
-					mineImage.alpha = 0.0f;
-
-					againButton.hidden = NO;
-
-					if(showLooserImage){
-						looser -> Bind();
-						DebugBlit( ScreenX/2 - 128 , 50 , 256, 256 );
-					}
-
-					if(!loseSound){
-						loseSound = YES;
-
-						self.changePlayerTap.enabled = YES;
-
-						if (kTicTacToeValue < 3) {
-							kTicTacToeValue = 0;
-						}
-
-						kLoseGamesValue++;
-
-						float tierOneLose = ((float)kLoseGamesValue / 10.0) * 100.0;
-						float tierTwoLose = ((float)kLoseGamesValue / 100.0 ) * 100.0;
-
-						[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber4
-																	percentage:tierOneLose];
-
-						[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber12
-																	percentage:tierTwoLose];
-
-						/////////////LEADERBOARDS///////////////////
-
-						std::vector<Vehicle*> tanks;
-
-						for(int i=0; i<_maxBotsCount; i++){
-							tanks.push_back(ai[i]);
-						}
-
-						std::sort(tanks.begin(), tanks.end(), ScoreSortForLeaderBoards());
-
-						int64_t score = ((Tank*)ai[0]->obj)->overfallScore;
-
-						if(self.gameMode == STGameModeMultiPlayer){
-							[[STGCHelper sharedInstance] reportCurrentScore:score];
-						}
-
-						/////////////LEADERBOARDS///////////////////
-
-
-
-						NSString *filePath = [[NSBundle mainBundle] pathForResource:@"lose" ofType:@"mp3"];
-						BOOL paused = [APPDELEGATE.musicTrack paused];
-						[APPDELEGATE.musicTrack playFile:filePath loops:-1];
-						[APPDELEGATE.musicTrack setPaused:paused];
-
-						if(self.gameMode==STGameModeMultiPlayer){
-
-							for (int i=0; i<6; i++) {
-								_emoticons[i].alpha = 0.0f;
-							}
-
-							againButton.alpha = 0.0f;
-							backButton.alpha = 0.0f;
-
-							//jezeli jestes serwerem to ci sie to nie pokaze!!!
-
-							if(USER_MULTI_ID == 0){
-								double delayInSeconds = 1.0;
-								dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-								dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-									 [self handleMultiTankDie:USER_MULTI_ID];
-								});
-							}
-						}
-
-						__block UIButton *weakButton = againButton;
-						__block ViewController *weakSelf = self;
-
-						double delayInSeconds = 3.0;
-						dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-						dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-							if(weakButton.hidden == NO){
-								showLooserImage = NO;
-
-								weakSelf.summary = [[[STSummaryScreen alloc] initWithFrame:self.view.frame] autorelease];
-								weakSelf.summary.delegate = self;
-								[weakSelf.view addSubview:weakSelf.summary];
-								[weakSelf.summary show];
-							}
-						});
-
-					}
-
-				}
-
-			} else if( active_count == 1 ){
-				if(!loseSound) {
-					directionPointer.alpha = 0.0f;
-					turretPointer.alpha = 0.0f;
-					mineButton.alpha = 0.0f;
-					mineImage.alpha = 0.0f;
-					againButton.alpha = 1.0f;
-
-					againButton.hidden = NO;
-
-					if(showWinImage){
-						win -> Bind();
-						DebugBlit( ScreenX/2 - 256 , 0 , 512, 512 );
-					}
-
-					wsk -> ai = true;
-
-					if (!playerWinGame) {
-						playerWinGame = YES;
-
-						self.changePlayerTap.enabled = YES;
-
-						/////////////LEADERBOARDS///////////////////
-
-						std::vector<Vehicle*> tanks;
-
-						for(int i=0; i<_maxBotsCount; i++){
-							tanks.push_back(ai[i]);
-						}
-
-						std::sort(tanks.begin(), tanks.end(), ScoreSortForLeaderBoards());
-
-						int64_t score = ((Tank*)ai[0]->obj)->overfallScore;
-
-						if(self.gameMode == STGameModeMultiPlayer){
-							[[STGCHelper sharedInstance] reportCurrentScore:score];
-						}
-
-						/////////////LEADERBOARDS///////////////////
-
-
-						kWinGamesValue++;
-						kTicTacToeValue++;
-
-						float tierOneWins = kWinGamesValue;
-						float tierTwoWins = ((float)kWinGamesValue / 1000.0 ) * 100.0;
-
-						[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber2
-																	percentage:tierOneWins];
-
-						[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber5
-																	percentage:tierTwoWins];
-
-						if(kTicTacToeValue >= 3) {
-							[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber11
-																		percentage:100.0];
-						}
-
-						self.endMatchDate = [NSDate date];
-
-						NSTimeInterval gameTime = [self.endMatchDate timeIntervalSinceDate:self.startMatchDate];
-						if (gameTime <= 180.0) {
-
-							[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber7
-																		percentage:100.0];
-						}
-
-
-						if(self.isGameHard && (wsk->score >= 6) ){
-
-							[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber3
-																		percentage:100.0];
-						}
-
-						if(wsk->live <= 5){
-							[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber6
-																		percentage:100.0];
-						}
-
-						if (wsk->shootsPerformed == 0) {
-							[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber13
-																		percentage:100.0];
-						}
-
-						if (wsk->medkidsTaken == 0) {
-							[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber17
-																		percentage:100.0];
-						}
-
-						if (wsk->hitsTakenFromOtherTanks == 0) {
-							[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber8
-																		percentage:100.0];
-						}
-
-						std::sort(tanks.begin(), tanks.end(), DamageSortForAchievement());
-
-						//simply if we are the last overalldamage tank
-						if (wsk == ((Tank*)ai[ tanks.size() - 1 ]->obj)) {
-							[[STAchievementManager sharedInstance] passAchievement:STAchievementNumber9
-																		percentage:100.0];
-						}
-
-						NSString *filePath = [[NSBundle mainBundle] pathForResource:@"win" ofType:@"mp3"];
-						BOOL paused = [APPDELEGATE.musicTrack paused];
-						[APPDELEGATE.musicTrack playFile:filePath loops:-1];
-						[APPDELEGATE.musicTrack setPaused:paused];
-
-						if(self.gameMode==STGameModeMultiPlayer){
-							for (int i=0; i<6; i++) {
-								_emoticons[i].alpha = 0.0f;
-							}
-
-							backButton.alpha = 0.0f;
-
-						}
-
-						__block UIButton *weakButton = againButton;
-						__block ViewController *weakSelf = self;
-
-						double delayInSeconds = 3.0;
-						dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-						dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-							if(weakButton.hidden == NO){
-								showWinImage = NO;
-
-								weakSelf.summary = [[[STSummaryScreen alloc] initWithFrame:self.view.frame] autorelease];
-								weakSelf.summary.delegate = self;
-								[weakSelf.view addSubview:weakSelf.summary];
-								[weakSelf.summary show];
-							}
-						});
-					}
-
-				}
-			}
-
-			bomb -> Bind();
-
-			for( int i = 0; i < wsk -> mines; ++i ){
-
-				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-					DebugBlit((ScreenX+(i * 32))-190-96, ScreenY - 34, 32, 32 );
-				}
-				else{
-					DebugBlit((ScreenX+(i * 32))-230-96, ScreenY - 34, 32, 32 );
-				}
-			}
-
-		}
-
-
-		glDisable( GL_BLEND );
-		glEnable( GL_DEPTH_TEST );
-		glDepthMask( 1 );
-		glDisable(GL_TEXTURE_2D);
-
-		// - - - - - - --
-
-		if (self.gameMode == STGameModeSinglePlayer) {
-			int bonus = rand()%1500;
-
-			if( bonus < 4 )
-			{
-				Bonuses . AddBonus( new HeathPack() );
-			} else if( bonus == 4 ){
-				Bonuses . AddBonus( new MineBonus() );
-			}
-		}
-		else if((self.gameMode == STGameModeMultiPlayer) && (USER_MULTI_ID == 0)) {
-
-			int bonus = rand()%1500;
-
-			if( bonus < 4 )
-			{
-				Bonus *bns = new HeathPack();
-
-				STMultiplayerViewController *ctr = [STMultiplayerBridge sharedInstance].multiController;
-				[ctr sendNetworkPacket:[STGCHelper sharedInstance].match
-							  packetID:NETWORK_BONUS_DROP_HEALT
-							  withData:&bns->Pos[0]
-							  reserved:0
-							  ofLength:sizeof(float) * 3
-							  reliable:YES
-								toUser:ctr.connectedPlayers];
-
-
-				Bonuses . AddBonus( bns );
-			} else if( bonus == 4 ){
-
-				Bonus *bns = new MineBonus();
-
-				STMultiplayerViewController *ctr = [STMultiplayerBridge sharedInstance].multiController;
-				[ctr sendNetworkPacket:[STGCHelper sharedInstance].match
-							  packetID:NETWORK_BONUS_DROP_MINE
-							  withData:&bns->Pos[0]
-							  reserved:0
-							  ofLength:sizeof(float) * 3
-							  reliable:YES
-								toUser:ctr.connectedPlayers];
-
-				Bonuses . AddBonus( bns );
-			}
-
-		}
-
-		// - - - - - - --
-
-	}
-	else{
-		glClearColor( 0.0 , 0.0 , 0.0 , 1.0 );
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
-	}
+	auto tank = std::dynamic_pointer_cast<SCTank>(ai[ ID ]->obj);
+	tank->emoticon(emID);
 }
 */

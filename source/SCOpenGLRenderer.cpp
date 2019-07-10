@@ -38,6 +38,8 @@ SCOpenGLRenderable::SCOpenGLRenderable(const std::shared_ptr<SCDisplay> &display
 	auto shaderPath = path + "shaders/desktop/";
 #endif
 
+    glBindVertexArray(0);
+    
 	//==================================================================
 
 	ParticleShader = std::make_shared<GLShader>();
@@ -189,8 +191,8 @@ void SCOpenGLRenderable::beginDrawing()
 	auto size = getDisplay()->getScreenSize();
 
 	glViewport(0, 0, size.width, size.height);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.4, 0.4, 0.4, 1);
+	glClearColor(107/255.0, 130/255.0, 146/255.0, 1);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void SCOpenGLRenderable::endDrawing()
@@ -282,7 +284,7 @@ void SCOpenGLRenderable::RectFill(float x1, float y1, float x2, float y2, int r,
 	glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, modelOrtho.getMatrix());
 
 	float alpha = (float)a / 255.0f;
-	float color[4] = { (float)r / 255.0f * alpha,(float)g / 255.0f * alpha, (float)b / 255.0f * alpha, alpha };
+	float color[4] = { (float)r / 255.0f,(float)g / 255.0f, (float)b / 255.0f, alpha };
 	glUniform4fv(current->uniforms[UNI_TEX1], 1, color);
 
 	glActiveTexture(GL_TEXTURE0);

@@ -323,12 +323,12 @@ namespace sc {
 				std::string modelScale = objDict["scale"];
 				std::string modelType = objDict["type"];
 
-				json objectInfo = prefabDict.value(modelType, {});
+                json objectInfo = prefabDict[modelType];
 
 				std::string meshName = objectInfo["mesh"].get<std::string>();
 				std::string textureName = objectInfo["texture"].get<std::string>();
 				
-				float Radius = objectInfo["radius"].get<float>();
+				float Radius = objectInfo.value<float>("radius", 0.0f);
 
 				std::vector<std::string> posArray = split(modelPosition, ','); 
 				std::vector<std::string> quatArray = split(modelRotation, ','); 
@@ -397,27 +397,27 @@ namespace sc {
 
 				BuildCollision(rx, ry, rz, Radius, sx, sy);
 
-				if (objectInfo["speed"]) {
+				if (objectInfo.find("speed") != objectInfo.end()) {
 
 					currModel->speed = objectInfo["speed"].get<float>();
 				}
 
-				if (objectInfo["amplitude"]) {
+				if (objectInfo.find("amplitude") != objectInfo.end()) {
 
 					currModel->amplitude = objectInfo["amplitude"].get<float>();
 				}
 
-				if (objectInfo["foliage"]) {
+				if (objectInfo.find("foliage") != objectInfo.end()) {
 
 					currModel->animated = true;
 					animated_count++;
 				}
 
-				if (objectInfo["destructible"]) {
+				if (objectInfo.find("destructible") != objectInfo.end()) {
 
 					currModel->destructible = true;
 					auto dstring = "models/" + meshName + "_destroyed";
-					currModel->destroyedMesh = meshInstance->GetMesh(dstring, path, SCMeshTypeNormal);
+                    currModel->destroyedMesh = meshInstance->GetMesh(dstring, path, currModel->animated ? SCMeshTypeAnimated : SCMeshTypeNormal);
 				}
 
 				SCMeshType type = SCMeshTypeNormal;

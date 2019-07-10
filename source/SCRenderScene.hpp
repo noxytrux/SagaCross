@@ -60,7 +60,6 @@ namespace sc {
         std::shared_ptr<SCBuilding> rocks;
 
         //misc
-        float deltaTime;
         std::shared_ptr<GameTimer> timer;
 
         uint32_t select;
@@ -79,5 +78,12 @@ namespace sc {
         bool loseSound;
 
         json botsInfo;
+
+        constexpr static const float MAX_FRAME_TIME = 0.01;
+        float accumulator;
+        float sec;
+
+        float Timer;
+        float mhit;
 	};
 }

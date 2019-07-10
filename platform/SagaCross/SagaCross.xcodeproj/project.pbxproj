@@ -42,17 +42,21 @@
 		1C88EEC422D3C7E300A2EF7A /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C88EEC322D3C7E300A2EF7A /* IOKit.framework */; };
 		1C88EEC622D3C7EB00A2EF7A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C88EEC522D3C7EB00A2EF7A /* CoreVideo.framework */; };
 		1C88EEC822D3EED500A2EF7A /* SCRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C88EEC722D3EED500A2EF7A /* SCRenderer.cpp */; };
+		1C88EECD22D6219300A2EF7A /* libfmod.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1C88EEB622D3AAF800A2EF7A /* libfmod.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		1C88EECE22D6219400A2EF7A /* libfmodL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1C88EEB522D3AAF800A2EF7A /* libfmodL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		1C88EE1A22D39F9800A2EF7A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
 			files = (
+				1C88EECD22D6219300A2EF7A /* libfmod.dylib in CopyFiles */,
+				1C88EECE22D6219400A2EF7A /* libfmodL.dylib in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -547,6 +551,7 @@
 					/usr/local/lib/,
 					"$(SRCROOT)/../../libraries/FMOD/lib/macOS/",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -567,6 +572,7 @@
 					/usr/local/lib/,
 					"$(SRCROOT)/../../libraries/FMOD/lib/macOS/",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

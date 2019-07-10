@@ -40,22 +40,30 @@ inline float differenceMod(float a, float b, float modulo)
 
 SCTank::SCTank(const json &botsData,
                const std::string &p,
-               const std::shared_ptr<SCMeshInstance> &meshInstance,
+               const std::shared_ptr<SCGround> &g,
                const std::shared_ptr<SCOpenGLRenderable> &r,
                const std::shared_ptr<SCAudio> &a,
-               const std::shared_ptr<SCCamera> c,
+               const std::shared_ptr<SCCamera> &c,
+               const std::shared_ptr<SCParticleLayer> &pl,
+               const std::shared_ptr<SCBonusManager> &bm,
+               const std::shared_ptr<SCRandomMeshPoint> &rmp,
+               const std::shared_ptr<SCMeshInstance> &mi,
+               const std::shared_ptr<SCBulletManager> bum,
                bool ai,
                float x, float y, float z,
-               const std::shared_ptr<SCGround> &g,
                int peerID, SCGameTankType TankModel, bool isAIHard)
     : SCVehicleObj()
-    , ai(ai)
     , ground(g)
     , renderer(r)
     , audio(a)
     , camera(c)
+    , particleLayer(pl)
+    , bonusManager(bm)
+    , randomMeshPoint(rmp)
+    , meshInstance(mi)
+    , bulletManager(bum)
+    , ai(ai)
 {
-
     path = p;
     HARD_AI = isAIHard;
 
@@ -715,7 +723,7 @@ void SCTank::Render()
             glDisable(GL_CULL_FACE);
 
             alpha = (mineLifeTime - inTIME) / mineLifeTime;
-            glUniform4f(current->uniforms[UNI_TEX1], 1.0 * alpha, 1.0 * alpha, 1.0 * alpha, alpha);
+            glUniform4f(current->uniforms[UNI_TEX1], 1.0, 1.0, 1.0, alpha);
 
             glBindTexture(GL_TEXTURE_2D, textureExpGround);
 
@@ -864,7 +872,7 @@ void SCTank::DrawTray() {
 
 }
 
-void SCTank::Steer(SCRenderObj * o)
+void SCTank::Steer(SCRenderObj * o, float dt)
 {
 
     if (tankDie) {
@@ -875,7 +883,7 @@ void SCTank::Steer(SCRenderObj * o)
     if (isSterable) {
         if (ai)
         {
-            Simulate(deltaTime);
+            Simulate(dt);
         }
         else
         {
@@ -883,15 +891,15 @@ void SCTank::Steer(SCRenderObj * o)
         }
     }
 
-    acc += (acc_to - acc) * deltaTime;
+    acc += (acc_to - acc) * dt;
 
-    turn_acc += (turn_to - turn_acc) * deltaTime;
+    turn_acc += (turn_to - turn_acc) * dt;
 
     float maxTanksSpeed = 38.0;
 
-    listenerForward = xVec3(cos(Rot * PiOver180) * acc * deltaTime * maxTanksSpeed,
+    listenerForward = xVec3(cos(Rot * PiOver180) * acc * dt * maxTanksSpeed,
                             0,
-                            sin(Rot * PiOver180) * acc * deltaTime  * maxTanksSpeed);
+                            sin(Rot * PiOver180) * acc * dt  * maxTanksSpeed);
 
     Pos[0] -= listenerForward.x;
     Pos[2] += listenerForward.z;
