@@ -157,7 +157,7 @@ namespace sc {
 
 				*d++ = (*b) / 8.0f;
 
-				b += 4;
+                b += 4;
 			}
 
 			stbi_image_free(imageData);

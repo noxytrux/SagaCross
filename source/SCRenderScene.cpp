@@ -135,10 +135,7 @@ SCSceneType SCRenderScene::Render() {
     glEnable( GL_DEPTH_TEST );
     glDepthMask( 1 );
 
-    glMatrix4x4 projection;
-    projection.setPerspective(( 45.0f * M_PI  ) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.1f, 6000.0f);
-
-    _renderer->Projection.setColumnMajor44(projection.getMatrix());
+    _renderer->Projection.mPerspective(( 45.0f * M_PI  ) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.1f, 10000.0f);
     camera->Apply();
 
     auto frustum = _renderer->getFrustum();

@@ -43,7 +43,7 @@ namespace sc {
 			x /= 2;
 			y /= 2;
 
-			return _heightmap->GetHeight(x, y);
+            return _heightmap->GetHeight(x, y);
 		}
 
 		inline xVec3 GetNormal(float x, float y)
@@ -63,7 +63,7 @@ namespace sc {
 
 		inline int GetGroundSize()
 		{
-			return 256;
+            return 256;
 		}
 
 		virtual void Render() override

@@ -130,21 +130,50 @@ class xMat34
 
 	X_INLINE void mLookAt( xVec3 &Eye, xVec3 &dir, xVec3 &Up )
 	{
-		xVec3 &zaxis = dir;
-		xVec3 xaxis = Up.cross( zaxis );
-		xaxis.normalize();
-		xVec3 yaxis = zaxis.cross( xaxis );
+        xVec3 ev = Eye;
+        xVec3 cv = dir;
+        xVec3 uv = Up;
 
-		float m[16] =
-		{
-			 xaxis.x,           yaxis.x,           zaxis.x,          0,
-			 xaxis.y,           yaxis.y,           zaxis.y,          0,
-			 xaxis.z,           yaxis.z,           zaxis.z,          0,
-			 -xaxis.dot(Eye),   -yaxis.dot(Eye),   -zaxis.dot(Eye),  1
-		};
+        cv.setNegative();
+
+        xVec3 n = (ev + cv);
+              n.normalize();
+        xVec3 u = uv.cross(n);
+              u.normalize();
+        xVec3 v = n.cross(u);
+
+        xVec3 nn = n;
+        nn.setNegative();
+        xVec3 nu = u;
+        nu.setNegative();
+        xVec3 nv = v;
+        nv.setNegative();
+
+        float m[16] =
+        {
+            u.x, v.x, n.x, 0.0f,
+            u.y, v.y, n.y, 0.0f,
+            u.z, v.z, n.z, 0.0f,
+            nu.dot(ev), nv.dot(ev), nn.dot(ev), 1.0f
+        };
 
 		setColumnMajor44( m );
 	}
+
+    X_INLINE void mPerspective(float fovyRadians, float aspect, float nearZ, float farZ)
+    {
+        float cotan = 1.0f / tanf(fovyRadians / 2.0f);
+
+        float m[16] =
+        {
+            cotan / aspect, 0.0f, 0.0f, 0.0f,
+            0.0f, cotan, 0.0f, 0.0f,
+            0.0f, 0.0f, (farZ + nearZ) / (nearZ - farZ), -1.0f,
+            0.0f, 0.0f, (2.0f * farZ * nearZ) / (nearZ - farZ), 0.0f
+        };
+
+        setColumnMajor44( m );
+    }
 
 	X_INLINE float* m()
 	{
