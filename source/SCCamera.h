@@ -179,17 +179,18 @@ namespace sc {
             auto gUp = xVec3(0, 1, 0);
             auto dir = gEye + gDir;
 
-            //            float mat[16] = {
-            //                0.1, 0.0, 0.0, 0.0,
-            //                0.0, 0.1, 0.0, 0.0,
-            //                0.0, 0.0, 0.1, 0.0,
-            //                0.0, 0.0, 0.0, 1.0
-            //            };
-            //
-            //            xMat34 scale; scale.setColumnMajor44(mat);
-            //            xMat34 cam; cam.mLookAt(gEye, dir, gUp);
+            float mat[16] = {
+                0.005,   0.0,   0.0, 0.0,
+                  0.0, 0.005,   0.0, 0.0,
+                  0.0,   0.0, 0.005, 0.0,
+                  0.0,   0.0,   0.0, 1.0
+            };
 
-            _renderer->ModelView.mLookAt(gEye, dir, gUp);
+            xMat34 scale; scale.setColumnMajor44(mat);
+            xMat34 cam; cam.mLookAt(gEye, dir, gUp);
+            _renderer->ModelView = scale * cam;
+
+//            _renderer->ModelView.mLookAt(gEye, dir, gUp);
         }
 
 

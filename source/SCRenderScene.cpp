@@ -137,7 +137,7 @@ SCSceneType SCRenderScene::Render() {
 
     auto renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
 
-    _renderer->Projection.mPerspective((45.0f * M_PI) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.1f, 10000.0f);
+    _renderer->Projection.mPerspective((45.0f * M_PI) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.001f, 50000.0f);
     //camera->Apply();
     camera->FreeCam(renderer->getDisplay());
 
