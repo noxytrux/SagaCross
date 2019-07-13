@@ -94,7 +94,7 @@ SCSceneType SCRenderScene::Render() {
     hit -= sec;
     mhit = hit;
 
-    if ( !wsk -> live && Timer < 0 )
+    if (!wsk->live && Timer < 0)
     {
         wsk = std::dynamic_pointer_cast<SCTank>(ai[select]->obj);
 
@@ -130,13 +130,16 @@ SCSceneType SCRenderScene::Render() {
     auto screenSize = display->getScreenSize();
 
     //game
-    glEnable( GL_TEXTURE_2D );
-    glDisable( GL_BLEND );
-    glEnable( GL_DEPTH_TEST );
-    glDepthMask( 1 );
+    glEnable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(1);
 
-    _renderer->Projection.mPerspective(( 45.0f * M_PI  ) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.1f, 10000.0f);
-    camera->Apply();
+    auto renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
+
+    _renderer->Projection.mPerspective((45.0f * M_PI) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.1f, 10000.0f);
+    //camera->Apply();
+    camera->FreeCam(renderer->getDisplay());
 
     auto frustum = _renderer->getFrustum();
 
@@ -144,8 +147,6 @@ SCSceneType SCRenderScene::Render() {
     frustum.projection = _renderer->Projection.m();
 
     frustum.calculateFrustum();
-
-    auto renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
 
     renderer->SimpleShader->begin();
 
@@ -157,7 +158,7 @@ SCSceneType SCRenderScene::Render() {
 
     renderer->ParticleShader->begin();
 
-    glDepthMask( 0 );
+    glDepthMask(0);
 
     Sparcles.Render(sec);
     ParticleSmoke.Render(sec);
@@ -167,11 +168,11 @@ SCSceneType SCRenderScene::Render() {
     TreeParticles.Render(sec);
     HouseParticles.Render(sec);
 
-    glBlendFunc( GL_ONE, GL_ONE );
+    glBlendFunc(GL_ONE, GL_ONE);
     LightSparcles.Render(sec);
-    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glDepthMask( 1 );
+    glDepthMask(1);
 
     renderer->GuiShader->begin();
 
@@ -185,9 +186,9 @@ SCSceneType SCRenderScene::Render() {
 
     auto current = renderer->GuiShader;
 
-    glEnable( GL_BLEND );
-    glDisable( GL_DEPTH_TEST );
-    glDepthMask( 0 );
+    glEnable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+    glDepthMask(0);
     glEnable(GL_TEXTURE_2D);
 
     for (const auto &v : SCVehicle::all) {
