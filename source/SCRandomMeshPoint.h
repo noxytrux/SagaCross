@@ -113,8 +113,6 @@ namespace sc {
 
 							Buffers[mindex].ActualData[index].position = xVec3(x, y, z);
 							Buffers[mindex].ActualData[index].coord = xVec2(u, v);
-							Buffers[mindex].ActualData[index].normal = xVec3(nx, ny, nz);
-							Buffers[mindex].ActualData[index].tangent = xVec3(0, 0, 0);
 						}
 
 						for (index = 0; index < nface; index++)

@@ -47,7 +47,7 @@ namespace sc {
             s_fFacing = 1.0;
             yPosAddition = 0;
             gEye = xVec3(0.0);
-            gDir = xVec3(0, 0, 1);
+            gDir = xVec3(1, 0, 0);
         }
 
         void Apply()
@@ -179,16 +179,17 @@ namespace sc {
             auto gUp = xVec3(0, 1, 0);
             auto dir = gEye + gDir;
 
-            //            float mat[16] = {
-            //                0.1, 0.0, 0.0, 0.0,
-            //                0.0, 0.1, 0.0, 0.0,
-            //                0.0, 0.0, 0.1, 0.0,
-            //                0.0, 0.0, 0.0, 1.0
-            //            };
-            //
-            //            xMat34 scale; scale.setColumnMajor44(mat);
-            //            xMat34 cam; cam.mLookAt(gEye, dir, gUp);
+ /*           float mat[16] = {
+                0.1, 0.0, 0.0, 0.0,
+                0.0, 0.1, 0.0, 0.0,
+                0.0, 0.0, 0.1, 0.0,
+                0.0, 0.0, 0.0, 1.0
+            };
+            
+            xMat34 scale; scale.setColumnMajor44(mat);
+			xMat34 cam; cam.mLookAt(gEye, dir, gUp);
 
+			_renderer->ModelView = scale * cam;*/
             _renderer->ModelView.mLookAt(gEye, dir, gUp);
         }
 

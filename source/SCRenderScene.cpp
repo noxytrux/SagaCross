@@ -130,12 +130,14 @@ SCSceneType SCRenderScene::Render() {
     auto screenSize = display->getScreenSize();
 
     //game
-    glEnable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
-    glDepthMask(1);
+	glDepthMask(1);
 
     auto renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
+
+	renderer->SimpleShader->begin();
 
     _renderer->Projection.mPerspective((45.0f * M_PI) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.1f, 10000.0f);
     //camera->Apply();
@@ -143,12 +145,16 @@ SCSceneType SCRenderScene::Render() {
 
     auto frustum = _renderer->getFrustum();
 
-    frustum.modelview = _renderer->ModelView.m();
-    frustum.projection = _renderer->Projection.m();
+	float proj[16];
+	float mv[16];
+
+	_renderer->Projection.getColumnMajor44(proj);
+	_renderer->ModelView.getColumnMajor44(mv);
+		
+	frustum.modelview = mv;
+	frustum.projection = proj;
 
     frustum.calculateFrustum();
-
-    renderer->SimpleShader->begin();
 
     RenderManager.Render();
     Bonuses->Draw( SCVehicle :: all );

@@ -211,7 +211,18 @@ SCTank::SCTank(const json &botsData,
 
     }
 
+	glGenVertexArrays(1, &guiVAO);
+	glBindVertexArray(guiVAO);
+	glGenBuffers(1, &guiVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, guiVBO);
+
     ResetTank();
+}
+
+SCTank::~SCTank() noexcept {
+
+	glDeleteBuffers(1, &guiVBO);
+	glDeleteVertexArrays(1, &guiVAO);
 }
 
 void SCTank::ResetTank() {
@@ -801,8 +812,14 @@ void SCTank::Render()
             positionmat.id();
             positionmat.t = xVec3(aimPos);
 
-            glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, renderer->Projection.m());
-            glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, ((renderer->ModelView * positionmat) * aimrotation).m());
+			float proj[16];
+			float mv[16];
+
+			renderer->Projection.getColumnMajor44(proj);
+			((renderer->ModelView * positionmat) * aimrotation).getColumnMajor44(mv);
+
+			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
+			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, aimTex);
@@ -812,23 +829,21 @@ void SCTank::Render()
             const int S = 12;
 
             float squareVertices[] = {
-                -S , 0.5f,  S ,
-                S , 0.5f,  S ,
-                -S , 0.5f, -S ,
-                S , 0.5f, -S
+                -S , 0.5f,  S , 1, 1,
+                 S , 0.5f,  S , 0, 1,
+                -S , 0.5f, -S , 1, 0,
+                 S , 0.5f, -S , 0, 0,
             };
 
-            static float textureVertices[] = {
-                1, 1,
-                0, 1,
-                1, 0,
-                0, 0
-            };
+			glBindVertexArray(guiVAO);
+			glBindBuffer(GL_ARRAY_BUFFER, guiVBO);
+			glBufferData(GL_ARRAY_BUFFER, 4 * 5 * sizeof(float), squareVertices, GL_STATIC_DRAW);
 
-            glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 0, squareVertices);
+            glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 5 * sizeof(float), (void*)(0 * sizeof(GLfloat)));
             glEnableVertexAttribArray(ATTRIB_VERTEX);
-            glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 0, textureVertices);
+            glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 5 * sizeof(float), (void*)(3 * sizeof(GLfloat)));
             glEnableVertexAttribArray(ATTRIB_COORDS);
+
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
         }
@@ -852,13 +867,24 @@ void SCTank::DrawTray() {
 
             glBindTexture(GL_TEXTURE_2D, blank);
             glUniform4f(current->uniforms[UNI_TEX1], 1.0 * 0.6, 32.0 / 255.0 * 0.6, 32.0 / 255.0 * 0.6, 0.6);
-            glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, renderer->Projection.m());
-            glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, renderer->ModelView.m());
 
-            glLineWidth(4.0);
+			float proj[16];
+			float mv[16];
 
-            glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 0, tracePoints);
-            glEnableVertexAttribArray(ATTRIB_VERTEX);
+			renderer->Projection.getColumnMajor44(proj);
+			renderer->ModelView.getColumnMajor44(mv);
+
+			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
+			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
+
+            glLineWidth(1.0); //4.0f
+
+			glBindVertexArray(guiVAO);
+			glBindBuffer(GL_ARRAY_BUFFER, guiVBO);
+			glBufferData(GL_ARRAY_BUFFER, traceNum * 3 * sizeof(float), tracePoints, GL_STATIC_DRAW);
+
+			glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 3 * sizeof(float), (void*)(0 * sizeof(GLfloat)));
+			glEnableVertexAttribArray(ATTRIB_VERTEX);
 
             glDrawArrays(GL_LINE_STRIP, 0, traceNum);
 
