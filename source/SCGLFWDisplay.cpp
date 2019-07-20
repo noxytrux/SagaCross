@@ -12,7 +12,7 @@ static void error_callback(int e, const char *d) {
 	std::cout << "Error " << e << ": " << d << std::endl;
 }
 
-void __stdcall DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
+void DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
 {
 	const char* sourceStr = "UNDEFINED";
 	switch (source)
@@ -131,7 +131,7 @@ void SCGLFWDisplay::makeWindow()
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(DEBUG)
 
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 	glfwWindowHint(GLFW_CONTEXT_NO_ERROR, GLFW_FALSE);

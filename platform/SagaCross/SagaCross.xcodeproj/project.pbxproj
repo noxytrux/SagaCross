@@ -44,6 +44,7 @@
 		1C88EEC822D3EED500A2EF7A /* SCRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C88EEC722D3EED500A2EF7A /* SCRenderer.cpp */; };
 		1C88EECD22D6219300A2EF7A /* libfmod.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1C88EEB622D3AAF800A2EF7A /* libfmod.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1C88EECE22D6219400A2EF7A /* libfmodL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1C88EEB522D3AAF800A2EF7A /* libfmodL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		1CDAD2CA22E34D4200E07043 /* SCDebugScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CDAD2C822E34D4100E07043 /* SCDebugScene.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -160,6 +161,8 @@
 		1C88EEC322D3C7E300A2EF7A /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		1C88EEC522D3C7EB00A2EF7A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		1C88EEC722D3EED500A2EF7A /* SCRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SCRenderer.cpp; sourceTree = "<group>"; };
+		1CDAD2C822E34D4100E07043 /* SCDebugScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCDebugScene.cpp; sourceTree = "<group>"; };
+		1CDAD2C922E34D4100E07043 /* SCDebugScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCDebugScene.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +212,8 @@
 		1C88EE2622D3A91400A2EF7A /* source */ = {
 			isa = PBXGroup;
 			children = (
+				1CDAD2C822E34D4100E07043 /* SCDebugScene.cpp */,
+				1CDAD2C922E34D4100E07043 /* SCDebugScene.hpp */,
 				1C88EE2722D3A91400A2EF7A /* SCFastWaterMesh.h */,
 				1C88EE2822D3A91400A2EF7A /* SCVehicle.hpp */,
 				1C88EE2922D3A91400A2EF7A /* SCTank.h */,
@@ -391,6 +396,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CDAD2CA22E34D4200E07043 /* SCDebugScene.cpp in Sources */,
 				1C88EE8F22D3A91400A2EF7A /* glMatrix4x4.cpp in Sources */,
 				1C88EE9722D3A91400A2EF7A /* SCMenuScene.cpp in Sources */,
 				1C88EEA022D3A91400A2EF7A /* SCSceneManager.cpp in Sources */,

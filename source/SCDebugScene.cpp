@@ -11,6 +11,12 @@
 
 using namespace sc;
 
+GLuint tex = 0;
+std::shared_ptr<SCFastMesh> model = nullptr;
+
+std::shared_ptr<SCMeshInstance> MeshManager = nullptr;
+std::shared_ptr<SCCamera> camera = nullptr;
+
 SCDebugScene::SCDebugScene(const std::string &name,
 	const std::string rootPath,
 	const std::shared_ptr<SCRendererInterface> &renderer,
@@ -31,8 +37,40 @@ SCSceneType SCDebugScene::Render() {
 	auto screenSize = display->getScreenSize();
 
 	//3D
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    auto renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
+    _renderer->Projection.mPerspective((45.0f * M_PI) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.001f, 50000.0f);
 
+    //camera->Apply();
+    camera->FreeCam(renderer->getDisplay());
+
+    auto frustum = _renderer->getFrustum();
+
+    float proj[16];
+    float mv[16];
+
+    _renderer->Projection.getColumnMajor44(proj);
+    _renderer->ModelView.getColumnMajor44(mv);
+
+    frustum.modelview = mv;
+    frustum.projection = proj;
+
+    frustum.calculateFrustum();
+
+    auto current = renderer->SimpleShader;
+    current->begin();
+
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glActiveTexture(GL_TEXTURE0);
+    glUniform1i(current->uniforms[UNI_TEX0], 0);
+    glUniform4f(current->uniforms[UNI_TEX1], 1.0f, 1.0f, 1.0f, 1.0f);
+
+//    glDisable(GL_CULL_FACE);
+
+    model->Draw();
 
     //ui
     ctx->style.window.fixed_background = nk_style_item_color(nk_rgba(0, 0, 0, 0));
@@ -73,7 +111,13 @@ void SCDebugScene::Init() {
 
 	//get game info 
 	auto settings = _renderer->getSettings();
-	
+
+    camera = std::make_shared<SCCamera>(_renderer, 0, 1, 0 );
+    MeshManager = std::make_shared<SCMeshInstance>(_renderer);
+
+    tex = textureLoader.loadFile(_rootPath + "maps/map1/level001_color.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
+	model = MeshManager->GetMesh("maps/map1/level001_terrain", _rootPath, SCMeshTypeNormal);
+    model->setScale(0.01);
 }
 
 void SCDebugScene::Destroy() {
