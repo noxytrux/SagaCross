@@ -108,7 +108,7 @@ namespace sc {
 
 		bool pointInFrustum(float x, float y, float z) const {
 
-			float dist = float(0.0f);
+	/*		float dist = float(0.0f);
 
 			for (int i = 0; i < 6; i++)
 			{
@@ -122,21 +122,21 @@ namespace sc {
 
 					return false;
 				}
-			}
+			}*/
 
 			return true;
 		}
 
 		bool SphereInFrustum(float x, float y, float z, float Radius) const {
 
-			int i;
+			//int i;
 
-			for (i = 0; i < 6; i++) {
-				if (frustum[i][0] * x + frustum[i][1] * y + frustum[i][2] * z + frustum[i][3] <= -Radius)
-				{
-					return false;
-				}
-			}
+			//for (i = 0; i < 6; i++) {
+			//	if (frustum[i][0] * x + frustum[i][1] * y + frustum[i][2] * z + frustum[i][3] <= -Radius)
+			//	{
+			//		return false;
+			//	}
+			//}
 
 			return true;
 		}

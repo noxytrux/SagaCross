@@ -35,7 +35,7 @@ namespace sc {
 
 		std::shared_ptr<SCFastMesh> GetMesh(const std::string & name, const std::string &path, SCMeshType type) {
 
-			auto i = _list.find(name);
+			auto i = _list.find(name + std::to_string(type));
 
 			if (i != _list.end()) {
 

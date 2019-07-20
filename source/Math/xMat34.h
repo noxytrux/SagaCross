@@ -22,10 +22,6 @@ homogenous transform class composed of a matrix and a vector.
 class xMat34
 	{
 
-	private:
-
-	float mat[16];
-
 	public:
 	/**
 	\brief [ M t ]
@@ -174,13 +170,6 @@ class xMat34
 
         setColumnMajor44( m );
     }
-
-	X_INLINE float* m()
-	{
-		getColumnMajor44(mat);
-
-		return mat;
-	}
 
 	/**
 	\brief convert from a matrix format appropriate for rendering

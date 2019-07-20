@@ -4,6 +4,7 @@
 #include "SCNewGameScene.hpp"
 #include "SCSettingsScene.hpp"
 #include "SCRenderScene.hpp"
+#include "SCDebugScene.hpp"
 
 using namespace sc;
 
@@ -14,13 +15,15 @@ SCSceneManager::SCSceneManager(const std::string rootPath, const std::shared_ptr
 	auto newGameScene  = std::make_shared<SCNewGameScene>("newgame", rootPath, renderer, audio);
 	auto settingsScene = std::make_shared<SCSettingsScene>("settings", rootPath, renderer, audio);
 	auto renderScene   = std::make_shared<SCRenderScene>("render", rootPath, renderer, audio);
+	auto debugScene	   = std::make_shared<SCDebugScene>("debug", rootPath, renderer, audio);
 
 	_scenes[menuScene->getName()] = menuScene;
 	_scenes[newGameScene->getName()] = newGameScene;
 	_scenes[settingsScene->getName()] = settingsScene;
 	_scenes[renderScene->getName()] = renderScene;
+	_scenes[debugScene->getName()] = debugScene;
 
-	this->setCurrent("menu");
+	this->setCurrent("debug");
 }
 
 SCSceneManager::~SCSceneManager() noexcept

@@ -16,8 +16,6 @@ namespace sc {
 
 	typedef struct mdata {
 		xVec3 position;
-		xVec3 normal;
-		xVec3 tangent;
 		xVec2 coord;
 	} VertexData; //loading data struct
 
@@ -131,9 +129,7 @@ namespace sc {
 
 							ActualData[index].position = xVec3(x, y, z);
 							ActualData[index].coord = xVec2(u, v);
-							ActualData[index].normal = xVec3(nx, ny, nz);
-							ActualData[index].tangent = xVec3(0, 0, 0);
-
+						
 							Temp = ActualData[index].position;
 							tlenght = Temp.magnitude();
 
@@ -154,35 +150,6 @@ namespace sc {
 							Fdata[index * 3] = v1;
 							Fdata[index * 3 + 1] = v2;
 							Fdata[index * 3 + 2] = v3;
-
-
-							xVec3 vv0 = ActualData[v1].position;
-							xVec3 vv1 = ActualData[v2].position;
-							xVec3 vv2 = ActualData[v3].position;
-
-							xVec3 normal;
-							normal.cross(vv2 - vv0, vv1 - vv0);
-
-							float uv21 = ActualData[v2].coord.x - ActualData[v1].coord.x;
-							float uv22 = ActualData[v2].coord.y - ActualData[v1].coord.y;
-
-							float uv31 = ActualData[v3].coord.x - ActualData[v1].coord.x;
-							float uv32 = ActualData[v3].coord.y - ActualData[v1].coord.y;
-
-							xVec3 vec21 = (vv1 - vv0);
-							xVec3 vec31 = (vv2 - vv0);
-
-							xVec3 tangent = ((vec21* uv32) - (vec31* uv22))*((uv21*uv32) - (uv22*uv31));
-
-							ActualData[v1].tangent += tangent;
-							ActualData[v2].tangent += tangent;
-							ActualData[v3].tangent += tangent;
-
-						}
-
-						for (index = 0; index < nvert; index++)
-						{
-							ActualData[index].tangent.normalize();
 						}
 
 						glGenVertexArrays(1, &_buffers[mindex].VAO);
@@ -194,10 +161,6 @@ namespace sc {
 
 						glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, sizeof(VertexData), (void*)OFFSET(VertexData, position));
 						glEnableVertexAttribArray(ATTRIB_VERTEX);
-						glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, 0, sizeof(VertexData), (void*)OFFSET(VertexData, normal));
-						glEnableVertexAttribArray(ATTRIB_NORMAL);
-						glVertexAttribPointer(ATTRIB_TANGENT, 3, GL_FLOAT, 0, sizeof(VertexData), (void*)OFFSET(VertexData, tangent));
-						glEnableVertexAttribArray(ATTRIB_TANGENT);
 						glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, sizeof(VertexData), (void*)OFFSET(VertexData, coord));
 						glEnableVertexAttribArray(ATTRIB_COORDS);
 
@@ -254,8 +217,14 @@ namespace sc {
 
 			auto current = _renderer->SimpleShader; 
 
-			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, _renderer->Projection.m());
-			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, _worldmodelview.m());
+			float proj[16];
+			float mv[16];
+
+			_renderer->Projection.getColumnMajor44(proj);
+			_worldmodelview.getColumnMajor44(mv);
+
+			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
+			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
 
 			for (int i = 0; i < _buffers.size(); i++) { //draw all mesh
 

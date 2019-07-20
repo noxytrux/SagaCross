@@ -29,9 +29,7 @@ namespace sc {
 		xVec2 Velocity;
 		float currAngle;
 
-		virtual ~SCTank() noexcept {
-
-		}
+		virtual ~SCTank() noexcept;
 
         SCTank(const json &botsData,
                const std::string &p,
@@ -179,5 +177,8 @@ namespace sc {
 		char rot_random;
 		char rot_rifle;
 		char rot_rifle_a;
+
+		GLuint guiVAO;
+		GLuint guiVBO;
 	};
 }

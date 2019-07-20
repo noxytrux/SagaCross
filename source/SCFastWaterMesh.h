@@ -44,8 +44,14 @@ namespace sc {
 
 			_worldmodelview = _renderer->ModelView * _finalWorld;
 
-			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, _renderer->Projection.m());
-			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, _worldmodelview.m());
+			float proj[16];
+			float mv[16];
+
+			_renderer->Projection.getColumnMajor44(proj);
+			_worldmodelview.getColumnMajor44(mv);
+
+			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
+			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
 
 			glUniform1f(current->uniforms[UNI_TEX1], time);
 

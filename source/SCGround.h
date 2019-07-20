@@ -71,21 +71,21 @@ namespace sc {
 			glEnable(GL_BLEND);
 			
 			auto current = _renderer->SimpleShader;
-
-			glUniform4f(current->uniforms[UNI_TEX1], 1.0, 1.0, 1.0, 1.0);
+			current->begin();
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _texture);
 			glUniform1i(current->uniforms[UNI_TEX0], 0);
+			glUniform4f(current->uniforms[UNI_TEX1], 1.0, 1.0, 1.0, 1.0);
 
 			_terrain->getUserMatrix().id();
 			_terrain->Draw();
 
-			if (_renderingWaterEnabled) {
+	/*		if (_renderingWaterEnabled) {
 
 				_water->getUserMatrix().id();
 				_water->Draw();
-			}
+			}*/
 
 			glDisable(GL_BLEND);
 		}

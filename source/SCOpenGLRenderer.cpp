@@ -29,7 +29,6 @@ SCOpenGLRenderable::SCOpenGLRenderable(const std::shared_ptr<SCDisplay> &display
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
-	glEnable(GL_TEXTURE_2D);
 	glActiveTexture(GL_TEXTURE0);
 
 #ifdef MOBILE 
@@ -401,8 +400,14 @@ void SCOpenGLRenderable::DrawBox(float x1, float y1, float z1, float x2, float y
 
 	xMat34 worldmodelview = ModelView * UserMatrix; 
 
-	glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, Projection.m());
-	glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, worldmodelview.m());
+	float proj[16];
+	float mv[16];
+
+	Projection.getColumnMajor44(proj);
+	worldmodelview.getColumnMajor44(mv);
+
+	glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
+	glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
 
 	float squareVertices[] = {
 		x1 , y1 , z1,//dol
