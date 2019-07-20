@@ -168,6 +168,7 @@ Copy /Y $(ProjectDir)..\libraries\glfw\bin\* $(ProjectDir)</Command>
     <ClCompile Include="..\source\Math\xVec3.cpp" />
     <ClCompile Include="..\source\SCApplication.cpp" />
     <ClCompile Include="..\source\SCAudio.cpp" />
+    <ClCompile Include="..\source\SCDebugScene.cpp" />
     <ClCompile Include="..\source\SCDisplay.cpp" />
     <ClCompile Include="..\source\SCGLFWDisplay.cpp" />
     <ClCompile Include="..\source\SCGLFWInput.cpp" />
@@ -214,6 +215,7 @@ Copy /Y $(ProjectDir)..\libraries\glfw\bin\* $(ProjectDir)</Command>
     <ClInclude Include="..\source\SCBonus.h" />
     <ClInclude Include="..\source\SCBulletManager.h" />
     <ClInclude Include="..\source\SCCamera.h" />
+    <ClInclude Include="..\source\SCDebugScene.hpp" />
     <ClInclude Include="..\source\SCDisplay.h" />
     <ClInclude Include="..\source\SCFastAnimatedMesh.h" />
     <ClInclude Include="..\source\SCFastCutoffMesh.h" />
