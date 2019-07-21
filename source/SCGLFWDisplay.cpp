@@ -154,7 +154,16 @@ void SCGLFWDisplay::makeWindow()
 	eglBuildVertexArray();
 #endif // _RPI_
 
+#if defined(_DEBUG) || defined(DEBUG)
+
+    if (!glfwExtensionSupported("GL_ARB_debug_output")) {
+        std::cout << "[ERROR] Could not enable OpenGL debugging" << std::endl;
+    }
+
 	EnableOpenGLErrorCallback();
+
+#endif
+
 }
 
 const bool SCGLFWDisplay::shouldClose() const {

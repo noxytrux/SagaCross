@@ -46,7 +46,7 @@ namespace sc {
 
             s_fFacing = 1.0;
             yPosAddition = 0;
-            gEye = xVec3(0.0);
+            gEye = xVec3(C);
             gDir = xVec3(1, 0, 0);
         }
 
@@ -132,12 +132,12 @@ namespace sc {
         {
             static xVec3 gViewY = xVec3(0.0);
 
-            float add = 0.2f;
+            float add = 0.05f;
 
             auto window = static_cast<GLFWwindow*>(display->getContext());
 
-            if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) add = 5.0f;
-            if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) add = 0.05f;
+            if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) add = 0.2f;
+            if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) add = 0.02f;
 
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) gEye += gDir*add;
             if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) gEye -= gDir*add;

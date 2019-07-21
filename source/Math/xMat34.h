@@ -158,14 +158,18 @@ class xMat34
 
     X_INLINE void mPerspective(float fovyRadians, float aspect, float nearZ, float farZ)
     {
-        float cotan = 1.0f / tanf(fovyRadians / 2.0f);
+        float scale = tan(angleOfView * 0.5 * M_PI / 180.0) * n;
+        float r = aspect * scale;
+        float l = -r;
+        float t = scale;
+        float b = -t;
 
         float m[16] =
         {
-            cotan / aspect, 0.0f, 0.0f, 0.0f,
-            0.0f, cotan, 0.0f, 0.0f,
-            0.0f, 0.0f, (farZ + nearZ) / (nearZ - farZ), -1.0f,
-            0.0f, 0.0f, (2.0f * farZ * nearZ) / (nearZ - farZ), 0.0f
+            2.0f * n / (r - l), 0.0f, 0.0f, 0.0f,
+            0.0f, 2.0f * n / (t - b), 0.0f,  0.0f,
+            (r + l) / (r - l), (t + b) / (t - b), -(f + n) / (f - n), -1.0f,
+            0.0f, 0.0f, -2.0f * f * n / (f - n), 0.0f
         };
 
         setColumnMajor44( m );

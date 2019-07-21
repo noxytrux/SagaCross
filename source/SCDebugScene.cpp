@@ -42,7 +42,8 @@ SCSceneType SCDebugScene::Render() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     auto renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
-    _renderer->Projection.mPerspective((45.0f * M_PI) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.001f, 50000.0f);
+
+    _renderer->Projection.mPerspective(45.0, (float)screenSize.width / (float)screenSize.height, 0.1f, 5000.0f);
 
     //camera->Apply();
     camera->FreeCam(renderer->getDisplay());
@@ -67,8 +68,6 @@ SCSceneType SCDebugScene::Render() {
     glActiveTexture(GL_TEXTURE0);
     glUniform1i(current->uniforms[UNI_TEX0], 0);
     glUniform4f(current->uniforms[UNI_TEX1], 1.0f, 1.0f, 1.0f, 1.0f);
-
-//    glDisable(GL_CULL_FACE);
 
     model->Draw();
 
@@ -112,12 +111,12 @@ void SCDebugScene::Init() {
 	//get game info 
 	auto settings = _renderer->getSettings();
 
-    camera = std::make_shared<SCCamera>(_renderer, 0, 1, 0 );
+    camera = std::make_shared<SCCamera>(_renderer, 0, 0, 0);
     MeshManager = std::make_shared<SCMeshInstance>(_renderer);
 
-    tex = textureLoader.loadFile(_rootPath + "maps/map1/level001_color.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
-	model = MeshManager->GetMesh("maps/map1/level001_terrain", _rootPath, SCMeshTypeNormal);
-    model->setScale(0.01);
+    tex = textureLoader.loadFile(_rootPath + "textures/mesh_object_wooden-crate-01.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
+	model = MeshManager->GetMesh("models/object_wooden-crate-closed-A", _rootPath, SCMeshTypeNormal);
+    model->setScale(0.005);
 }
 
 void SCDebugScene::Destroy() {

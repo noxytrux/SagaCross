@@ -133,7 +133,10 @@ namespace sc {
 							Temp = ActualData[index].position;
 							tlenght = Temp.magnitude();
 
-							if (tlenght > _AABBRay) _AABBRay = tlenght;
+                            if (tlenght > _AABBRay) {
+
+                                _AABBRay = tlenght;
+                            }
 						}
 
 
@@ -213,7 +216,7 @@ namespace sc {
 
 			if (!_renderer->getFrustum().SphereInFrustum(pos.x, pos.y, pos.z, _AABBRay * std::max(_scaleX, std::max(_scaleY, _scaleZ)))) return;
 
-			_worldmodelview = _renderer->ModelView * _finalWorld; 
+			_worldmodelview = _finalWorld * _renderer->ModelView; 
 
 			auto current = _renderer->SimpleShader; 
 
@@ -221,8 +224,8 @@ namespace sc {
 			float mv[16];
 
 			_renderer->Projection.getColumnMajor44(proj);
-			_worldmodelview.getColumnMajor44(mv);
-
+            _worldmodelview.getColumnMajor44(mv);
+			
 			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
 			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
 
