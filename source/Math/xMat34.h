@@ -156,7 +156,7 @@ class xMat34
 		setColumnMajor44( m );
 	}
 
-    X_INLINE void mPerspective(float fovyRadians, float aspect, float nearZ, float farZ)
+    X_INLINE void mPerspective(float angleOfView, float aspect, float n, float f)
     {
         float scale = tan(angleOfView * 0.5 * M_PI / 180.0) * n;
         float r = aspect * scale;
