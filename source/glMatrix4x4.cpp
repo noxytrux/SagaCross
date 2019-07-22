@@ -68,11 +68,16 @@ void glMatrix4x4::setPerspective(const xReal & fovyInDegrees,
                                  const xReal & nearZ,
                                  const xReal & farZ) {
 
-    xReal ymax, xmax;
-    ymax = nearZ * tanf(fovyInDegrees*M_PI/360.0);
-    xmax = ymax * aspect;
+    float cotan = 1.0f / tanf((fovyInDegrees * M_PI / 180.0) / 2.0f);
 
-    this->setFrustum(-xmax, xmax, -ymax, ymax, nearZ, farZ);
+    float m[16] =
+    {   cotan / aspect, 0.0f, 0.0f, 0.0f,
+        0.0f, cotan, 0.0f, 0.0f,
+        0.0f, 0.0f, (farZ + nearZ) / (nearZ - farZ), -1.0f,
+        0.0f, 0.0f, (2.0f * farZ * nearZ) / (nearZ - farZ), 0.0f
+    };
+
+    memcpy(matrix, m, 16*sizeof(xReal));
 }
 
 void glMatrix4x4::setFrustum(const xReal & left,
@@ -144,41 +149,27 @@ void glMatrix4x4::setOrtho(const xReal & left,
 
 void glMatrix4x4::lookAt(const xVec3 & eyePos, const xVec3 & dir, const xVec3 & up) {
 
-    xVec3 forward;
-    xVec3 side;
-    xVec3 upvec;
+    xVec3 ev = eyePos;
+    xVec3 cv = dir;
+    xVec3 uv = up;
 
-    xReal matrix2[16], resultMatrix[16];
+    cv.setNegative();
 
-    forward = dir - eyePos;
-    side.cross(forward, upvec);
-    side.normalize();
+    xVec3 n = cv;
+    n.normalize();
+    xVec3 u = uv.cross(n);
+    u.normalize();
+    xVec3 v = n.cross(u);
 
-    upvec.cross(side, forward);
+    float m[16] =
+    {
+        u.x, v.x, n.x, 0.0f,
+        u.y, v.y, n.y, 0.0f,
+        u.z, v.z, n.z, 0.0f,
+        -u.dot(ev), -v.dot(ev), -n.dot(ev), 1.0f
+    };
 
-    matrix2[0]=side.x;
-    matrix2[4]=side.y;
-    matrix2[8]=side.z;
-    matrix2[12]=0.0;
-
-    matrix2[1]=upvec.x;
-    matrix2[5]=upvec.y;
-    matrix2[9]=upvec.z;
-    matrix2[13]=0.0;
-
-    matrix2[2]=-forward.x;
-    matrix2[6]=-forward.y;
-    matrix2[10]=-forward.z;
-    matrix2[14]=0.0;
-
-    matrix2[3]=matrix2[7]=matrix2[11]=0.0;
-    matrix2[15]=1.0;
-
-    this->multiply(resultMatrix, matrix, matrix2);
-
-    memcpy(matrix, resultMatrix, 16*sizeof(xReal));
-
-    this->translate(-eyePos.x, -eyePos.y, -eyePos.z);
+    memcpy(matrix, m, 16*sizeof(xReal));
 }
 
 void glMatrix4x4::setOrtho2D(const xReal & left, const xReal & right, const xReal & bottom, const xReal & top) {

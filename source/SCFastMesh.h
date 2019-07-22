@@ -39,9 +39,8 @@ namespace sc {
 			: _renderer(std::dynamic_pointer_cast<SCOpenGLRenderable>(renderer)) 
 		{
 			_userMatrix.id();
-			_world.id();
-			_finalWorld.id();
-			_worldmodelview.id();
+			_finalWorld.loadIdentity();
+			_worldmodelview.loadIdentity();
 
 			_scaleX = 0.05f;
 			_scaleY = 0.05f;
@@ -128,7 +127,7 @@ namespace sc {
 							fread(&nz, sizeof(FLOAT), 1, f);
 
 							ActualData[index].position = xVec3(x, y, z);
-							ActualData[index].coord = xVec2(u, v);
+                            ActualData[index].coord = xVec2(u, v);
 						
 							Temp = ActualData[index].position;
 							tlenght = Temp.magnitude();
@@ -138,7 +137,6 @@ namespace sc {
                                 _AABBRay = tlenght;
                             }
 						}
-
 
 						for (index = 0; index < nface; index++)
 						{
@@ -184,8 +182,6 @@ namespace sc {
 
 					fclose(f);
 
-					_world.id();
-
 				}//if heder OK
 
 
@@ -209,25 +205,22 @@ namespace sc {
 
 			xMat33 scale = xMat33(xVec3(_scaleX, 0, 0), xVec3(0, _scaleY, 0), xVec3(0, 0, _scaleZ));
 
-			_world = _userMatrix;
-			_finalWorld = _world * xMat34(scale, xVec3());
+            float userMat[16];
+            _userMatrix.getColumnMajor44(userMat);
+            glMatrix4x4 scaleMat; scaleMat.scale(_scaleX, _scaleY, _scaleZ);
 
-			auto pos = _finalWorld.t;
+            _finalWorld.multiply(_finalWorld.getMatrix(), userMat, scaleMat.getMatrix());
+
+			auto pos = _finalWorld.t();
 
 			if (!_renderer->getFrustum().SphereInFrustum(pos.x, pos.y, pos.z, _AABBRay * std::max(_scaleX, std::max(_scaleY, _scaleZ)))) return;
 
-			_worldmodelview = _finalWorld * _renderer->ModelView; 
+            _worldmodelview.multiply(_worldmodelview.getMatrix(), _renderer->ModelView.getMatrix(), _finalWorld.getMatrix());
 
 			auto current = _renderer->SimpleShader; 
 
-			float proj[16];
-			float mv[16];
-
-			_renderer->Projection.getColumnMajor44(proj);
-            _worldmodelview.getColumnMajor44(mv);
-			
-			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
-			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
+			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, _renderer->Projection.getMatrix());
+			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, _worldmodelview.getMatrix());
 
 			for (int i = 0; i < _buffers.size(); i++) { //draw all mesh
 
@@ -265,9 +258,8 @@ namespace sc {
 		std::shared_ptr<SCOpenGLRenderable> _renderer;
 		std::vector<SCMeshInfo> _buffers;
 		
-		xMat34 _finalWorld; //final world matrix
-		xMat34 _worldmodelview; //world x modelview
-		xMat34 _world;
+		glMatrix4x4 _finalWorld; //final world matrix
+		glMatrix4x4 _worldmodelview; //world x modelview
 
 		xMat34 _userMatrix;
 		float _scaleX;

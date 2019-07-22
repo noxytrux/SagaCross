@@ -802,24 +802,20 @@ void SCTank::Render()
 
             static float aimRot = 360;
 
-            xMat34 aimrotation;
-            aimrotation.id();
-            aimrotation.M.rotY(aimRot * M_PI / 180.0);
+            glMatrix4x4 aimrotation;
+            aimrotation.rotatef(0, aimRot * M_PI / 180.0, 0);
+
             aimRot -= 4;
             if (aimRot <= 0) aimRot = 360;
 
-            xMat34 positionmat;
-            positionmat.id();
-            positionmat.t = xVec3(aimPos);
+            glMatrix4x4 model; model.set(renderer->ModelView.getMatrix());
+            model.translate(aimPos[0], aimPos[1], aimPos[2]);
 
-			float proj[16];
-			float mv[16];
+            float mv[16];
+            model.multiply(mv, model.getMatrix(), aimrotation.getMatrix());
 
-			renderer->Projection.getColumnMajor44(proj);
-			((renderer->ModelView * positionmat) * aimrotation).getColumnMajor44(mv);
-
-			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
-			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
+			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, renderer->Projection.getMatrix());
+            glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, aimTex);
@@ -868,14 +864,8 @@ void SCTank::DrawTray() {
             glBindTexture(GL_TEXTURE_2D, blank);
             glUniform4f(current->uniforms[UNI_TEX1], 1.0 * 0.6, 32.0 / 255.0 * 0.6, 32.0 / 255.0 * 0.6, 0.6);
 
-			float proj[16];
-			float mv[16];
-
-			renderer->Projection.getColumnMajor44(proj);
-			renderer->ModelView.getColumnMajor44(mv);
-
-			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
-			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
+			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, renderer->Projection.getMatrix());
+			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, renderer->ModelView.getMatrix());
 
             glLineWidth(1.0); //4.0f
 

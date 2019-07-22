@@ -227,14 +227,8 @@ namespace sc {
 				auto renderer = explosionFirst->getRenderer();
 				auto current = renderer->GuiShader;
 
-				float proj[16];
-				float mv[16];
-
-				renderer->Projection.getColumnMajor44(proj);
-				renderer->ModelView.getColumnMajor44(mv);
-
-				glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
-				glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
+				glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, renderer->Projection.getMatrix());
+				glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, renderer->ModelView.getMatrix());
 
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, texture);

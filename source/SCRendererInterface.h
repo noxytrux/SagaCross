@@ -15,6 +15,7 @@
 #define NK_INCLUDE_FONT_BAKING
 
 #include "nuklear.h"
+#include "glMatrix4x4.hpp"
 
 namespace sc {
 
@@ -26,8 +27,8 @@ namespace sc {
 			, _settings(settings)
 			, _ctx(nullptr) {
 		
-			ModelView.id();
-			Projection.id();
+            ModelView.loadIdentity();
+			Projection.loadIdentity();
 
 			m_vSunVector = xVec3(0, 1, 1);
 			m_SunColor = xVec3(1.000000, 0.598512, 0.157620);
@@ -47,8 +48,8 @@ namespace sc {
 		virtual void beginDrawing() = 0;
 		virtual void endDrawing() = 0;
 
-		xMat34 ModelView;
-		xMat34 Projection;
+		glMatrix4x4 ModelView;
+		glMatrix4x4 Projection;
 
 		//TODO: get rid of this ?
 		xVec3 m_vSunVector;

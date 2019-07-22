@@ -37,21 +37,22 @@ namespace sc {
 			glBindTexture(GL_TEXTURE_2D, tex);
 			glUniform1i(current->uniforms[UNI_TEX0], 0);
 
-			xMat33 scale = xMat33(xVec3(_scaleX, 0, 0), xVec3(0, _scaleY, 0), xVec3(0, 0, _scaleZ));
+            xMat33 scale = xMat33(xVec3(_scaleX, 0, 0), xVec3(0, _scaleY, 0), xVec3(0, 0, _scaleZ));
 
-			_world = _userMatrix;
-			_finalWorld = _world * xMat34(scale, xVec3());
+            float userMat[16];
+            _userMatrix.getColumnMajor44(userMat);
+            glMatrix4x4 scaleMat; scaleMat.scale(_scaleX, _scaleY, _scaleZ);
 
-			_worldmodelview = _renderer->ModelView * _finalWorld;
+            _finalWorld.multiply(_finalWorld.getMatrix(), userMat, scaleMat.getMatrix());
 
-			float proj[16];
-			float mv[16];
+            auto pos = _finalWorld.t();
 
-			_renderer->Projection.getColumnMajor44(proj);
-			_worldmodelview.getColumnMajor44(mv);
+            if (!_renderer->getFrustum().SphereInFrustum(pos.x, pos.y, pos.z, _AABBRay * std::max(_scaleX, std::max(_scaleY, _scaleZ)))) return;
 
-			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
-			glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
+            _worldmodelview.multiply(_worldmodelview.getMatrix(), _renderer->ModelView.getMatrix(), _finalWorld.getMatrix());
+
+            glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, _renderer->Projection.getMatrix());
+            glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, _worldmodelview.getMatrix());
 
 			glUniform1f(current->uniforms[UNI_TEX1], time);
 

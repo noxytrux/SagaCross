@@ -113,10 +113,9 @@ namespace sc {
 
                 gEye = xVec3(E);
 
-                auto vDir = xVec3(E[0] + gDir.x, E[1] + gDir.y, E[2] + gDir.z);
                 auto vUp = xVec3(0, 1, 0);
 
-                _renderer->ModelView.mLookAt(gEye, vDir, vUp);
+                _renderer->ModelView.lookAt(gEye, gDir, vUp);
 
             }
             else
@@ -124,7 +123,7 @@ namespace sc {
                 auto vUp = xVec3(0, 1, 0);
                 auto vC = xVec3(C);
 
-                _renderer->ModelView.mLookAt(vC, gEye, vUp);
+                _renderer->ModelView.lookAt(vC, gEye, vUp);
             }
         }
 
@@ -177,20 +176,9 @@ namespace sc {
             }
 
             auto gUp = xVec3(0, 1, 0);
-            auto dir = gEye + gDir;
+            auto dir = gDir;
 
- /*           float mat[16] = {
-                0.1, 0.0, 0.0, 0.0,
-                0.0, 0.1, 0.0, 0.0,
-                0.0, 0.0, 0.1, 0.0,
-                0.0, 0.0, 0.0, 1.0
-            };
-            
-            xMat34 scale; scale.setColumnMajor44(mat);
-			xMat34 cam; cam.mLookAt(gEye, dir, gUp);
-
-			_renderer->ModelView = scale * cam;*/
-            _renderer->ModelView.mLookAt(gEye, dir, gUp);
+            _renderer->ModelView.lookAt(gEye, dir, gUp);
         }
 
 

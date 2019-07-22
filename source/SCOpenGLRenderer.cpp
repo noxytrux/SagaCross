@@ -216,13 +216,16 @@ bool SCOpenGLRenderable::Get2DOGLPos(float px, float py, float pz, float &winx, 
 	viewport[2] = size.width;
 	viewport[3] = size.height;
 
-	GLdouble m1[16];
-	GLdouble m2[16];
+    GLdouble mv[16]; //ModelView.getMatrix()
+    GLdouble proj[16]; //Projection.getMatrix()
 
-	ModelView.getColumnMajor44D(m1);
-	Projection.getColumnMajor44D(m2);
-		
-	gluProject(px, py, pz, m1, m2, viewport, &wx, &wy, &wz);
+    for (int i=0; i<16; ++i) {
+
+        mv[i] = ModelView.getMatrix()[i];
+        proj[i] = Projection.getMatrix()[i];
+    }
+
+	gluProject(px, py, pz, mv, proj, viewport, &wx, &wy, &wz);
 	winx = wx;
 	winy = size.height - wy;
 
@@ -398,15 +401,13 @@ void SCOpenGLRenderable::DrawBox(float x1, float y1, float z1, float x2, float y
 {
 	auto current = SimpleShader;
 
-	xMat34 worldmodelview = ModelView * UserMatrix; 
-
-	float proj[16];
 	float mv[16];
+    float user[16];
 
-	Projection.getColumnMajor44(proj);
-	worldmodelview.getColumnMajor44(mv);
+    UserMatrix.getColumnMajor44(user);
+    ModelView.multiply(mv, ModelView.getMatrix(), user);
 
-	glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, proj);
+	glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, Projection.getMatrix());
 	glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
 
 	float squareVertices[] = {

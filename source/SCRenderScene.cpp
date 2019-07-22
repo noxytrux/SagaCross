@@ -75,16 +75,19 @@ SCSceneType SCRenderScene::Render() {
     accumulator = xMath::clamp(accumulator, (xF32)1.0, (xF32)0.0);
 
     RenderManager.Simulate(sec);
+    Bullets->Simulate(sec);
+    SCVehicle::MakeCollide(Bullets);
 
-    while (accumulator >= MAX_FRAME_TIME) {
 
-    //    RenderManager.Simulate(MAX_FRAME_TIME);
-        Bullets->Simulate(MAX_FRAME_TIME);
-
-        SCVehicle::MakeCollide(Bullets);
-
-        accumulator -= MAX_FRAME_TIME;
-    }
+//    while (accumulator >= MAX_FRAME_TIME) {
+//
+//    //    RenderManager.Simulate(MAX_FRAME_TIME);
+//        Bullets->Simulate(MAX_FRAME_TIME);
+//
+//        SCVehicle::MakeCollide(Bullets);
+//
+//        accumulator -= MAX_FRAME_TIME;
+//    }
 
     auto wsk = std::dynamic_pointer_cast<SCTank>(ai[0]->obj);
 
@@ -131,27 +134,20 @@ SCSceneType SCRenderScene::Render() {
 
     //game
     glDisable(GL_BLEND);
-	glDisable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glDepthMask(1);
 
     auto renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
-    _renderer->Projection.mPerspective((45.0f * M_PI) / 180.0f, (float)screenSize.width / (float)screenSize.height, 0.001f, 50000.0f);
+    _renderer->Projection.setPerspective(45.0, (float)screenSize.width / (float)screenSize.height, 0.1f, 6000.0f);
 	renderer->SimpleShader->begin();
 
-    //camera->Apply();
-    camera->FreeCam(renderer->getDisplay());
+    camera->Apply();
+    //camera->FreeCam(renderer->getDisplay());
 
     auto frustum = _renderer->getFrustum();
 
-	float proj[16];
-	float mv[16];
-
-	_renderer->Projection.getColumnMajor44(proj);
-	_renderer->ModelView.getColumnMajor44(mv);
-		
-	frustum.modelview = mv;
-	frustum.projection = proj;
+	frustum.modelview = _renderer->ModelView.getMatrix();
+	frustum.projection = _renderer->Projection.getMatrix();
 
     frustum.calculateFrustum();
 

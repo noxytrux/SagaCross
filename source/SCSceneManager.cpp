@@ -23,7 +23,7 @@ SCSceneManager::SCSceneManager(const std::string rootPath, const std::shared_ptr
 	_scenes[renderScene->getName()] = renderScene;
 	_scenes[debugScene->getName()] = debugScene;
 
-	this->setCurrent("debug");
+	this->setCurrent("menu");
 }
 
 SCSceneManager::~SCSceneManager() noexcept

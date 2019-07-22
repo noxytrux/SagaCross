@@ -132,25 +132,18 @@ class xMat34
 
         cv.setNegative();
 
-        xVec3 n = (ev + cv);
+        xVec3 n = cv;
               n.normalize();
         xVec3 u = uv.cross(n);
               u.normalize();
         xVec3 v = n.cross(u);
-
-        xVec3 nn = n;
-        nn.setNegative();
-        xVec3 nu = u;
-        nu.setNegative();
-        xVec3 nv = v;
-        nv.setNegative();
 
         float m[16] =
         {
             u.x, v.x, n.x, 0.0f,
             u.y, v.y, n.y, 0.0f,
             u.z, v.z, n.z, 0.0f,
-            nu.dot(ev), nv.dot(ev), nn.dot(ev), 1.0f
+            -u.dot(ev), -v.dot(ev), -n.dot(ev), 1.0f
         };
 
 		setColumnMajor44( m );
@@ -158,18 +151,16 @@ class xMat34
 
     X_INLINE void mPerspective(float angleOfView, float aspect, float n, float f)
     {
-        float scale = tan(angleOfView * 0.5 * M_PI / 180.0) * n;
-        float r = aspect * scale;
-        float l = -r;
-        float t = scale;
-        float b = -t;
+
+        float cotan = 1.0f / tanf((angleOfView * M_PI / 180.0) / 2.0f);
+        float farZ = f;
+        float nearZ = n;
 
         float m[16] =
-        {
-            2.0f * n / (r - l), 0.0f, 0.0f, 0.0f,
-            0.0f, 2.0f * n / (t - b), 0.0f,  0.0f,
-            (r + l) / (r - l), (t + b) / (t - b), -(f + n) / (f - n), -1.0f,
-            0.0f, 0.0f, -2.0f * f * n / (f - n), 0.0f
+        {   cotan / aspect, 0.0f, 0.0f, 0.0f,
+            0.0f, cotan, 0.0f, 0.0f,
+            0.0f, 0.0f, (farZ + nearZ) / (nearZ - farZ), -1.0f,
+            0.0f, 0.0f, (2.0f * farZ * nearZ) / (nearZ - farZ), 0.0f
         };
 
         setColumnMajor44( m );

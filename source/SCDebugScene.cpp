@@ -43,21 +43,15 @@ SCSceneType SCDebugScene::Render() {
 
     auto renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
 
-    _renderer->Projection.mPerspective(45.0, (float)screenSize.width / (float)screenSize.height, 0.1f, 5000.0f);
+    _renderer->Projection.setPerspective(45.0, (float)screenSize.width / (float)screenSize.height, 0.1f, 6000.0f);
 
-    //camera->Apply();
     camera->FreeCam(renderer->getDisplay());
+    //camera->Apply();
 
     auto frustum = _renderer->getFrustum();
-
-    float proj[16];
-    float mv[16];
-
-    _renderer->Projection.getColumnMajor44(proj);
-    _renderer->ModelView.getColumnMajor44(mv);
-
-    frustum.modelview = mv;
-    frustum.projection = proj;
+    
+    frustum.modelview = _renderer->ModelView.getMatrix();
+    frustum.projection = _renderer->Projection.getMatrix();
 
     frustum.calculateFrustum();
 

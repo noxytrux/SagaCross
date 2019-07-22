@@ -48,10 +48,9 @@ namespace sc {
 		void lookAt(const xVec3 & eyePos, const xVec3 & dir, const xVec3 & up);
 		void setOrtho2D(const xReal & left, const xReal & right, const xReal & bottom, const xReal & top);
 		void rotatef(const xReal & x, const xReal & y, const xReal & z);
-
-	protected:
-
 		void multiply(xReal *result, xReal *left, xReal *right);
+
+        xVec3 t() { return xVec3(matrix[12], matrix[13], matrix[14]); }
 
 	private:
 
