@@ -69,7 +69,7 @@ SCSceneType SCRenderScene::Render() {
 
     timer->update();
     sec = timer->getElapsedSeconds();
-    sec = xMath::max((xF32)0.0, sec);
+	sec = clamp(sec, 0.0f, 0.33f);
 
     accumulator += xMath::max(sec, MAX_FRAME_TIME);
     accumulator = xMath::clamp(accumulator, (xF32)1.0, (xF32)0.0);
@@ -89,7 +89,9 @@ SCSceneType SCRenderScene::Render() {
 //        accumulator -= MAX_FRAME_TIME;
 //    }
 
-    auto wsk = std::dynamic_pointer_cast<SCTank>(ai[0]->obj);
+	std::shared_ptr<SCTank> wsk = nullptr;
+
+    /*auto wsk = std::dynamic_pointer_cast<SCTank>(ai[0]->obj);
 
     if (wsk->tankDie) Timer -= sec;
 
@@ -115,7 +117,7 @@ SCSceneType SCRenderScene::Render() {
                 wsk = std::dynamic_pointer_cast<SCTank>(ai[select]->obj);
             }
         }
-    }
+    }*/
 
     if (wsk) {
 
@@ -141,8 +143,8 @@ SCSceneType SCRenderScene::Render() {
     _renderer->Projection.setPerspective(45.0, (float)screenSize.width / (float)screenSize.height, 0.1f, 6000.0f);
 	renderer->SimpleShader->begin();
 
-    camera->Apply();
-    //camera->FreeCam(renderer->getDisplay());
+    //camera->Apply();
+    camera->FreeCam(renderer->getDisplay());
 
     auto frustum = _renderer->getFrustum();
 
@@ -155,7 +157,7 @@ SCSceneType SCRenderScene::Render() {
     Bonuses->Draw( SCVehicle :: all );
     Bullets->Render();
 
-    wsk->DrawTray();
+	/*wsk->DrawTray();
 
     renderer->ParticleShader->begin();
 
@@ -343,7 +345,7 @@ SCSceneType SCRenderScene::Render() {
         auto mineBonus = std::make_shared<SCMineBonus>(_rootPath, mapRandomPoint, ground, MeshManager);
 
         Bonuses->AddBonus(mineBonus);
-    }
+    }*/
 
     //ui
     ctx->style.window.fixed_background = nk_style_item_color(nk_rgba(0, 0, 0, 0));

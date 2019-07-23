@@ -131,11 +131,11 @@ namespace sc {
         {
             static xVec3 gViewY = xVec3(0.0);
 
-            float add = 0.05f;
+            float add = 0.1f;
 
             auto window = static_cast<GLFWwindow*>(display->getContext());
 
-            if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) add = 0.2f;
+            if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) add = 2.f;
             if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) add = 0.02f;
 
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) gEye += gDir*add;

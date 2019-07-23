@@ -12,7 +12,11 @@ static void error_callback(int e, const char *d) {
 	std::cout << "Error " << e << ": " << d << std::endl;
 }
 
+#ifdef _WIN32
+void __stdcall DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
+#else
 void DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
+#endif
 {
 	const char* sourceStr = "UNDEFINED";
 	switch (source)

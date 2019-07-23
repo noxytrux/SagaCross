@@ -490,6 +490,11 @@ namespace sc {
 		{
 			objectsDT += dt;
 
+			if (objectsDT > FLT_MAX - 1) {
+			
+				objectsDT = 0.0f;
+			}
+
 			for (const auto &model : mainModelQueue) {
 
 				model->Update(objectsDT);

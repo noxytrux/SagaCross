@@ -106,6 +106,8 @@ GLuint glTextureLoader::loadFile(const std::string & filepath,
 
     _loadedTextures.push_back(info);
     
+	std::cout << "Loading texture: " << filepath.c_str() << " ID: " << tex << std::endl;
+
     return tex;
 }
 

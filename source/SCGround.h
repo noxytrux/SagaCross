@@ -28,6 +28,7 @@ namespace sc {
 			_terrain->setScale(1.0f);
 
 			_water = std::make_unique<SCFastWaterMesh>(path + "models/object_level001-water-stream-fx.gmf", renderer);
+			_water->tex = textureLoader.loadFile(path + "textures/fx_water-stream.png", GL_LINEAR, 0, GL_REPEAT, false);
 			_water->setScale(1.0f);
 		}
 
@@ -81,11 +82,11 @@ namespace sc {
 			_terrain->getUserMatrix().id();
 			_terrain->Draw();
 
-	/*		if (_renderingWaterEnabled) {
+			if (_renderingWaterEnabled) {
 
 				_water->getUserMatrix().id();
 				_water->Draw();
-			}*/
+			}
 
 			glDisable(GL_BLEND);
 		}
