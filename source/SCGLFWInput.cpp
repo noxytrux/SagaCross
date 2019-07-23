@@ -132,31 +132,26 @@ void SCGLFWInput::sc_key_callback(GLFWwindow *window)
 {
 	xVec2 direction = xVec2(0, 0);
 	float angle = 180;
-	bool move = false;
 	float moveSpeed = 50;
 
 	if (glfwGetKey(window, GLFW_KEY_A) || glfwGetKey(window, GLFW_KEY_LEFT)) {
 
 		direction.x = -moveSpeed;
-		move = true;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_D) || glfwGetKey(window, GLFW_KEY_RIGHT)) {
 
 		direction.x = moveSpeed;
-		move = true;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_W) || glfwGetKey(window, GLFW_KEY_UP)) {
 
 		direction.y = -moveSpeed;
-		move = true;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_S) || glfwGetKey(window, GLFW_KEY_DOWN)) {
 
 		direction.y = moveSpeed;
-		move = true;
 	}
 
 	double x, y;
@@ -168,7 +163,7 @@ void SCGLFWInput::sc_key_callback(GLFWwindow *window)
 	float rad = std::atan2(x - (mode->width * 0.25), y - (mode->height * 0.25));
 	angle = (int)((rad * 180.0 / M_PI) + 360.0) % 360;
 
-	if (move && movementCallback) {
+	if (movementCallback) {
 
 		movementCallback(direction, angle);
 	}

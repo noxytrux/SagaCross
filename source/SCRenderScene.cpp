@@ -383,6 +383,9 @@ void SCRenderScene::Init() {
     std::string map = "maps/map" + std::to_string(selectedmap) + "/";
     std::string level = "level00" + std::to_string(selectedmap);
 
+    SCVehicle::all.clear();
+    SCVehicle::col.clear();
+
     Bonuses = std::make_shared<SCBonusManager>(_audio);
     Listener = std::make_shared<SCAudioListener>(_audio);
     camera = std::make_shared<SCCamera>(_renderer, 80, 60, 0 );
@@ -409,9 +412,6 @@ void SCRenderScene::Init() {
     win = textureLoader.loadFile(_rootPath + "textures/win.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     bomb = textureLoader.loadFile(_rootPath + "textures/bomb.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     blood = textureLoader.loadFile(_rootPath + "textures/hurt.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
-
-    SCVehicle::all.clear();
-    SCVehicle::col.clear();
 
     _audio->loadSound("sounds/pyr.wav");
     _audio->loadSound("sounds/shoot.wav");
@@ -637,8 +637,6 @@ void SCRenderScene::handleMove(const xVec2 &direction, const float angle) {
     if (!tank->live) {
         return;
     }
-
-	std::cout << "Angle" << angle;
 
     tank->Velocity = direction;
     tank->currAngle = angle;

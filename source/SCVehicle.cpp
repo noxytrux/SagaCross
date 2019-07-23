@@ -38,7 +38,6 @@ void SCVehicle::MakeCollide(const std::shared_ptr<SCBulletManager> &Bullets)
 
 SCVehicle::SCVehicle(const std::shared_ptr<SCVehicleObj> &o, const std::shared_ptr<SCOpenGLRenderable> &renderer) : SCRenderObj(renderer)
 {
-
     all.push_back(o);
     obj = o;
 }

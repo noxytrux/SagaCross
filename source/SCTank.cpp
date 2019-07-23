@@ -800,22 +800,11 @@ void SCTank::Render()
 
             aimPos[1] = ground->GetHeight(aimPos[0], aimPos[2]) + 0.3f;
 
-            static float aimRot = 360;
-
-            glMatrix4x4 aimrotation;
-            aimrotation.rotatef(0, aimRot * M_PI / 180.0, 0);
-
-            aimRot -= 4;
-            if (aimRot <= 0) aimRot = 360;
-
             glMatrix4x4 model; model.set(renderer->ModelView.getMatrix());
-            model.translate(aimPos[0], aimPos[1], aimPos[2]);
-
-            float mv[16];
-            model.multiply(mv, model.getMatrix(), aimrotation.getMatrix());
+            model.translate(aimPos[0], aimPos[1] + 0.5, aimPos[2]);
 
 			glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, renderer->Projection.getMatrix());
-            glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
+            glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, model.getMatrix());
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, aimTex);
@@ -825,10 +814,10 @@ void SCTank::Render()
             const int S = 12;
 
             float squareVertices[] = {
-                -S , 0.5f,  S , 1, 1,
-                 S , 0.5f,  S , 0, 1,
-                -S , 0.5f, -S , 1, 0,
-                 S , 0.5f, -S , 0, 0,
+                -S , 0.0,  S , 1, 1,
+                 S , 0.0,  S , 0, 1,
+                -S , 0.0, -S , 1, 0,
+                 S , 0.0, -S , 0, 0,
             };
 
 			glBindVertexArray(guiVAO);
@@ -1271,7 +1260,12 @@ void SCTank::Input()
 
         acc_to = (fabsf(dir.mag()) / 50.0) * max_speed;
 
-        float desiretRotation = currAngle + 180;
+        auto normal = dir;
+        normal.normalize();
+
+        auto directionAngle = std::atan2(normal.x, normal.y) / M_PI * 180.0f;
+
+        float desiretRotation = directionAngle + 180;
 
         Rot += (differenceMod(Rot, desiretRotation, 360.0) * (deltaTime * kMaxTankRotationSpeed));
     }
@@ -1295,8 +1289,6 @@ void SCTank::Input()
             acc_to = -0.5 * max_speed;
         }
     }
-
-	std::cout << "ROT: " << Rot << std::endl;
 
     float desiredAngle = currAngle;
 
@@ -1388,7 +1380,6 @@ void SCTank::Collide(std::vector<std::shared_ptr<SCVehicleObj>> &rest, std::vect
 
                 LightSparcles.Add(Pos[0], Pos[1], Pos[2], -0.2*bullets[i]->Acc[0], -0.2*bullets[i]->Acc[1], -0.2*bullets[i]->Acc[2], 20, 244, 142, 74, 0.6 + rand() % 2);
 
-
                 hitSize = 0.0f;
                 hited = true;
 
@@ -1418,12 +1409,8 @@ void SCTank::Collide(std::vector<std::shared_ptr<SCVehicleObj>> &rest, std::vect
 
                 follow = ((SCTank*)bullets[i]->parent);
             }
-
-            return;
         }
     }
-
-
 
     for (int i = 0; i < col.size(); ++i)
     {
@@ -1494,7 +1481,6 @@ void SCTank::Collide(std::vector<std::shared_ptr<SCVehicleObj>> &rest, std::vect
                 turn_to = 10.0f;
 
             }
-
         }
 
     }
