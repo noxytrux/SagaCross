@@ -276,12 +276,13 @@ namespace sc {
 					glUniform4f(current->uniforms[UNI_TEX1], 1.0, 1.0, 1.0, alpha);
 					glBindTexture(GL_TEXTURE_2D, textureExpGround);
 					
-					xMat34 &UserMatrix = explosionFirst->getUserMatrix();
+					xMat34 UserMatrix;
 
 					UserMatrix.t = xVec3(Pos);
 					UserMatrix.t.y += 1.5;
 					UserMatrix.M.rotY(-(Time*0.5));
 
+                    explosionFirst->setUserMatrix(UserMatrix);
 					explosionFirst->setScale(xVec3(0.1 * 2.0, (0.1 * (1.1 - std::min(Time, 1.0f))) * 2.0, 0.1 * 2.0));
 					explosionFirst->Draw();
 
@@ -291,12 +292,11 @@ namespace sc {
 					{
 				
 						glBindTexture(GL_TEXTURE_2D, textureExp);
-				
-						UserMatrix = explosionSecond->getUserMatrix();
 
 						UserMatrix.t = xVec3(Pos);
 						UserMatrix.M.id();
 
+                        explosionSecond->setUserMatrix(UserMatrix);
 						explosionSecond->setScale(xVec3(0.005, (0.05 + 0.1 * (Time / 1.0)), 0.005));
 						explosionSecond->Draw();
 					}

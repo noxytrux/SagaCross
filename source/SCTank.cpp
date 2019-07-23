@@ -626,7 +626,6 @@ void SCTank::Render()
 
     outputMatrix = meshMainMatrix * meshAdditionalTransform * meshAccMatrixZ * meshAccMatrixX * turretMatrixMain * muzzleAngleMain;
 
-
     if (shooted) {
         muzzleSize += deltaTime * 4.0;
 
@@ -663,11 +662,12 @@ void SCTank::Render()
             tankHitMesh->setScale(0.1f * hitSize);
             tankHitMesh->cutoff = hitSize;
 
-            auto userMatrix = tankHitMesh->getUserMatrix();
+            xMat34 userMatrix;
 
             userMatrix.M.id();
             userMatrix.t = xVec3(Pos[0], Pos[1] + 2.0, Pos[2]) - hitPos;
 
+            tankHitMesh->setUserMatrix(userMatrix);
             tankHitMesh->Draw();
         }
 
@@ -706,18 +706,20 @@ void SCTank::Render()
 
         tankExplosionA->cutoff = destoyedASize;
 
-        auto userMatrix = tankExplosionA->getUserMatrix();
+        xMat34 userMatrix;
 
         userMatrix.M.rotZ(destoyedASize * M_PI);
         userMatrix.t = xVec3(lastExplosionPos) + xVec3(0, 4.0 + destoyedPosA, 0);
+
+        tankExplosionA->setUserMatrix(userMatrix);
         tankExplosionA->Draw();
 
         tankExplosionB->cutoff = destoyedBSize;
 
-        userMatrix = tankExplosionB->getUserMatrix();
-
         userMatrix.M.rotZ(M_PI_4 + destoyedBSize * M_PI);
         userMatrix.t = xVec3(lastExplosionPos) + xVec3(0, 3.0 + destoyedPosB, 0);
+
+        tankExplosionB->setUserMatrix(userMatrix);
         tankExplosionB->Draw();
 
         current = renderer->SimpleShader;
@@ -1012,15 +1014,23 @@ void SCTank::Steer(SCRenderObj * o, float dt)
     turn_to = 0.0f;
     acc_to = 0.0f;
 
-    if ((int)reload_time == 4 && !ai) {
+    static bool played = false;
+
+    if ((int)reload_time == 4 && !ai && !played) {
         std::string filename = "missilex";
         filename[7] = '0' + rand() % 3;
 
         SCAudio::SoundID readyID = audio->loadSound("sounds/" + filename + ".wav");
         audio->playSound(readyID, Pos, 1.0f);
+        played = true;
     }
 
-    if (reload_time > 0) reload_time -= 8.0 * dt;
+    if (reload_time > 0) {
+        reload_time -= 14.0 * dt;
+    }
+    else {
+        played = false;
+    }
 
     rifle_angle = std::min(std::max(rifle_angle, -6.0f), 24.0f); //MAX VAL -12!
 }
@@ -1305,7 +1315,7 @@ void SCTank::Input()
 void SCTank::handleMineDrop()
 {
 
-    if (mines) {
+    if (mines > 0) {
 
         if (isSterable && ai) emoticon(3);
 
@@ -1330,7 +1340,7 @@ void SCTank::handleMineDrop()
 void SCTank::Shoot()
 {
     if (reload_time > 0) return;
-    reload_time = 2 * 60;
+    reload_time = 60;
 
     muzzleSize = 0.0f;
     shooted = true;

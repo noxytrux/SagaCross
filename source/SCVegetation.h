@@ -41,7 +41,8 @@ namespace sc {
 			, destroyed(false)
 			, animated(false)
 			, waterRendering(false)
-		{			
+		{
+            time = random;
 		}
 
 		~SCModel() noexcept = default;
@@ -49,7 +50,7 @@ namespace sc {
 		virtual void Reset() {
 
 			destroyed = false;
-			time = 0;
+			time = random;
 		}
 
 		virtual void Draw() {
@@ -92,11 +93,11 @@ namespace sc {
 
 		virtual void Update(float & dt) {
 
-			time = dt + random;
+			time += dt;
 			
 			if (time > 9000.0f) { 
 				
-				time = 0.0f; 
+				time = random;
 			}
 
 			mesh->setUserMatrix(matrix);
@@ -136,6 +137,46 @@ namespace sc {
 			startDestruction = false;
 		}
 
+        virtual void Draw() override {
+
+            glBindTexture(GL_TEXTURE_2D, tex);
+
+            if (destructible && destroyed) {
+
+                if (animated) {
+
+                    auto fa = std::dynamic_pointer_cast<SCFastAnimatedMesh>(destroyedMesh);
+
+                    fa->time = 0;
+                    fa->speed = 0;
+                    fa->amplitude = 0;
+                    fa->Draw();
+                }
+                else {
+
+                    destroyedMesh->Draw();
+                }
+            }
+
+            if (!finishedDestruction) {
+
+                if (animated) {
+
+                    auto fa = std::dynamic_pointer_cast<SCFastAnimatedMesh>(mesh);
+
+                    fa->time = time;
+                    fa->speed = speed;
+                    fa->amplitude = amplitude;
+                    fa->Draw();
+                }
+                else {
+
+                    mesh->Draw();
+                }
+            }
+        }
+
+
 		virtual void Update(float & dt) override {
 			
 			SCModel::Update(dt);
@@ -157,8 +198,8 @@ namespace sc {
 			}
 
 			if (startDestruction && !finishedDestruction) {
-				
-				fallingPosY += (dt * 7.0);
+
+                fallingPosY += (dt * 7.0);
 
 				treeFall.t -= xVec3(0, 0, dt * 7.0);
 
@@ -174,7 +215,9 @@ namespace sc {
 					}
 				}
 
-				mesh->setUserMatrix(matrix * treeFall * treeRotation);
+                xMat34 finalMatrix = matrix * treeFall * treeRotation;
+
+				mesh->setUserMatrix(finalMatrix);
 			}
 		}
 
@@ -267,7 +310,6 @@ namespace sc {
 	private:
 
 		xVec2 global_wind;
-		float objectsDT;
 		int animated_count;
 
 	public:
@@ -301,7 +343,6 @@ namespace sc {
 			: SCRenderObj(renderer)
 		{
 			global_wind = xVec2(3.0, 3.0);
-			objectsDT = 0.0f;
 			animated_count = 0;
 
 			std::ifstream i((path + mapname).c_str());
@@ -351,11 +392,11 @@ namespace sc {
 
 				bool updateIntoCustomQueue = false;
 
-				if (meshName == "nature_tree-sprucesummer - A") {
+				if (meshName == "nature_tree-sprucesummer-A") {
 
 					currModel = std::make_shared<SCTreeModel>();
 				}
-				else if (meshName == "object_building-rural - A") {
+				else if (meshName == "object_building-rural-A") {
 
 					currModel = std::make_shared<SCHouseModel>();
 				}
@@ -490,21 +531,14 @@ namespace sc {
 
 		virtual void Simulate(float dt) override
 		{
-			objectsDT += dt;
-
-			if (objectsDT > FLT_MAX - 1) {
-			
-				objectsDT = 0.0f;
-			}
-
 			for (const auto &model : mainModelQueue) {
 
-				model->Update(objectsDT);
+				model->Update(dt);
 			}
 
 			for (const auto &model : customModelQueue) {
 
-				model->Update(objectsDT);
+				model->Update(dt);
 			}
 		}
 	};

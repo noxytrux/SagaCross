@@ -73,7 +73,7 @@ SCSceneType SCRenderScene::Render() {
 
     RenderManager.Simulate(sec);
     Bullets->Simulate(sec);
-
+    Bonuses->Simulate(sec);
     SCVehicle::MakeCollide(Bullets);
 
     auto wsk = std::dynamic_pointer_cast<SCTank>(ai[0]->obj);
@@ -142,9 +142,9 @@ SCSceneType SCRenderScene::Render() {
     Bonuses->Draw( SCVehicle :: all );
     Bullets->Render();
 
-	/*wsk->DrawTray();
+	wsk->DrawTray();
 
-    renderer->ParticleShader->begin();
+    /*renderer->ParticleShader->begin();
 
     glDepthMask(0);
 
@@ -164,13 +164,13 @@ SCSceneType SCRenderScene::Render() {
 
     renderer->GuiShader->begin();
 
-    Bullets->DrawExplodes();
+    Bullets->DrawExplodes(); */
 
     renderer->SimpleShader->begin();
 
     Bullets->DrawClouds(sec);
 
-    renderer->GuiShader->begin();
+    /*renderer->GuiShader->begin();
 
     auto current = renderer->GuiShader;
 
@@ -308,13 +308,7 @@ SCSceneType SCRenderScene::Render() {
 
             renderer->DebugBlit((screenSize.width + (i * 32)) - 230 - 96, screenSize.height - 34, 32, 32 );
         }
-    }
-
-
-    glDisable( GL_BLEND );
-    glEnable( GL_DEPTH_TEST );
-    glDepthMask( 1 );
-    glDisable(GL_TEXTURE_2D);
+    }*/
 
     int bonus = rand() % 1500;
 
@@ -330,7 +324,7 @@ SCSceneType SCRenderScene::Render() {
         auto mineBonus = std::make_shared<SCMineBonus>(_rootPath, mapRandomPoint, ground, MeshManager);
 
         Bonuses->AddBonus(mineBonus);
-    }*/
+    }
 
     //ui
     ctx->style.window.fixed_background = nk_style_item_color(nk_rgba(0, 0, 0, 0));
@@ -615,6 +609,16 @@ void SCRenderScene::handleMouse(int button, int action, double x, double y) {
         return;
     }
 
+    if (!tank->live) {
+
+        if (button == 0 && action == 1) {
+
+            changePlayer();
+        }
+
+        return;
+    }
+
     if (button == 0 && action == 1) {
 
         Shoot();
@@ -645,7 +649,7 @@ void SCRenderScene::handleMove(const xVec2 &direction, const float angle) {
 void SCRenderScene::dropMine() {
 
     auto tank = std::dynamic_pointer_cast<SCTank>(ai[0]->obj);
-    tank->DropMine();
+    tank->handleMineDrop();
 }
 
 void SCRenderScene::Shoot() {
