@@ -96,7 +96,7 @@ namespace sc {
                 {
                     k_v3LookFromPos.y = 80 + yPosAddition;
                     v3LookFromPos += k_v3LookFromPos;
-
+			
                     xVec3 v3LookAtPos = (v3Position + k_v3fLookAtPos);
 
                     xVec3 Ray = v3LookFromPos - v3LookAtPos;
@@ -106,6 +106,8 @@ namespace sc {
                     gDir = -d;
                     gDir.normalize();
                 }
+
+				v3LookFromPos.y = std::min(v3LookFromPos.y, 200.0f);
 
                 E[0] = v3LookFromPos.x + S[0];
                 E[1] = v3LookFromPos.y + S[1];

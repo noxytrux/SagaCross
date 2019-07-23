@@ -32,16 +32,9 @@ namespace sc {
 		buff *Buffers;
 		int BuffersCount;
 
-		float ScaleX;
-		float ScaleY;
-		float ScaleZ;
-
 		SCRandomMeshPoint(const std::string &filename)
 		{
-			ScaleX = 0.05f;
-			ScaleY = 0.05f;
-			ScaleZ = 0.05f;
-
+		
 			typedef uint8_t		BYTE;
 			typedef uint16_t	WORD;
 			typedef uint32_t	DWORD;

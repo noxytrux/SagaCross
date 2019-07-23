@@ -891,6 +891,8 @@ void SCTank::DrawTray() {
 void SCTank::Steer(SCRenderObj * o, float dt)
 {
 
+	deltaTime = dt * 2.0;
+
     if (tankDie) {
 
         return;
@@ -1036,8 +1038,6 @@ void SCTank::Steer(SCRenderObj * o, float dt)
 
 void SCTank::Simulate(float dt)
 {
-
-    deltaTime = dt;
 
     if (explode > 0.0) {
 
@@ -1295,6 +1295,8 @@ void SCTank::Input()
             acc_to = -0.5 * max_speed;
         }
     }
+
+	std::cout << "ROT: " << Rot << std::endl;
 
     float desiredAngle = currAngle;
 

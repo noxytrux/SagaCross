@@ -71,27 +71,12 @@ SCSceneType SCRenderScene::Render() {
     sec = timer->getElapsedSeconds();
 	sec = clamp(sec, 0.0f, 0.33f);
 
-    accumulator += xMath::max(sec, MAX_FRAME_TIME);
-    accumulator = xMath::clamp(accumulator, (xF32)1.0, (xF32)0.0);
-
     RenderManager.Simulate(sec);
     Bullets->Simulate(sec);
+
     SCVehicle::MakeCollide(Bullets);
 
-
-//    while (accumulator >= MAX_FRAME_TIME) {
-//
-//    //    RenderManager.Simulate(MAX_FRAME_TIME);
-//        Bullets->Simulate(MAX_FRAME_TIME);
-//
-//        SCVehicle::MakeCollide(Bullets);
-//
-//        accumulator -= MAX_FRAME_TIME;
-//    }
-
-	std::shared_ptr<SCTank> wsk = nullptr;
-
-    /*auto wsk = std::dynamic_pointer_cast<SCTank>(ai[0]->obj);
+    auto wsk = std::dynamic_pointer_cast<SCTank>(ai[0]->obj);
 
     if (wsk->tankDie) Timer -= sec;
 
@@ -117,7 +102,7 @@ SCSceneType SCRenderScene::Render() {
                 wsk = std::dynamic_pointer_cast<SCTank>(ai[select]->obj);
             }
         }
-    }*/
+    }
 
     if (wsk) {
 
@@ -143,8 +128,8 @@ SCSceneType SCRenderScene::Render() {
     _renderer->Projection.setPerspective(45.0, (float)screenSize.width / (float)screenSize.height, 0.1f, 6000.0f);
 	renderer->SimpleShader->begin();
 
-    //camera->Apply();
-    camera->FreeCam(renderer->getDisplay());
+    camera->Apply();
+    //camera->FreeCam(renderer->getDisplay());
 
     auto frustum = _renderer->getFrustum();
 
@@ -525,6 +510,7 @@ void SCRenderScene::Init() {
     for (int i = 0; i < maxBotsCount; ++i) {
 
         auto rnd = mapRandomPoint->GetRandomPoint();
+
         auto info = i == 0 ? json::object() : botsInfo[botsNames[i-1]];
 
         auto tank = std::make_shared<SCTank>(info,
@@ -651,6 +637,8 @@ void SCRenderScene::handleMove(const xVec2 &direction, const float angle) {
     if (!tank->live) {
         return;
     }
+
+	std::cout << "Angle" << angle;
 
     tank->Velocity = direction;
     tank->currAngle = angle;
