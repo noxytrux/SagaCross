@@ -193,6 +193,9 @@ namespace sc {
 
 		class SCExplode final {
 
+            GLuint expVAO;
+            GLuint expVBO;
+
 		public:
 			GLuint  texture;
 			GLuint  textureExp;
@@ -218,17 +221,45 @@ namespace sc {
 				explosionFirst = meshInstance->GetMesh("models/fx_ground-explosion-b", path, SCMeshTypeNormal); 
 				explosionSecond = meshInstance->GetMesh("models/fx_explosion-spherical-c", path, SCMeshTypeNormal); 
 
+                glGenVertexArrays(1, &expVAO);
+                glBindVertexArray(expVAO);
+                glGenBuffers(1, &expVBO);
+                glBindBuffer(GL_ARRAY_BUFFER, expVBO);
+
+                const int S = 6;
+
+                float squareVertices[] = {
+                    -S, 0,  S, 1, 1,
+                     S, 0,  S, 0, 1,
+                    -S, 0, -S, 1, 0,
+                     S, 0, -S, 0, 0
+                };
+
+                glBufferData(GL_ARRAY_BUFFER, 4 * 5 * sizeof(float), squareVertices, GL_STATIC_DRAW);
+
+                glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 5 * sizeof(float), (void*)(0 * sizeof(GLfloat)));
+                glEnableVertexAttribArray(ATTRIB_VERTEX);
+                glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 5 * sizeof(float), (void*)(3 * sizeof(GLfloat)));
+                glEnableVertexAttribArray(ATTRIB_COORDS);
 			}
 
-			~SCExplode() noexcept = default;
+            ~SCExplode() noexcept {
+
+                glDeleteBuffers(1, &expVBO);
+                glDeleteVertexArrays(1, &expVAO);
+            }
 
 			bool Draw()
 			{
 				auto renderer = explosionFirst->getRenderer();
 				auto current = renderer->GuiShader;
+                const float offset = 0.55f;
+
+                glMatrix4x4 mv; mv.set(renderer->ModelView.getMatrix());
+                mv.translate(Pos[0], Pos[1] + offset, Pos[2]);
 
 				glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, renderer->Projection.getMatrix());
-				glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, renderer->ModelView.getMatrix());
+				glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv.getMatrix());
 
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, texture);
@@ -238,27 +269,8 @@ namespace sc {
 				float color[4] = { 1.0f, 1.0f, 1.0f, alpha };
 				glUniform4fv(current->uniforms[UNI_TEX1], 1, color);
 
-				const int S = 6;
-
-				float squareVertices[] = {
-					-S + Pos[0], Pos[1] + 0.5f,  S + Pos[2],
-					 S + Pos[0], Pos[1] + 0.5f,  S + Pos[2],
-					-S + Pos[0], Pos[1] + 0.5f, -S + Pos[2],
-					 S + Pos[0], Pos[1] + 0.5f, -S + Pos[2]
-				};
-
-				static float textureVertices[] = {
-					1, 1,
-					0, 1,
-					1, 0,
-					0, 0
-				};
-
-				glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 0, squareVertices);
-				glEnableVertexAttribArray(ATTRIB_VERTEX);
-				glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 0, textureVertices);
-				glEnableVertexAttribArray(ATTRIB_COORDS);
-				glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+                glBindVertexArray(expVAO);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 				return Time > 100;
 			}

@@ -87,7 +87,7 @@ namespace sc {
 
 			color[3] = 1.0 - fast_absf(k * 2.0 - 1.0); 
 
-			float c[4] = { color[0] * color[3], color[1] * color[3], color[2] * color[3], color[3] };
+			float c[4] = { color[0], color[1], color[2], color[3] };
 			float r[3] = { sinf(angle), cosf(angle), (1.0f - k) };
 
 			memcpy(pSparcleVertex, Pos, 12); pSparcleVertex += 3;
@@ -103,6 +103,11 @@ namespace sc {
 	};
 
 	class SCSparclesManager final {
+
+    private:
+
+        GLuint spVAO;
+        GLuint vVBO;
 
 	public:
 
@@ -132,14 +137,29 @@ namespace sc {
 			pSparcleRotation = SparcleRotation;
 		}
 
+        ~SCSparclesManager() noexcept {
+
+        }
+
+        void Init() {
+
+            glGenVertexArrays(1, &spVAO);
+            glBindVertexArray(spVAO);
+
+            glGenBuffers(1, &vVBO);
+            glBindBuffer(GL_ARRAY_BUFFER, vVBO);
+        }
+
 		void Clear() {
 
 			S.clear();
+
+            glDeleteBuffers(1, &vVBO);
+            glDeleteVertexArrays(1, &spVAO);
 		}
 
 		void Add(float x, float y, float z, float vx, float vy, float vz, int num, GLubyte r, GLubyte g, GLubyte b, float MaxTime = 4 + rand() % 10 * 0.2f)
 		{
-
 			SCSparcle s(ground, rotated);
 
 			s.Pos[0] = x;
@@ -162,17 +182,6 @@ namespace sc {
 
 				S.push_back(s);
 			}
-
-		}
-
-		static void Start() {
-
-			glDisable(GL_TEXTURE_2D);
-		}
-
-		static void End() {
-
-			glEnable(GL_TEXTURE_2D);
 		}
 
 		void Render(float dt)
@@ -206,17 +215,28 @@ namespace sc {
 
 			glUniform3f(current->uniforms[UNI_TEX2], p_size_min, p_size_max, p_size_decrase);
 
-			glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 0, SparcleVertex);
-			glEnableVertexAttribArray(ATTRIB_VERTEX);
-			glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, 0, 0, SparcleColor);
-			glEnableVertexAttribArray(ATTRIB_COLOR);
-			glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, 0, 0, SparcleRotation);
-			glEnableVertexAttribArray(ATTRIB_NORMAL);
+            glBindVertexArray(spVAO);
+            glBindBuffer(GL_ARRAY_BUFFER, vVBO);
+            glBufferData(GL_ARRAY_BUFFER, 10 * S.size() * sizeof(GLfloat), nullptr, GL_DYNAMIC_DRAW);
+            glBufferSubData(GL_ARRAY_BUFFER, 0                             , S.size() * 3 * sizeof(GLfloat), SparcleVertex);
+            glBufferSubData(GL_ARRAY_BUFFER, S.size() * 3 * sizeof(GLfloat), S.size() * 4 * sizeof(GLfloat), SparcleColor);
+            glBufferSubData(GL_ARRAY_BUFFER, S.size() * 7 * sizeof(GLfloat), S.size() * 3 * sizeof(GLfloat), SparcleRotation);
+
+            glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+            glVertexAttribPointer(ATTRIB_COLOR,  4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(S.size() * 3 * sizeof(GLfloat)));
+            glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)(S.size() * 7 * sizeof(GLfloat)));
+
+            glEnableVertexAttribArray(ATTRIB_VERTEX);
+            glEnableVertexAttribArray(ATTRIB_COLOR);
+            glEnableVertexAttribArray(ATTRIB_NORMAL);
 
             glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(S.size()));
 
+            glDisableVertexAttribArray(ATTRIB_VERTEX);
+            glDisableVertexAttribArray(ATTRIB_COLOR);
+            glDisableVertexAttribArray(ATTRIB_NORMAL);
+
 			glDisable(GL_BLEND);
-			glLineWidth(1.0f);
 		}
 	};
 

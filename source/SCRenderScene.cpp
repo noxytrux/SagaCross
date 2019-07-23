@@ -144,7 +144,7 @@ SCSceneType SCRenderScene::Render() {
 
 	wsk->DrawTray();
 
-    /*renderer->ParticleShader->begin();
+    renderer->ParticleShader->begin();
 
     glDepthMask(0);
 
@@ -164,7 +164,7 @@ SCSceneType SCRenderScene::Render() {
 
     renderer->GuiShader->begin();
 
-    Bullets->DrawExplodes(); */
+    Bullets->DrawExplodes();
 
     renderer->SimpleShader->begin();
 
@@ -432,24 +432,28 @@ void SCRenderScene::Init() {
     _audio->loadSound("sounds/no_mine.wav");
     SCAudio::SoundID ready = _audio->loadSound("sounds/ready0.wav");
 
+    Sparcles.Init();
     Sparcles.texture = textureLoader.loadFile(_rootPath + "textures/particle0.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     Sparcles.p_size_min = 20;
     Sparcles.p_size_max = 20;
     Sparcles.ground = ground;
     Sparcles.renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
 
+    ParticleSmoke.Init();
     ParticleSmoke.texture = textureLoader.loadFile(_rootPath + "textures/particle1.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     ParticleSmoke.p_size_min = 40;
     ParticleSmoke.p_size_max = 60;
     ParticleSmoke.ground = ground;
     ParticleSmoke.renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
 
+    LightSparcles.Init();
     LightSparcles.texture = textureLoader.loadFile(_rootPath + "textures/particle2.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     LightSparcles.p_size_min = 12;
     LightSparcles.p_size_max = 14;
     LightSparcles.ground = ground;
     LightSparcles.renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
 
+    TankSmoke.Init();
     TankSmoke.texture = textureLoader.loadFile(_rootPath + "textures/fx_dust-cloud-01.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     TankSmoke.p_size_min = 15;
     TankSmoke.p_size_max = 150;
@@ -457,6 +461,7 @@ void SCRenderScene::Init() {
     TankSmoke.ground = ground;
     TankSmoke.renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
 
+    TankSmokeWater.Init();
     TankSmokeWater.texture = textureLoader.loadFile(_rootPath + "textures/fx_water-splash-01.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     TankSmokeWater.p_size_min = 15;
     TankSmokeWater.p_size_max = 150;
@@ -465,6 +470,7 @@ void SCRenderScene::Init() {
     TankSmokeWater.ground = ground;
     TankSmokeWater.renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
 
+    TankSmokeGrass.Init();
     TankSmokeGrass.texture = textureLoader.loadFile(_rootPath + "textures/fx_grass-particles-01.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     TankSmokeGrass.p_size_min = 60;
     TankSmokeGrass.p_size_max = 60;
@@ -473,12 +479,14 @@ void SCRenderScene::Init() {
     TankSmokeGrass.ground = ground;
     TankSmokeGrass.renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
 
+    TreeParticles.Init();
     TreeParticles.texture = textureLoader.loadFile(_rootPath + "textures/fx_tree-debris-01.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     TreeParticles.p_size_min = 30;
     TreeParticles.p_size_max = 40;
     TreeParticles.ground = ground;
     TreeParticles.renderer = std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer);
 
+    HouseParticles.Init();
     HouseParticles.texture = textureLoader.loadFile(_rootPath + "textures/fx_debris-brics-01.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     HouseParticles.p_size_min = 110;
     HouseParticles.p_size_max = 130;
