@@ -121,7 +121,7 @@ namespace sc {
 		float p_size_max;
 		float p_size_decrase;
 		bool rotated;
-
+	
 		GLuint texture;
 
 		SCSparclesManager(int t = 255, float g = -10, int s = 3, float w1 = 0, float w2 = 0, float w3 = 0)
@@ -160,6 +160,12 @@ namespace sc {
 
 		void Add(float x, float y, float z, float vx, float vy, float vz, int num, GLubyte r, GLubyte g, GLubyte b, float MaxTime = 4 + rand() % 10 * 0.2f)
 		{
+
+			//CPU limit fix (this may be even smaller on mobile)
+			if (S.size() > 400) {
+				return;
+			}
+	
 			SCSparcle s(ground, rotated);
 
 			s.Pos[0] = x;
@@ -170,7 +176,7 @@ namespace sc {
 
 			s.MaxTime = MaxTime;
 
-			for (int i = 0; i < num; ++i) 
+			for (int i = 0; i < num; ++i)
 			{
 				s.color[0] = (float)r / 255.0f; 
 				s.color[1] = (float)g / 255.0f; 
@@ -217,7 +223,7 @@ namespace sc {
 
             glBindVertexArray(spVAO);
             glBindBuffer(GL_ARRAY_BUFFER, vVBO);
-            glBufferData(GL_ARRAY_BUFFER, 10 * S.size() * sizeof(GLfloat), nullptr, GL_DYNAMIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, 10 * S.size() * sizeof(GLfloat), nullptr, GL_STATIC_DRAW);
             glBufferSubData(GL_ARRAY_BUFFER, 0                             , S.size() * 3 * sizeof(GLfloat), SparcleVertex);
             glBufferSubData(GL_ARRAY_BUFFER, S.size() * 3 * sizeof(GLfloat), S.size() * 4 * sizeof(GLfloat), SparcleColor);
             glBufferSubData(GL_ARRAY_BUFFER, S.size() * 7 * sizeof(GLfloat), S.size() * 3 * sizeof(GLfloat), SparcleRotation);
@@ -231,10 +237,6 @@ namespace sc {
             glEnableVertexAttribArray(ATTRIB_NORMAL);
 
             glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(S.size()));
-
-            glDisableVertexAttribArray(ATTRIB_VERTEX);
-            glDisableVertexAttribArray(ATTRIB_COLOR);
-            glDisableVertexAttribArray(ATTRIB_NORMAL);
 
 			glDisable(GL_BLEND);
 		}

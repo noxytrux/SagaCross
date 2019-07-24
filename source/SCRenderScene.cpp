@@ -139,7 +139,7 @@ SCSceneType SCRenderScene::Render() {
     frustum->calculateFrustum();
 
     RenderManager.Render();
-    Bonuses->Draw( SCVehicle :: all );
+    Bonuses->Draw(SCVehicle::all);
     Bullets->Render();
 
 	wsk->DrawTray();
@@ -151,7 +151,7 @@ SCSceneType SCRenderScene::Render() {
     Sparcles.Render(sec);
     ParticleSmoke.Render(sec);
     TankSmoke.Render(sec);
-    TankSmokeWater.Render(sec);
+    TankSmokeWater.Render(sec); 
     TankSmokeGrass.Render(sec);
     TreeParticles.Render(sec);
     HouseParticles.Render(sec);
