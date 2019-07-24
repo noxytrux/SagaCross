@@ -35,13 +35,15 @@ namespace sc {
 		void RectFill(float x1, float y1, float x2, float y2, int r, int g, int b, int a);
 		void RectFillGradient(int x1, int y1, int x2, int y2, int r1, int g1, int b1, float a, int r2, int g2, int b2, float a2);
 		void RectFillGradientH(int x1, int y1, int x2, int y2, int r1, int g1, int b1, float a, int r2, int g2, int b2, float a2);
-		void DrawBox(float x1, float y1, float z1, float x2, float y2, float z2, xMat34 & UserMatrix);
 	
 	private:
 
 		struct nk_font_atlas *_atlas;
 		struct nk_font *_orbitron30 = nullptr;
 		struct nk_font *_orbitron15 = nullptr;
+
+		GLuint guiVAO;
+		GLuint guiVBO;
 	};
 }
 

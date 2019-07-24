@@ -128,8 +128,8 @@ SCSceneType SCRenderScene::Render() {
     _renderer->Projection.setPerspective(45.0, (float)screenSize.width / (float)screenSize.height, 0.1f, 6000.0f);
 	renderer->SimpleShader->begin();
 
-    //camera->Apply();
-    camera->FreeCam(renderer->getDisplay());
+    camera->Apply();
+    //camera->FreeCam(renderer->getDisplay());
 
     auto frustum = _renderer->getFrustum();
 
@@ -144,7 +144,7 @@ SCSceneType SCRenderScene::Render() {
 
 	wsk->DrawTray();
 
-   /* renderer->ParticleShader->begin();
+    renderer->ParticleShader->begin();
 
     glDepthMask(0);
 
@@ -160,7 +160,7 @@ SCSceneType SCRenderScene::Render() {
     LightSparcles.Render(sec);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glDepthMask(1);*/
+    glDepthMask(1);
 
     renderer->GuiShader->begin();
 
@@ -170,14 +170,13 @@ SCSceneType SCRenderScene::Render() {
 
     Bullets->DrawClouds(sec);
 
-    /*renderer->GuiShader->begin();
+    renderer->GuiShader->begin();
 
     auto current = renderer->GuiShader;
 
     glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     glDepthMask(0);
-    glEnable(GL_TEXTURE_2D);
 
     for (const auto &v : SCVehicle::all) {
 
@@ -271,6 +270,7 @@ SCSceneType SCRenderScene::Render() {
                 if (!loseSound) {
 
                     loseSound = true;
+					showLooserImage = true;
 
                     _audio->pauseMusic();
                     _audio->loadMusic("music/lose.mp3");
@@ -293,6 +293,7 @@ SCSceneType SCRenderScene::Render() {
                 if (!playerWinGame) {
 
                     playerWinGame = true;
+					showWinImage = true;
 
                     _audio->pauseMusic();
                     _audio->loadMusic("music/win.mp3");
@@ -308,7 +309,9 @@ SCSceneType SCRenderScene::Render() {
 
             renderer->DebugBlit((screenSize.width + (i * 32)) - 230 - 96, screenSize.height - 34, 32, 32 );
         }
-    }*/
+    }
+
+	glDepthMask(1);
 
     int bonus = rand() % 1500;
 

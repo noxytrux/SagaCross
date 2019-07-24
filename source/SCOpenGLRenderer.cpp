@@ -32,11 +32,18 @@ SCOpenGLRenderable::SCOpenGLRenderable(const std::shared_ptr<SCDisplay> &display
 	glActiveTexture(GL_TEXTURE0);
 
 #ifdef MOBILE 
+	glEnable(GL_POINT_SPRITE);
 	auto shaderPath = path + "shaders/";
 #else 
+	glEnable(GL_PROGRAM_POINT_SIZE);
 	auto shaderPath = path + "shaders/desktop/";
 #endif
     
+	glGenVertexArrays(1, &guiVAO);
+	glBindVertexArray(guiVAO);
+	glGenBuffers(1, &guiVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, guiVBO);
+
 	//==================================================================
 
 	ParticleShader = std::make_shared<GLShader>();
@@ -154,11 +161,17 @@ SCOpenGLRenderable::SCOpenGLRenderable(const std::shared_ptr<SCDisplay> &display
 	WaterShader->uniforms[UNI_TEX1] = WaterShader->uniformLocation("texWaterCaustics");
 	WaterShader->uniforms[UNI_TEX2] = WaterShader->uniformLocation("texWaterCausticsSecond");
 	WaterShader->uniforms[UNI_TEX3] = WaterShader->uniformLocation("time");
+
+	glBindVertexArray(0);
 }
 
 SCOpenGLRenderable::~SCOpenGLRenderable() noexcept
 {
 	nk_glfw3_shutdown();
+
+	glDeleteBuffers(1, &guiVBO);
+	glDeleteVertexArrays(1, &guiVAO);
+
 	glUseProgram(0);
 	glBindVertexArray(0);
 }
@@ -247,23 +260,21 @@ void SCOpenGLRenderable::DebugBlit(float x1, float y1, float rx, float ry, float
 	glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, modelOrtho.getMatrix());
 
 	float squareVertices[] = {
-		x1    , y1 + ry, 0,
-		x1 + rx , y1 + ry, 0,
-		x1    , y1, 0,
-		x1 + rx , y1, 0,
+		x1      , y1 + ry, 0, 0.0f, 1.0f,
+		x1 + rx , y1 + ry, 0, resX, 1.0f,
+		x1      , y1     , 0, 0.0f, 1.0f - resY,
+		x1 + rx , y1     , 0, resX, 1.0f - resY
 	};
 
-	float textureVertices[] = {
-		0, 1.0f,
-		resX,  1.0f,
-		0, 1.0f - resY,
-		resX, 1.0f - resY,
-	};
+	glBindVertexArray(guiVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, guiVBO);
+	glBufferData(GL_ARRAY_BUFFER, 4 * 5 * sizeof(float), squareVertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 0, squareVertices);
+	glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 5 * sizeof(float), (void*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(ATTRIB_VERTEX);
-	glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 0, textureVertices);
+	glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 5 * sizeof(float), (void*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(ATTRIB_COORDS);
+
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 }
@@ -292,25 +303,22 @@ void SCOpenGLRenderable::RectFill(float x1, float y1, float x2, float y2, int r,
 	glUniform1i(current->uniforms[UNI_TEX0], 0);
 
 	float squareVertices[] = {
-		x1 - 0.375f , y2 - 0.375f, 0,
-		x2 - 0.375f , y2 - 0.375f, 0,
-		x1 - 0.375f , y1 - 0.375f, 0,
-		x2 - 0.375f , y1 - 0.375f, 0,
+		x1 - 0.375f , y2 - 0.375f, 0, 1, 1,
+		x2 - 0.375f , y2 - 0.375f, 0, 0, 1,
+		x1 - 0.375f , y1 - 0.375f, 0, 1, 0,
+		x2 - 0.375f , y1 - 0.375f, 0, 0, 0
 	};
 
-	float textureVertices[] = {
-		1 , 1,
-		0 , 1,
-		1 , 0,
-		0 , 0
-	};
+	glBindVertexArray(guiVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, guiVBO);
+	glBufferData(GL_ARRAY_BUFFER, 4 * 5 * sizeof(float), squareVertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 0, squareVertices);
+	glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 5 * sizeof(float), (void*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(ATTRIB_VERTEX);
-	glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 0, textureVertices);
+	glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 5 * sizeof(float), (void*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(ATTRIB_COORDS);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 void SCOpenGLRenderable::RectFillGradient(int x1, int y1, int x2, int y2, int r1, int g1, int b1, float a, int r2, int g2, int b2, float a2)
@@ -334,27 +342,23 @@ void SCOpenGLRenderable::RectFillGradient(int x1, int y1, int x2, int y2, int r1
 	glBindTexture(GL_TEXTURE_2D, blank);
 	glUniform1i(current->uniforms[UNI_TEX0], 0);
 
-
 	float squareVertices[] = {
-		x1 - 0.375f , y2 - 0.375f, 0,
-		x2 - 0.375f , y2 - 0.375f, 0,
-		x1 - 0.375f , y1 - 0.375f, 0,
-		x2 - 0.375f , y1 - 0.375f, 0,
+		x1 - 0.375f , y2 - 0.375f, 0, 1, 1,
+		x2 - 0.375f , y2 - 0.375f, 0, 0, 1,
+		x1 - 0.375f , y1 - 0.375f, 0, 1, 0,
+		x2 - 0.375f , y1 - 0.375f, 0, 0, 0
 	};
 
-	float textureVertices[] = {
-		1 , 1,
-		0 , 1,
-		1 , 0,
-		0 , 0,
-	};
+	glBindVertexArray(guiVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, guiVBO);
+	glBufferData(GL_ARRAY_BUFFER, 4 * 5 * sizeof(float), squareVertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 0, squareVertices);
+	glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 5 * sizeof(float), (void*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(ATTRIB_VERTEX);
-	glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 0, textureVertices);
+	glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 5 * sizeof(float), (void*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(ATTRIB_COORDS);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 void SCOpenGLRenderable::RectFillGradientH(int x1, int y1, int x2, int y2, int r1, int g1, int b1, float a, int r2, int g2, int b2, float a2)
@@ -375,152 +379,22 @@ void SCOpenGLRenderable::RectFillGradientH(int x1, int y1, int x2, int y2, int r
 	glUniform4fv(current->uniforms[UNI_TEX1], 1, color);
 
 	float squareVertices[] = {
-		x1 - 0.375f , y1 - 0.375f, 0,
-		x1 - 0.375f , y2 - 0.375f, 0,
-		x2 - 0.375f , y1 - 0.375f, 0,
-		x2 - 0.375f , y2 - 0.375f, 0,
+		x1 - 0.375f , y1 - 0.375f, 0, 1, 1,
+		x1 - 0.375f , y2 - 0.375f, 0, 0, 1,
+		x2 - 0.375f , y1 - 0.375f, 0, 1, 0,
+		x2 - 0.375f , y2 - 0.375f, 0, 0, 0
 
 	};
 
-	float textureVertices[] = {
-		1 , 1,
-		0 , 1,
-		1 , 0,
-		0 , 0
-	};
+	glBindVertexArray(guiVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, guiVBO);
+	glBufferData(GL_ARRAY_BUFFER, 4 * 5 * sizeof(float), squareVertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 0, squareVertices);
+	glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 5 * sizeof(float), (void*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(ATTRIB_VERTEX);
-	glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 0, textureVertices);
+	glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 5 * sizeof(float), (void*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(ATTRIB_COORDS);
+
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-}
-
-void SCOpenGLRenderable::DrawBox(float x1, float y1, float z1, float x2, float y2, float z2, xMat34 &UserMatrix)
-{
-	auto current = SimpleShader;
-
-	float mv[16];
-    float user[16];
-
-    UserMatrix.getColumnMajor44(user);
-    ModelView.multiply(mv, ModelView.getMatrix(), user);
-
-	glUniformMatrix4fv(current->uniforms[UNI_PROJECTION_MAT], 1, false, Projection.getMatrix());
-	glUniformMatrix4fv(current->uniforms[UNI_MODELVIEW_WORLD_MAT], 1, false, mv);
-
-	float squareVertices[] = {
-		x1 , y1 , z1,//dol
-		x2 , y1 , z1,//
-		x1 , y1 , z2,//
-		x2 , y1 , z2,//
-
-		x1 , y2 , z2,//gora
-		x2 , y2 , z2,//
-		x1 , y2 , z1,//
-		x2 , y2 , z1,//
-
-		x1 , y1 , z1,//prawa
-		x2 , y1 , z1,//
-		x1 , y2 , z1,//
-		x2 , y2 , z1,//
-
-		x1 , y1 , z1,//przod
-		x1 , y1 , z2,//
-		x1 , y2 , z1,//
-		x1 , y2 , z2,//
-
-		x1 , y1 , z2,//lewa
-		x2 , y1 , z2,//
-		x1 , y2 , z2,//
-		x2 , y2 , z2,//
-
-		x2 , y2 , z1,//
-		x2 , y1 , z1,//tyl
-		x2 , y1 , z2,//
-		x2 , y2 , z2,//
-
-		x1 , y1 , z1,//dol
-		x2 , y1 , z1,//
-
-	};
-
-	static float textureVertices[] = {
-		1 , 1,
-		0 , 1,
-		1 , 0,
-		0 , 0,
-
-		1 , 1,
-		0 , 1,
-		1 , 0,
-		0 , 0,
-
-		1 , 1,
-		0 , 1,
-		0 , 0,
-		1 , 0,
-
-		1 , 1,
-		0 , 1,
-		0 , 0,
-		1 , 0,
-
-		1 , 1,
-		0 , 1,
-		0 , 0,
-		1 , 0,
-
-		1 , 1,
-		0 , 1,
-		0 , 0,
-		1 , 0,
-
-		1 , 1,
-		0 , 1,
-	};
-
-	static float squareNormals[] = {
-		0 ,  1 , -1,
-		0 ,  1 , -1,
-		0 ,  1 ,  1,
-		0 ,  1 ,  1,
-
-		0 , -1 ,  1,
-		0 , -1 ,  1,
-		0 , -1 , -1,
-		0 , -1 , -1,
-
-		0 ,  1 , -1,
-		0 ,  1 , -1,
-		0 ,  1 , -1,
-		0 ,  1 , -1,
-
-		-1 , 0 , 1,
-		-1 , 0 , 1,
-		-1 , 0 , 1,
-		-1 , 0 , 1,
-
-		1 , 0 , 0,
-		1 , 0 , 0,
-		1 , 0 , 0,
-		1 , 0 , 0,
-
-		0 ,  -1 , 0,
-		0 ,  -1 , 0,
-		0 ,  -1 , 0,
-		0 ,  -1 , 0,
-
-		0 ,  1 , -1,
-		0 ,  1 , -1,
-	};
-
-	glVertexAttribPointer(ATTRIB_VERTEX, 3, GL_FLOAT, 0, 0, squareVertices);
-	glEnableVertexAttribArray(ATTRIB_VERTEX);
-	glVertexAttribPointer(ATTRIB_COORDS, 2, GL_FLOAT, 0, 0, textureVertices);
-	glEnableVertexAttribArray(ATTRIB_COORDS);
-	glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, 0, 0, squareNormals);
-	glEnableVertexAttribArray(ATTRIB_NORMAL);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 26);
 }
