@@ -10,6 +10,8 @@
 
 #include <time.h>
 
+using namespace sc;
+
 void AndroidTimer::update() {
 
     timespec lTimeVal;
