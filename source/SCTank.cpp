@@ -265,7 +265,7 @@ void SCTank::ResetTank() {
     reload_time = 0;
     turn_to = 0;
 
-    bullet_speed = 100.0;
+    bullet_speed = 200.0;
     mines = 3;
     pyr_sound = 0;
     hit = 0.0f;
@@ -1026,7 +1026,7 @@ void SCTank::Steer(SCRenderObj * o, float dt)
     }
 
     if (reload_time > 0) {
-        reload_time -= 14.0 * dt;
+        reload_time -= 25.0 * dt;
     }
     else {
         played = false;
