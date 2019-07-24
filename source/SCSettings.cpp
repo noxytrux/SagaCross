@@ -39,6 +39,13 @@ bool SCSettings::load()
 
 	m_file.close();
 
+	#ifdef __EMSCRIPTEN__
+
+	_settings.width = 1280;
+	_settings.height = 720;
+
+	#endif
+
 	return true;
 }
 

@@ -26,6 +26,9 @@ namespace sc {
 
 		const std::string getResourcePath();
 
+	#ifdef __EMSCRIPTEN__
+	public:
+	#endif
 		void renderFrame();
 		
 	private:

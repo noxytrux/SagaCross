@@ -12,6 +12,8 @@ static void error_callback(int e, const char *d) {
 	std::cout << "Error " << e << ": " << d << std::endl;
 }
 
+#ifndef __EMSCRIPTEN__
+
 #ifdef _WIN32
 void __stdcall DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
 #else
@@ -95,6 +97,7 @@ void DisableOpenGLErrorCallback()
 	}
 }
 
+#endif
 
 SCGLFWDisplay::SCGLFWDisplay(const uint32_t width, const uint32_t height, const bool fullscreen) 
 	: SCDisplay(width, height, fullscreen)
@@ -104,7 +107,10 @@ SCGLFWDisplay::SCGLFWDisplay(const uint32_t width, const uint32_t height, const 
 
 SCGLFWDisplay::~SCGLFWDisplay() noexcept
 { 
+	#ifndef __EMSCRIPTEN__
 	DisableOpenGLErrorCallback();
+	#endif
+
 	glfwDestroyWindow(_win);
 	glfwTerminate();
 }
@@ -146,6 +152,7 @@ void SCGLFWDisplay::makeWindow()
 
 	glfwMakeContextCurrent(_win);
 
+#ifndef __EMSCRIPTEN__
 #ifndef _RPI_
 	glewExperimental = GL_TRUE;
 
@@ -157,14 +164,17 @@ void SCGLFWDisplay::makeWindow()
 #else
 	eglBuildVertexArray();
 #endif // _RPI_
+#endif
 
 #if defined(_DEBUG) || defined(DEBUG)
 
     if (!glfwExtensionSupported("GL_ARB_debug_output")) {
         std::cout << "[ERROR] Could not enable OpenGL debugging" << std::endl;
     }
-
+    
+    #ifndef __EMSCRIPTEN__
 	EnableOpenGLErrorCallback();
+	#endif
 
 #endif
 

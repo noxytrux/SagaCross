@@ -5,6 +5,9 @@
 
 #ifdef __EMSCRIPTEN__
 
+    #include <GL/gl.h>
+    #include <GL/glu.h>
+
     #define GL_GLEXT_PROTOTYPES
     #include <GLES/gl.h>
     #include <GLES2/gl2.h>
@@ -12,7 +15,7 @@
     #define GLFW_INCLUDE_ES2
     #include <GLFW/glfw3.h>
     #include <emscripten/emscripten.h>
-
+    
     #define glBindVertexArray glBindVertexArrayOES
     #define glGenVertexArrays glGenVertexArraysOES
     #define glDeleteVertexArrays glDeleteVertexArraysOES

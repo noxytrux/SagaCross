@@ -5,22 +5,46 @@
 
 using namespace sc;
 
+#ifdef __EMSCRIPTEN__
+void RenderLoopCallback(void* arg)
+{
+  static_cast<SCApplication*>(arg)->renderFrame();
+}
+#endif
+
 static std::shared_ptr<SCDisplay> makeDisplay(const std::shared_ptr<SCSettings> &settings)
 {
-#ifdef MOBILE
+#ifdef __EMSCRIPTEN__
+
+	return std::make_shared<SCGLFWDisplay>(settings->getWidht(), settings->getHeight(), settings->isFullScreen());
 
 #else 
-	return std::make_shared<SCGLFWDisplay>(settings->getWidht(), settings->getHeight(), settings->isFullScreen());
-#endif 
+
+	#ifdef MOBILE
+
+	#else 
+		return std::make_shared<SCGLFWDisplay>(settings->getWidht(), settings->getHeight(), settings->isFullScreen());
+	#endif 
+
+#endif
 }
 
 static std::shared_ptr<SCInputInteface> makeInput(const std::shared_ptr<SCDisplay> &display)
 {
-#ifdef MOBILE
+
+#ifdef __EMSCRIPTEN__
+
+	return std::make_shared<SCGLFWInput>(display->getContext());
 
 #else 
-	return std::make_shared<SCGLFWInput>(display->getContext());
-#endif 
+
+	#ifdef MOBILE
+
+	#else 
+		return std::make_shared<SCGLFWInput>(display->getContext());
+	#endif 
+
+#endif
 }
 
 SCApplication::SCApplication() 
@@ -158,6 +182,9 @@ void SCApplication::renderFrame()
 	_renderer->endDrawing();
 }
 
+#ifdef __EMSCRIPTEN__
+EMSCRIPTEN_KEEPALIVE
+#endif
 int SCApplication::run() 
 {
 	auto ctx = _renderer->getUIContext();
@@ -185,7 +212,7 @@ int SCApplication::run()
 	};
 
 #ifdef __EMSCRIPTEN__
-	emscripten_set_main_loop(renderFrame, 0, 1);
+	emscripten_set_main_loop_arg(RenderLoopCallback, this, 0, 1);
 #else
 	auto display = _renderer->getDisplay();
 
