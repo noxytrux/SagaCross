@@ -128,15 +128,15 @@ SCSceneType SCRenderScene::Render() {
     _renderer->Projection.setPerspective(45.0, (float)screenSize.width / (float)screenSize.height, 0.1f, 6000.0f);
 	renderer->SimpleShader->begin();
 
-    camera->Apply();
-    //camera->FreeCam(renderer->getDisplay());
+    //camera->Apply();
+    camera->FreeCam(renderer->getDisplay());
 
     auto frustum = _renderer->getFrustum();
 
-	frustum.modelview = _renderer->ModelView.getMatrix();
-	frustum.projection = _renderer->Projection.getMatrix();
+	frustum->modelview = _renderer->ModelView.getMatrix();
+	frustum->projection = _renderer->Projection.getMatrix();
 
-    frustum.calculateFrustum();
+    frustum->calculateFrustum();
 
     RenderManager.Render();
     Bonuses->Draw( SCVehicle :: all );
@@ -144,7 +144,7 @@ SCSceneType SCRenderScene::Render() {
 
 	wsk->DrawTray();
 
-    renderer->ParticleShader->begin();
+   /* renderer->ParticleShader->begin();
 
     glDepthMask(0);
 
@@ -160,7 +160,7 @@ SCSceneType SCRenderScene::Render() {
     LightSparcles.Render(sec);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glDepthMask(1);
+    glDepthMask(1);*/
 
     renderer->GuiShader->begin();
 

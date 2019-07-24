@@ -50,10 +50,10 @@ SCSceneType SCDebugScene::Render() {
 
     auto frustum = _renderer->getFrustum();
     
-    frustum.modelview = _renderer->ModelView.getMatrix();
-    frustum.projection = _renderer->Projection.getMatrix();
+    frustum->modelview = _renderer->ModelView.getMatrix();
+    frustum->projection = _renderer->Projection.getMatrix();
 
-    frustum.calculateFrustum();
+    frustum->calculateFrustum();
 
     auto current = renderer->SimpleShader;
     current->begin();

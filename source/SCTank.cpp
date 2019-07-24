@@ -568,7 +568,7 @@ void SCTank::Render()
     chasis->setUserMatrix(outputMatrix);
     chasis->Draw();
 
-    render_info = renderer->getFrustum().SphereInFrustum(Pos[0], Pos[1], Pos[2], chasis->getAABBRay() * std::max(chasis->getScaleX(), std::max(chasis->getScaleY(), chasis->getScaleZ())));
+    render_info = renderer->getFrustum()->SphereInFrustum(Pos[0], Pos[1], Pos[2], chasis->getAABBRay() * std::max(chasis->getScaleX(), std::max(chasis->getScaleY(), chasis->getScaleZ())));
 
     xMat34 turretMatrixMain;
     xMat33 turretMat;

@@ -38,7 +38,7 @@ namespace sc {
 
 		const std::shared_ptr<SCDisplay> &getDisplay() const { return _display; }
 		const std::shared_ptr<SCSettings> &getSettings() const { return _settings; }
-		const SCFrustum& getFrustum() const { return _frustum; }
+		SCFrustum* getFrustum() { return &_frustum; }
 
 		struct nk_context *getUIContext() const { return _ctx; }
 

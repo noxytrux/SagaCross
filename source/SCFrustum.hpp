@@ -31,10 +31,7 @@ namespace sc {
 		void normPlane(float plane[4], float result[4])
 		{
 
-			double mag = sqrt((plane[0] * plane[0]) +
-				(plane[1] * plane[1]) +
-				(plane[2] * plane[2]));
-
+			double mag = sqrt((plane[0] * plane[0]) + (plane[1] * plane[1]) + (plane[2] * plane[2]));
 
 			result[0] = float(plane[0] / mag);
 			result[1] = float(plane[1] / mag);
@@ -49,7 +46,17 @@ namespace sc {
 
 		float result[16];
 
-		SCFrustum() { modelview = nullptr; projection = nullptr; }
+		SCFrustum() { 
+			modelview = nullptr; projection = nullptr; 
+			
+			for (int i = 0; i < 6; i++) {
+				
+				frustum[i][0] = -1;
+				frustum[i][1] = -1;
+				frustum[i][2] = -1;
+				frustum[i][3] = -1;
+			}
+		}
 
 		virtual ~SCFrustum(void) noexcept = default;
 
@@ -108,35 +115,37 @@ namespace sc {
 
 		bool pointInFrustum(float x, float y, float z) const {
 
-			//float dist = float(0.0f);
+			float dist = 0.0f;
 
-			//for (int i = 0; i < 6; i++)
-			//{
+			for (int i = 0; i < 6; i++) {
 
-			//	dist = frustum[i][0] * x +
-			//		frustum[i][1] * y +
-			//		frustum[i][2] * z +
-			//		frustum[i][3];
+				dist = frustum[i][0] * x + frustum[i][1] * y + frustum[i][2] * z + frustum[i][3];
 
-			//	if (dist <= 0) {
+				if (dist <= 0) {
 
-			//		return false;
-			//	}
-			//}
+					return false;
+				}
+			}
 
 			return true;
 		}
 
 		bool SphereInFrustum(float x, float y, float z, float Radius) const {
 
-            /*int i;
+            int i;
+			double p;
+			double r;
 
             for (i = 0; i < 6; i++) {
-                if (frustum[i][0] * x + frustum[i][1] * y + frustum[i][2] * z + frustum[i][3] <= -Radius)
+
+				p = frustum[i][0] * x + frustum[i][1] * y + frustum[i][2] * z + frustum[i][3];
+				r = -Radius;
+
+                if (p <= r)
                 {
                     return false;
                 }
-            }*/
+            }
 
 			return true;
 		}
