@@ -33,7 +33,8 @@ SagaCross/Debug/
 SagaCross/Release/
 SagaCross/*.dll
 SagaCross/resource/
+bin/
 
-platform/SagaCross/DerivedData/
-platform/SagaCross/SagaCross.xcodeproj/xcuserdata/
-platform/SagaCross/SagaCross.xcodeproj/project.xcworkspace/xcuserdata/
+platform/iOS/SagaCross/DerivedData/
+platform/iOS/SagaCross/SagaCross.xcodeproj/xcuserdata/
+platform/iOS/SagaCross/SagaCross.xcodeproj/project.xcworkspace/xcuserdata/
