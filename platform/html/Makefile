@@ -1,4 +1,4 @@
-TARGET = bin/pixfight.html
+TARGET = bin/SagaCross.html
 
 CXX := emcc
 
@@ -10,9 +10,6 @@ EMFLAGS += -s NO_EXIT_RUNTIME=1
 EMFLAGS += -s DISABLE_EXCEPTION_CATCHING=1
 EMFLAGS += --memory-init-file 0
 
-#enable it only if your browser support SharedArrayBuffer (e.g: in chrome -> chrome://flags/)
-#EMFLAGS += -s USE_PTHREADS=1
-
 CPPFLAGS += -std=c++14 -w -O2  
 CPPFLAGS += $(EMFLAGS)
 
@@ -21,98 +18,64 @@ LIBS += $(EMFLAGS)
 LIBS += -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' 
 LIBS += -s DEMANGLE_SUPPORT=1 
 
-VPATH += ../../CORE
-VPATH += ../../CORE/PathFinding
-VPATH += ../../CORE/Rendering
-VPATH += ../../CORE/Math
-VPATH += ../../CORE/Shader
-VPATH += ../../CORE/utilities
-VPATH += ../../CORE/utilities/Timer
-VPATH += ../../CORE/iFurionGL
-VPATH += ../../CORE/GameLogic
-VPATH += ../../CORE/AI
-VPATH += ../../CORE/Audio
-VPATH += ../Linux/
+VPATH += ../../source
+VPATH += ../../source/Math
+VPATH += ../../source/Timer
+VPATH += ../../SagaCross
 
-CPPFLAGS += -I../../CORE/
-CPPFLAGS += -I../../CORE/AI/
-CPPFLAGS += -I../../CORE/PathFinding/
-CPPFLAGS += -I../../CORE/Rendering/
-CPPFLAGS += -I../../CORE/Math/
-CPPFLAGS += -I../../CORE/Shader/
-CPPFLAGS += -I../../CORE/utilities/
-CPPFLAGS += -I../../CORE/utilities/Timer/
-CPPFLAGS += -I../../CORE/iFurionGL/
-CPPFLAGS += -I../../CORE/GameLogic/
-CPPFLAGS += -I../../CORE/Audio/
-CPPFLAGS += -I../Linux/
-CPPFLAGS += -I./FMOD/inc/
+CPPFLAGS += -I../../source/
+CPPFLAGS += -I../../source/Math/
+CPPFLAGS += -I../../source/Timer/
+CPPFLAGS += -I../../libraries/FMOD/inc/
 
-
-COMMON_SRC := ./main.cpp \
-			  ../../CORE/Core-pch.cpp \
-              ../../CORE/PathFinding/SearchNode.cpp \
-              ../../CORE/Rendering/DrawingContext.cpp \
-              ../../CORE/Rendering/Mesh2d.cpp \
-              ../../CORE/Rendering/GameAnimation.cpp \
-              ../../CORE/Math/xMath.cpp \
-              ../../CORE/Math/xVec3.cpp \
-              ../../CORE/Shader/ShaderProgram.cpp \
-              ../../CORE/utilities/BasePathExtraction.cpp \
-              ../../CORE/utilities/glMatrix4x4.cpp \
-              ../../CORE/utilities/glTextureLoader.cpp \
-              ../../CORE/utilities/Timer/GameTimer.cpp \
-              ../../CORE/utilities/Timer/AndroidTimer.cpp \
-              ../../CORE/iFurionGL/DataTypes.cpp \
-              ../../CORE/iFurionGL/FGLCollisions.cpp \
-              ../../CORE/iFurionGL/FGLDrawingDescriptor.cpp \
-              ../../CORE/iFurionGL/FGLMath.cpp \
-              ../../CORE/iFurionGL/FGLTexture.cpp \
-              ../../CORE/iFurionGL/FGLVector.cpp \
-              ../../CORE/iFurionGL/FurionGL.cpp \
-              ../../CORE/GameLogic/GameBase.cpp \
-              ../../CORE/GameLogic/GameMap.cpp \
-              ../../CORE/GameLogic/GameUnit.cpp \
-              ../../CORE/GameLogic/GameSync.cpp \
-              ../../CORE/GameLogic/GameLogic.cpp \
-              ../../CORE/AI/AIObject.cpp \
-              ../../CORE/AI/AIPlayer.cpp \
-              ../../CORE/AI/AITaskGenerator.cpp \
-              ../../CORE/Audio/Audio.cpp \
-              ../Linux/LoadGameScene.cpp \
-              ../Linux/MenuScene.cpp \
-              ../Linux/PFSettings.cpp \
-              ../Linux/RenderScene.cpp \
-              ../Linux/NewGameScene.cpp \
-              ../Linux/SceneManager.cpp \
-              ../Linux/SettingsScene.cpp                                                        
+COMMON_SRC := ../../SagaCross/SagaCross.cpp \
+			  ../../source/BasePathExtraction.cpp \
+			  ../../source/ShaderProgram.cpp \
+			  ../../source/Core-pch.cpp \
+			  ../../source/SCGLFWDisplay.cpp \
+			  ../../source/SCSettings.cpp \
+			  ../../source/SCSceneManager.cpp \
+			  ../../source/SCEntity.cpp \
+			  ../../source/SCDisplay.cpp \
+			  ../../source/SCRenderScene.cpp \
+			  ../../source/SCRenderer.cpp \
+			  ../../source/SCDebugScene.cpp \
+			  ../../source/SCAudio.cpp \
+			  ../../source/SCOpenGLRenderer.cpp \
+			  ../../source/SCVehicle.cpp \
+			  ../../source/SCTank.cpp \
+			  ../../source/SCNewGameScene.cpp \
+			  ../../source/SCApplication.cpp \
+			  ../../source/glTextureLoader.cpp \
+			  ../../source/SCMenuScene.cpp \
+			  ../../source/SCSparkles.cpp \
+			  ../../source/SCSettingsScene.cpp \
+			  ../../source/SCGLFWInput.cpp \
+			  ../../source/glMatrix4x4.cpp \
+			  ../../source/Math/xMath.cpp \
+			  ../../source/Math/xVec3.cpp \
+			  ../../source/Timer/GameTimer.cpp \
+			  ../../source/Timer/AndroidTimer.cpp
 
 COMMON_OBJS := $(patsubst %.cpp, bin/%.bc, $(notdir $(COMMON_SRC)))
-COMMON_OBJS += ./FMOD/lib/fmod.bc 
+COMMON_OBJS += ../../libraries/FMOD/lib/html5/fmod.bc 
 
 all: copy $(TARGET)
 
 copy: generate
-	cp -a ../../CORE/Resources/Lato-Black.ttf bin/data/
-	cp -a ../../CORE/Resources/FFFATLAN.TTF bin/data/
-	cp -a ../../CORE/Resources/shaders/Mobile/* bin/data/
-	cp -a ../../CORE/Resources/textures/* bin/data/
-	cp -a ../../CORE/Resources/sfx/* bin/data/
-	cp -a ../../CORE/Resources/music/* bin/data/
-	cp -a ../../CORE/Resources/maps/* bin/data/
-	cp -a ../../CORE/Resources/UI/* bin/data/
+
+	cp -a ../../resource/* bin/resource/
 
 generate: clean
 
 	@mkdir -p bin	
-	@mkdir -p bin/data	
-	@mkdir -p bin/data/save	
+	@mkdir -p bin/resource	
 
 clean:
 	@rm -rf bin
 
 $(TARGET) : $(COMMON_OBJS)
-	$(CXX) $^ -o $@ $(LIBS) --preload-file bin/data@data
+	$(CXX) $^ -o $@ $(LIBS) --preload-file bin/resource@resource
 
 bin/%.bc: %.cpp
 	$(CXX) $(CPPFLAGS) $< -o $@

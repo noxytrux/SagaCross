@@ -19,6 +19,7 @@ ifeq ($(UNAME_S),Darwin)
 	LDFLAGS:= -rpath @executable_path/
 else
 	LIBS := $(GLFW3) -lGL -lm -lGLU -lGLEW -lfmod -lfmodL
+	LDFLAGS:= -rpath @executable_path/
 endif
 
 #additional includes
@@ -80,6 +81,10 @@ ifeq ($(UNAME_S),Darwin)
 	
 	cp -a libraries/FMOD/lib/macOS/libfmod.dylib ./
 	cp -a libraries/FMOD/lib/macOS/libfmodL.dylib ./
+	
+else 
+
+	cp -a libraries/FMOD/lib/Linux/* ./
 
 endif
 	
