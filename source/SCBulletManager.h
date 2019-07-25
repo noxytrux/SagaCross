@@ -108,8 +108,8 @@ namespace sc {
 			lPos = rPos;
 			dir.normalize();
 
-			OY = std::atan2f(-dir.z, dir.x);
-			OX = std::atan2f(dir.y, sqrt(dir.x * dir.x + dir.z * dir.z));
+			OY = atan2(-dir.z, dir.x);
+			OX = atan2(dir.y, sqrt(dir.x * dir.x + dir.z * dir.z));
 
 			quaternion.fromEulerAngles(0, OY, 0);
 			quaternion2.fromEulerAngles(0, 0, OX);

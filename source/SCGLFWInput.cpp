@@ -163,13 +163,13 @@ void SCGLFWInput::sc_key_callback(GLFWwindow *window)
 
 #ifdef __EMSCRIPTEN__
 
-	float rad = std::atan2(x - (1280 * 0.25), y - (720 * 0.25));
+	float rad = atan2(x - (1280 * 0.25), y - (720 * 0.25));
 
 #else
 	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
-	float rad = std::atan2(x - (mode->width * 0.25), y - (mode->height * 0.25));
+	float rad = atan2(x - (mode->width * 0.25), y - (mode->height * 0.25));
 #endif
 
 	angle = (int)((rad * 180.0 / M_PI) + 360.0) % 360;

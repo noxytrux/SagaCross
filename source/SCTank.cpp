@@ -1273,7 +1273,7 @@ void SCTank::Input()
         auto normal = dir;
         normal.normalize();
 
-        auto directionAngle = std::atan2(normal.x, normal.y) / M_PI * 180.0f;
+        auto directionAngle = atan2(normal.x, normal.y) / M_PI * 180.0f;
 
         float desiretRotation = directionAngle + 180;
 
