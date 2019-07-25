@@ -228,6 +228,7 @@ void SCGLFWDisplay::setFullScreen(bool fullscreen)
 {
 	SCDisplay::setFullScreen(fullscreen);
 
+#if GLFW_VERSION_MINOR >= 2
 	const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 	if (fullscreen) {
@@ -238,6 +239,7 @@ void SCGLFWDisplay::setFullScreen(bool fullscreen)
 	
 		glfwSetWindowMonitor(_win, nullptr, (mode->width - _size.width) * 0.5, (mode->height - _size.height) * 0.5, _size.width, _size.height, 0);
 	}
+#endif
 }
 
 void SCGLFWDisplay::setVsync(const bool vsync)

@@ -110,6 +110,11 @@
 
         #include <GLFW/glfw3.h>
 
+	#ifndef GLFW_TRUE
+	#define GLFW_TRUE 1
+	#define GLFW_FALSE 0
+	#endif
+
         #ifndef _RPI_
             #define GL_RED_EXT GL_RED
         #endif
@@ -145,6 +150,7 @@ extern bool FLT_EQUAL(float a, float b);
 #include <map>
 #include <set>
 #include <cstdint>
+#include <cmath>
 
 #include "EnumOptionMacro.hpp"
 #include "MathTypes.h"
