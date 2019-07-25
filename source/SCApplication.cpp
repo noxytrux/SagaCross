@@ -2,6 +2,7 @@
 #include "SCOpenGLRenderer.h"
 #include "SCGLFWDisplay.h"
 #include "SCGLFWInput.h"
+#include "stb_image.h"
 
 #if defined(__linux__)
 #include <limits.h>
@@ -70,6 +71,20 @@ SCApplication::SCApplication()
 
 	display->makeWindow();
 	display->setVsync(_settings->isVsyncEnabled());
+
+#if !defined(MOBILE) || !defined(__EMSCRIPTEN__)
+
+	GLFWimage images[2];
+
+	images[0].pixels = stbi_load((getResourcePath() + "icons/icon152.png").c_str(), &images[0].width, &images[0].height, 0, 4);
+	images[1].pixels = stbi_load((getResourcePath() + "icons/icon40.png").c_str(), &images[1].width, &images[1].height, 0, 4);
+
+	glfwSetWindowIcon(static_cast<GLFWwindow*>(display->getContext()), 2, images);
+
+	stbi_image_free(images[0].pixels);
+	stbi_image_free(images[1].pixels);
+
+#endif
 
 	auto renderer = std::make_shared<SCOpenGLRenderable>(display, _settings, getResourcePath());
 	renderer->loadFonts(getResourcePath());
