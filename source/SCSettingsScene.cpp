@@ -175,11 +175,13 @@ SCSceneType SCSettingsScene::Render() {
 
 			settings->save();
 
-			display->setFullScreen(settings->isFullScreen());
-			display->setVsync(settings->isVsyncEnabled());
+			if (display->allowMultipleResolutions()) {
 
-			_renderer->updateViewPort(selectedResolution);
-			display->resizeWindow(selectedResolution);
+				display->setFullScreen(settings->isFullScreen());
+				display->setVsync(settings->isVsyncEnabled());
+				_renderer->updateViewPort(selectedResolution);
+				display->resizeWindow(selectedResolution);
+			}
 
 			if (settings->isMuted()) {
 			

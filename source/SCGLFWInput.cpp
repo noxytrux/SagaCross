@@ -79,10 +79,12 @@ bool SCGLFWInput::isDoubleClickDown()
 
 void SCGLFWInput::sc_scroll_callback(GLFWwindow *win, double xoff, double yoff)
 {
+#ifndef __EMSCRIPTEN__
 	if (scrollCallback) {
 	
 		scrollCallback(xVec2(xoff, yoff));
 	}
+#endif
 }
 
 void SCGLFWInput::sc_mouse_callback(GLFWwindow *win, int button, int action, int mods)
@@ -122,10 +124,12 @@ void SCGLFWInput::sc_mouse_callback(GLFWwindow *win, int button, int action, int
 
 void SCGLFWInput::sc_text_callback(GLFWwindow *win, unsigned int codepoint)
 {
+#ifndef __EMSCRIPTEN__
 	if (textCallback) {
 	
 		textCallback(codepoint);
 	}
+#endif
 }
 
 void SCGLFWInput::sc_key_callback(GLFWwindow *window)
@@ -157,10 +161,17 @@ void SCGLFWInput::sc_key_callback(GLFWwindow *window)
 	double x, y;
 	glfwGetCursorPos(window, &x, &y);
 
+#ifdef __EMSCRIPTEN__
+
+	float rad = std::atan2(x - (1280 * 0.25), y - (720 * 0.25));
+
+#else
 	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
 	float rad = std::atan2(x - (mode->width * 0.25), y - (mode->height * 0.25));
+#endif
+
 	angle = (int)((rad * 180.0 / M_PI) + 360.0) % 360;
 
 	if (movementCallback) {

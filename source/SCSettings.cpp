@@ -12,7 +12,7 @@ SCSettings::SCSettings(const std::string &path) : _path(path), _settings({})
 	_settings.vsync = true;
 	_settings.mute = false;
 	_settings.hardAI = true;
-	_settings.secondCam = false;
+	_settings.secondCam = true;
 
 	userDefaults = json::object();
 }

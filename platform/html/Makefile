@@ -22,7 +22,7 @@ CPPFLAGS += $(EMFLAGS)
 LIBS := -s USE_GLFW=3 -s FULL_ES2=1 -s USE_WEBGL2=1
 LIBS += $(EMFLAGS)
 LIBS += -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' 
-LIBS += -s DEMANGLE_SUPPORT=1 
+LIBS += -s DEMANGLE_SUPPORT=0 
 
 VPATH += ../../source
 VPATH += ../../source/Math

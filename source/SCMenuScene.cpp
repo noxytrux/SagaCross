@@ -77,13 +77,15 @@ SCSceneType SCMenuScene::Render() {
         }
         nk_spacing(ctx, 1);
 
+#ifndef __EMSCRIPTEN__
 		nk_spacing(ctx, 1);
 		if (nk_button_label(ctx, "MULTIPLAYER")) {
 
 			//TODO: implement multiplayer
 		}
 		nk_spacing(ctx, 1);
-		
+#endif		
+
         nk_spacing(ctx, 1);
         if (nk_button_label(ctx, "SETTINGS")) {
 

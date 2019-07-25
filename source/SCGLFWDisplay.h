@@ -13,7 +13,15 @@ namespace sc {
 
 		virtual void makeWindow() override;
 		virtual const bool shouldClose() const override;
-		virtual const bool allowMultipleResolutions() const override { return true; }
+
+		virtual const bool allowMultipleResolutions() const override { 
+		#ifdef __EMSCRIPTEN__
+			return false;
+		#else
+			return true; 
+		#endif
+		}
+
 		virtual void resizeWindow(const SCScreenSize &size) override;
 		virtual void resizeWindow(uint32_t width, uint32_t height) override;
 		virtual const std::vector<SCScreenSize> getResolutions() override;
