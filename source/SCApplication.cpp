@@ -1,7 +1,14 @@
 #include "SCApplication.h"
 #include "SCOpenGLRenderer.h"
+
+#if defined(MOBILE)
+#include "SCMobileDisplay.h"
+#include "SCMobileInput.h"
+#else
 #include "SCGLFWDisplay.h"
 #include "SCGLFWInput.h"
+#endif
+
 #include "stb_image.h"
 
 #if defined(__linux__)
@@ -27,7 +34,7 @@ static std::shared_ptr<SCDisplay> makeDisplay(const std::shared_ptr<SCSettings> 
 #else 
 
 	#ifdef MOBILE
-
+        return std::make_shared<SCMobileDisplay>(settings->getWidht(), settings->getHeight(), settings->isFullScreen());
 	#else 
 		return std::make_shared<SCGLFWDisplay>(settings->getWidht(), settings->getHeight(), settings->isFullScreen());
 	#endif 
@@ -45,7 +52,7 @@ static std::shared_ptr<SCInputInteface> makeInput(const std::shared_ptr<SCDispla
 #else 
 
 	#ifdef MOBILE
-
+        return std::make_shared<SCMobileInput>(display->getContext());
 	#else 
 		return std::make_shared<SCGLFWInput>(display->getContext());
 	#endif 
@@ -72,7 +79,7 @@ SCApplication::SCApplication()
 	display->makeWindow();
 	display->setVsync(_settings->isVsyncEnabled());
 
-#if !defined(MOBILE) || !defined(__EMSCRIPTEN__)
+#if !defined(MOBILE) && !defined(__EMSCRIPTEN__)
 
 	GLFWimage images[2];
 

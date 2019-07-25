@@ -24,7 +24,7 @@
 
 #include "nuklear.h"
 
-#ifdef __EMSCRIPTEN__
+#if defined(__EMSCRIPTEN__) || defined(MOBILE)
 
 #include "Core-pch.hpp"
 

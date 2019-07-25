@@ -1,6 +1,9 @@
 #include "SCOpenGLRenderer.h"
-#include "SCGLFWDisplay.h"
 #include "glMatrix4x4.hpp"
+
+#ifndef MOBILE
+#include "SCGLFWDisplay.h"
+#endif
 
 #define MAX_VERTEX_BUFFER 512 * 1024
 #define MAX_ELEMENT_BUFFER 128 * 1024
@@ -10,7 +13,7 @@
 
 using namespace sc;
 
-#ifdef __EMSCRIPTEN__
+#if defined(__EMSCRIPTEN__) || defined(MOBILE)
 int glhProjectf(float objx, float objy, float objz, float *modelview, float *projection, int *viewport, GLdouble *wx, GLdouble *wy, GLdouble *wz)
 {
 	float fTempo[8];
@@ -245,10 +248,12 @@ void SCOpenGLRenderable::endDrawing()
 {
 	nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 
+#ifndef MOBILE
 	const auto glfwDisplay = static_cast<GLFWwindow*>(getDisplay()->getContext());
 	assert(glfwDisplay);
 
 	glfwSwapBuffers(glfwDisplay);
+#endif
 	glBindVertexArray(0);
 }
 
@@ -265,6 +270,12 @@ bool SCOpenGLRenderable::Get2DOGLPos(float px, float py, float pz, float &winx, 
 	viewport[2] = size.width;
 	viewport[3] = size.height;
 
+#if defined(__EMSCRIPTEN__) || defined(MOBILE)
+
+    glhProjectf(px, py, pz, ModelView.getMatrix(), Projection.getMatrix(), viewport, &wx, &wy, &wz);
+
+#else
+
     GLdouble mv[16]; //ModelView.getMatrix()
     GLdouble proj[16]; //Projection.getMatrix()
 
@@ -274,9 +285,6 @@ bool SCOpenGLRenderable::Get2DOGLPos(float px, float py, float pz, float &winx, 
         proj[i] = Projection.getMatrix()[i];
     }
 
-#ifdef __EMSCRIPTEN__
-    glhProjectf(px, py, pz, ModelView.getMatrix(), Projection.getMatrix(), viewport, &wx, &wy, &wz);
-#else 
 	gluProject(px, py, pz, mv, proj, viewport, &wx, &wy, &wz);
 #endif
 

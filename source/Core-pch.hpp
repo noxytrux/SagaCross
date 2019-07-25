@@ -53,6 +53,12 @@
         #define glGenVertexArrays glGenVertexArraysOES
         #define glDeleteVertexArrays glDeleteVertexArraysOES
 
+        #define glMapBuffer glMapBufferOES
+        #define glUnmapBuffer glUnmapBufferOES
+        #define GL_WRITE_ONLY GL_WRITE_ONLY_OES
+        #define GL_POINT_SPRITE GL_POINT_SPRITE_OES
+        #define GLdouble double
+
     #else
 
         #include <GL/glew.h>

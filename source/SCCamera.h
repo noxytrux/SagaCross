@@ -4,7 +4,10 @@
 #include "SCRendererInterface.h"
 #include "SCSettings.h"
 #include "glMatrix4x4.hpp"
+
+#ifndef MOBILE
 #include "SCGLFWDisplay.h"
+#endif
 
 namespace sc {
 
@@ -129,6 +132,7 @@ namespace sc {
             }
         }
 
+#ifndef MOBILE
         void FreeCam(const std::shared_ptr<SCDisplay> &display)
         {
             static xVec3 gViewY = xVec3(0.0);
@@ -182,7 +186,7 @@ namespace sc {
 
             _renderer->ModelView.lookAt(gEye, dir, gUp);
         }
-
+#endif
 
         void GoForward(float dir = 1.0f)
         {

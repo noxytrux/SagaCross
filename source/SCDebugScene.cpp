@@ -45,9 +45,12 @@ SCSceneType SCDebugScene::Render() {
 
     _renderer->Projection.setPerspective(45.0, (float)screenSize.width / (float)screenSize.height, 0.1f, 6000.0f);
 
+#ifndef MOBILE
     camera->FreeCam(renderer->getDisplay());
-    //camera->Apply();
-
+#else
+    camera->Apply();
+#endif
+    
     auto frustum = _renderer->getFrustum();
     
     frustum->modelview = _renderer->ModelView.getMatrix();

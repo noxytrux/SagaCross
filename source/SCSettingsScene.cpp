@@ -86,7 +86,7 @@ SCSceneType SCSettingsScene::Render() {
 		nk_layout_row(ctx, NK_DYNAMIC, 40, 3, ratio);
 
 		if (_selectedResolution >= resolutions.size()) {
-			_selectedResolution = resolutions.size() - 1;
+			_selectedResolution = static_cast<uint32_t>(resolutions.size() - 1);
 		}
 
 		if (display->allowMultipleResolutions()) {
