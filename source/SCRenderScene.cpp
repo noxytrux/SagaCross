@@ -362,6 +362,8 @@ void SCRenderScene::Init() {
     //clean up before loading game
     textureLoader.releaseTextures();
 
+	_audio->pauseMusic();
+
     auto btnbackpath = _rootPath + "textures/menubtn.png";
     _btnbacktex = textureLoader.loadFile(btnbackpath, GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
     _backbtn = nk_subimage_id(_btnbacktex, 32, 32, nk_rect(0, 0, 32, 32));
