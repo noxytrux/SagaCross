@@ -934,9 +934,9 @@ void SCTank::Steer(SCRenderObj * o, float dt)
         norm = ground->GetNormal(Pos[0], Pos[2]);
     }
 
-    if (isnan(Pos[0])) Pos[0] = 0;
-    if (isnan(Pos[1])) Pos[1] = 0;
-    if (isnan(Pos[2])) Pos[2] = 0;
+    if (std::isnan(Pos[0])) Pos[0] = 0;
+    if (std::isnan(Pos[1])) Pos[1] = 0;
+    if (std::isnan(Pos[2])) Pos[2] = 0;
 
     SCGroundType currType = particleLayer->getCurrentGroundType(Pos[0], Pos[2]);
 

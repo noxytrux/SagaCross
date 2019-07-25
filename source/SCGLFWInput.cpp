@@ -1,5 +1,12 @@
 #include "SCGLFWInput.h"
 
+namespace sc {
+
+	void scroll_callback(GLFWwindow *win, double xoff, double yoff);
+	void mouse_callback(GLFWwindow *win, int button, int action, int mods);
+	void text_callback(GLFWwindow *win, unsigned int codepoint);
+}
+
 using namespace sc;
 
 constexpr float NK_GLFW_DOUBLE_CLICK_LO  = 0.02;

@@ -3,6 +3,11 @@
 #include "SCGLFWDisplay.h"
 #include "SCGLFWInput.h"
 
+#if defined(__linux__)
+#include <limits.h>
+#include <unistd.h>
+#endif
+
 using namespace sc;
 
 #ifdef __EMSCRIPTEN__

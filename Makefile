@@ -18,8 +18,8 @@ ifeq ($(UNAME_S),Darwin)
 	CPPFLAGS += -I/usr/local/include
 	LDFLAGS:= -rpath @executable_path/
 else
-	LIBS := $(GLFW3) -lGL -lm -lGLU -lGLEW -lfmod -lfmodL
-	LDFLAGS:= -rpath @executable_path/
+	LIBS := $(GLFW3) -lGL -lm -lGLU -lGLEW -Llibraries/FMOD/lib/Linux -lfmod -lfmodL
+	LDFLAGS:= -Wl,-rpath=.
 endif
 
 #additional includes
