@@ -85,10 +85,14 @@ SCSceneType SCSettingsScene::Render() {
 
 		nk_layout_row(ctx, NK_DYNAMIC, 40, 3, ratio);
 
+		if (_selectedResolution >= resolutions.size()) {
+			_selectedResolution = resolutions.size() - 1;
+		}
+
 		if (display->allowMultipleResolutions()) {
 		
 			const auto &curres = resolutions[_selectedResolution];
-
+			 
 			std::stringstream ss;
 
 			ss << curres.width << "x" << curres.height;
