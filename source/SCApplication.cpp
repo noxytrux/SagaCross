@@ -1,7 +1,7 @@
 #include "SCApplication.h"
 #include "SCOpenGLRenderer.h"
 
-#if defined(MOBILE)
+#if defined(MOBILE) && !defined(__EMSCRIPTEN__)
 #include "SCMobileDisplay.h"
 #include "SCMobileInput.h"
 #else
