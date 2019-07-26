@@ -33,7 +33,10 @@ namespace sc {
 
 		virtual void Draw() override {
 
+			glEnable(GL_BLEND);
+
 			auto current = _renderer->WaterShader;
+			current->begin();
 
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, caustic);

@@ -434,7 +434,7 @@ namespace sc {
 
 				auto texturePath = path + "textures/" + textureName + ".png";
 
-				currModel->tex = textureLoader.loadFile(texturePath, GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false); 
+				currModel->tex = textureLoader.loadFile(texturePath, GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
 
                 std::cout << "[INFO] Model: " << meshName.c_str() << " R(" << Radius << ")" << std::endl;
 
