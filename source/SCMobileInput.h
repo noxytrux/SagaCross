@@ -20,6 +20,11 @@ namespace sc {
         virtual bool isRightMouseButtonDown() override;
         virtual bool isMiddleMouseButtonDown() override;
         virtual bool isDoubleClickDown() override;
+
+    public:
+
+        xVec2 mousePos;
+        bool selected;
     };
 }
 

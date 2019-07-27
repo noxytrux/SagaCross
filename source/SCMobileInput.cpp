@@ -4,6 +4,8 @@ using namespace sc;
 
 SCMobileInput::SCMobileInput(void *context)
 : SCInputInteface(context)
+, mousePos(0)
+, selected(false)
 {
 }
 
@@ -17,17 +19,19 @@ void SCMobileInput::update()
 
 xVec2 SCMobileInput::getMousePosition()
 {
-    return xVec2(0, 0);
+    return mousePos;
 }
 
 xVec2 SCMobileInput::getDoubleClickPosition()
 {
-    return xVec2(0, 0);
+    return mousePos;
 }
 
 bool SCMobileInput::isLeftMouseButtonDown()
 {
-    return false;
+    bool state = selected;
+    selected = false;
+    return state;
 }
 
 bool SCMobileInput::isRightMouseButtonDown()

@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SCGameWrapper : NSObject
 
 - (void)initializeEngine:(CGSize)screenSize;
+- (void)renderGame;
+- (void)handleTouch:(CGPoint)position selected:(BOOL)selected;
+- (void)handleMovement:(CGPoint)direction angle:(CGFloat)angle;
+- (void)fireBullet;
+- (void)dropMine;
 
 @end
 

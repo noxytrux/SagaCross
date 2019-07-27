@@ -60,20 +60,13 @@ static std::shared_ptr<SCInputInteface> makeInput(const std::shared_ptr<SCDispla
 #endif
 }
 
-SCApplication::SCApplication() 
-	: _settings(nullptr)
+SCApplication::SCApplication(const std::shared_ptr<SCSettings> &settings, const std::string &rootPath)
+	: _settings(settings)
+    , _resourcePath(rootPath)
 	, _renderer(nullptr)
 	, _userunloop(true)
 	, _input(nullptr)
 {
-	auto filename = getResourcePath() + "settings.bin";
-
-	_settings = std::make_shared<SCSettings>(filename);
-
-	if (!_settings->load()) {
-		_settings->save();
-	}
-
 	auto display = makeDisplay(_settings);
 
 	display->makeWindow();
@@ -115,24 +108,9 @@ SCApplication::~SCApplication() noexcept
 
 }
 
-const std::string SCApplication::getResourcePath()
+const std::string SCApplication::getResourcePath() const
 {
-
-#if defined(__linux__)
-
-	char result[PATH_MAX];
-
-	ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
-	std::string path = std::string(result, (count > 0) ? count : 0);
-
-	return path.substr(0, path.find_last_of("\\/")) + "/resource/";
-
-#else 
-
-	return "resource/";
-
-#endif
-
+    return _resourcePath;
 }
 
 void SCApplication::renderFrame()
@@ -243,10 +221,18 @@ int SCApplication::run()
 #else
 	auto display = _renderer->getDisplay();
 
-	while (!display->shouldClose() && _userunloop) {
-	
-		renderFrame();
-	}
+    if (_userunloop) {
+
+        while (!display->shouldClose()) {
+
+            renderFrame();
+        }
+
+    }
+    else {
+
+        renderFrame();
+    }
 #endif
 
 	return EXIT_SUCCESS;

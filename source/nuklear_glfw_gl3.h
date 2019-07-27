@@ -93,7 +93,7 @@ NK_API void
 nk_glfw3_device_create(void)
 {
 
-#if defined(__EMSCRIPTEN__) || defined(_RPI_)
+#if defined(MOBILE) || defined(_RPI_)
     GLint status;
     static const GLchar *vertex_shader =
         "#version 100\n"
@@ -154,9 +154,41 @@ nk_glfw3_device_create(void)
     glCompileShader(dev->vert_shdr);
     glCompileShader(dev->frag_shdr);
     glGetShaderiv(dev->vert_shdr, GL_COMPILE_STATUS, &status);
-    assert(status == GL_TRUE);
+
+    if (status == GL_FALSE) {
+
+        std::cout << "[ERROR] Could not compile vertex shader" << std::endl;
+        GLint logLength = 0;
+
+        glGetShaderiv(dev->vert_shdr, GL_INFO_LOG_LENGTH, &logLength);
+
+        if (logLength > 0) {
+
+            GLchar *log = (GLchar *)malloc(logLength);
+            glGetShaderInfoLog(dev->vert_shdr, logLength, &logLength, log);
+            std::cout<<"[COMPILE] Vert:" << log << std::endl;
+            free(log);
+        }
+    }
+
     glGetShaderiv(dev->frag_shdr, GL_COMPILE_STATUS, &status);
-    assert(status == GL_TRUE);
+
+    if(status == GL_FALSE) {
+
+        std::cout << "[ERROR] Could not compile fragment shader" << std::endl;
+        GLint logLength = 0;
+
+        glGetShaderiv(dev->frag_shdr, GL_INFO_LOG_LENGTH, &logLength);
+
+        if (logLength > 0) {
+
+            GLchar *log = (GLchar *)malloc(logLength);
+            glGetShaderInfoLog(dev->frag_shdr, logLength, &logLength, log);
+            std::cout<<"[COMPILE] Frag:" << log << std::endl;
+            free(log);
+        }
+    }
+
     glAttachShader(dev->prog, dev->vert_shdr);
     glAttachShader(dev->prog, dev->frag_shdr);
     glLinkProgram(dev->prog);
