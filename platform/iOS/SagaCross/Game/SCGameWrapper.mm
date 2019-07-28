@@ -92,6 +92,11 @@ using namespace sc;
     input->mouseCallback(1, 1, xVec2(0));
 }
 
+- (BOOL)renderingGame {
+
+    return _application->isRenderingGame();
+}
+
 - (void)setupAudioSession {
 
     double rate = 44100.0;

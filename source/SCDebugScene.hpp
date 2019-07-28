@@ -21,8 +21,6 @@ namespace sc {
 		virtual void Init() override;
 		virtual void Destroy() override;
 
-		virtual bool isRender() override { return true; }
-
 		virtual void handleScroll(double s) override;
 		virtual void handleMouse(int button, int action, double x, double y) override;
 		virtual void handleMove(const xVec2 &direction, const float angle) override;

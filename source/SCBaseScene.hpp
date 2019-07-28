@@ -49,6 +49,8 @@ namespace sc {
 		virtual void handleMouse(int button, int action, double x, double y) {}
 		virtual void handleMove(const xVec2 &direction, const float angle) {}
 
+        virtual bool isRenderingGame() { return false; }
+
 	protected:
 
 		std::string _name;

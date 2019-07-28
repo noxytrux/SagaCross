@@ -21,6 +21,7 @@ namespace sc {
 		void setShouldUseRunLoop(bool userunloop) { _userunloop = userunloop; }
 
 		const std::shared_ptr<SCInputInteface> &getInput() const { return _input; }
+        bool isRenderingGame() const;
 
 	private:
 

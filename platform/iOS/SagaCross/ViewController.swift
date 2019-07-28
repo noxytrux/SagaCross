@@ -15,6 +15,7 @@ class ViewController: GLKViewController {
 
     @IBOutlet weak var movePad: GamePad?
     @IBOutlet weak var aimPad: GamePad?
+    @IBOutlet weak var bombButton: UIButton?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,8 +40,8 @@ class ViewController: GLKViewController {
             print("[ERROR] Could not set active GLContext!")
         }
 
-
-        //glView.contentScaleFactor = 1.0
+        //Plus sizes etc dont go to much over pixels
+        glView.contentScaleFactor = min(glView.contentScaleFactor, 2.0)
         
         let scaleFactor = glView.contentScaleFactor
         let size = CGSize(width: self.view.frame.width * scaleFactor,
@@ -58,9 +59,28 @@ class ViewController: GLKViewController {
 
         movePad?.delegate = self
         aimPad?.delegate = self
+
+        let path = Bundle.main.resourcePath
+
+        guard let resourcePath = path else {
+            return
+        }
+
+        let normal = UIImage(contentsOfFile:resourcePath.appending("/resource/textures/bomb_btn.png"))
+        let selected = UIImage(contentsOfFile:resourcePath.appending("/resource/textures/bomb_btn_down.png"))
+
+        bombButton?.setImage(normal, for: .normal)
+        bombButton?.setImage(selected, for: .highlighted)
+        
     }
 
     override func glkView(_ view: GLKView, drawIn rect: CGRect) {
+
+        let isRendering = !wrapper.renderingGame()
+
+        movePad?.isHidden = isRendering
+        aimPad?.isHidden = isRendering
+        bombButton?.isHidden = isRendering
 
         wrapper.renderGame()
     }
@@ -80,7 +100,7 @@ class ViewController: GLKViewController {
             ()
 
         case .ended:
-            () //wrapper.handleTouch(position, selected: false)
+            () 
 
         case .cancelled, .failed:
             wrapper.handleTouch(position, selected: false)
@@ -88,6 +108,11 @@ class ViewController: GLKViewController {
         @unknown default:
             fatalError("unknown state")
         }
+    }
+
+    @IBAction func bombDeploy(sender: UIButton) {
+
+        wrapper.dropMine();
     }
 }
 

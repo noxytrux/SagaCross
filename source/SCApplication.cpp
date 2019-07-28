@@ -113,6 +113,11 @@ const std::string SCApplication::getResourcePath() const
     return _resourcePath;
 }
 
+bool SCApplication::isRenderingGame() const
+{
+    return _sceneManager->getCurrentScenePointer()->isRenderingGame();
+}
+
 void SCApplication::renderFrame()
 {
 #ifdef __EMSCRIPTEN__

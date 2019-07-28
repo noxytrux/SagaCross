@@ -48,6 +48,7 @@
 		1C4B790322EA44400089E8E5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B790222EA443F0089E8E5 /* AVFoundation.framework */; };
 		1C4B790422EA44630089E8E5 /* libfmod_iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B78EC22EA2ECF0089E8E5 /* libfmod_iphonesimulator.a */; };
 		1C4B790522EA44630089E8E5 /* libfmodL_iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B78EB22EA2ECF0089E8E5 /* libfmodL_iphonesimulator.a */; };
+		1C50280622ED796C008A6B75 /* icon1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C50280522ED796C008A6B75 /* icon1024.png */; };
 		1C65CDE222EB7B9600B594E3 /* resource in Resources */ = {isa = PBXBuildFile; fileRef = 1C65CDE122EB7B9600B594E3 /* resource */; };
 		1C65CDE522EB989B00B594E3 /* GamePad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C65CDE422EB989B00B594E3 /* GamePad.swift */; };
 /* End PBXBuildFile section */
@@ -163,6 +164,7 @@
 		1C4B790022EA44300089E8E5 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		1C4B790222EA443F0089E8E5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1C4B790622EA48E00089E8E5 /* SagaCross-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SagaCross-Bridging-Header.h"; sourceTree = "<group>"; };
+		1C50280522ED796C008A6B75 /* icon1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon1024.png; path = ../../../../resource/icons/icon1024.png; sourceTree = "<group>"; };
 		1C65CDE122EB7B9600B594E3 /* resource */ = {isa = PBXFileReference; lastKnownFileType = folder; name = resource; path = ../../../../resource; sourceTree = "<group>"; };
 		1C65CDE422EB989B00B594E3 /* GamePad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePad.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -223,6 +225,7 @@
 		1C4B75E922EA0FFA0089E8E5 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				1C50280522ED796C008A6B75 /* icon1024.png */,
 				1C65CDE122EB7B9600B594E3 /* resource */,
 				1C4B75EA22EA10150089E8E5 /* source */,
 				1C4B78E522EA2C940089E8E5 /* SCGameWrapper.h */,
@@ -422,6 +425,7 @@
 				1C65CDE222EB7B9600B594E3 /* resource in Resources */,
 				1C460E7022EA0269009F03C1 /* LaunchScreen.storyboard in Resources */,
 				1C460E6D22EA0269009F03C1 /* Assets.xcassets in Resources */,
+				1C50280622ED796C008A6B75 /* icon1024.png in Resources */,
 				1C460E6B22EA0268009F03C1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

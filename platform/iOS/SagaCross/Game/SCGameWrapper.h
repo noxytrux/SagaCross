@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)handleMovement:(CGPoint)direction angle:(CGFloat)angle;
 - (void)fireBullet;
 - (void)dropMine;
+- (BOOL)renderingGame;
 
 @end
 

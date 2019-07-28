@@ -26,15 +26,27 @@
                                 <rect key="frame" x="0.0" y="0.0" width="448" height="414"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zrX-cm-G3D">
+                                <rect key="frame" x="628" y="289" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="kyC-mC-h4D"/>
+                                    <constraint firstAttribute="width" constant="64" id="mTS-ZR-OmQ"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="bombDeployWithSender:" destination="QFE-fY-Bkh" eventType="touchUpInside" id="2Cm-sU-rKV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Nzt-Oo-TQY" firstAttribute="width" secondItem="jd8-Vx-GGK" secondAttribute="width" multiplier="0.5" id="5Sc-Bp-dUX"/>
                             <constraint firstItem="wgk-Ij-uCT" firstAttribute="top" secondItem="pfs-u2-Mv1" secondAttribute="top" id="5sm-Ee-Xm1"/>
                             <constraint firstAttribute="bottom" secondItem="wgk-Ij-uCT" secondAttribute="bottom" id="6hN-g0-ATp"/>
+                            <constraint firstItem="pfs-u2-Mv1" firstAttribute="bottom" secondItem="zrX-cm-G3D" secondAttribute="bottom" constant="40" id="8D7-tq-hTH"/>
                             <constraint firstAttribute="trailing" secondItem="wgk-Ij-uCT" secondAttribute="trailing" id="AiY-kO-9ZT"/>
                             <constraint firstItem="wgk-Ij-uCT" firstAttribute="height" secondItem="jd8-Vx-GGK" secondAttribute="height" id="CTL-Mv-pig"/>
                             <constraint firstItem="wgk-Ij-uCT" firstAttribute="leading" secondItem="Nzt-Oo-TQY" secondAttribute="trailing" id="FlU-58-AeL"/>
                             <constraint firstItem="Nzt-Oo-TQY" firstAttribute="leading" secondItem="jd8-Vx-GGK" secondAttribute="leading" id="dQp-uD-svA"/>
+                            <constraint firstItem="pfs-u2-Mv1" firstAttribute="trailing" secondItem="zrX-cm-G3D" secondAttribute="trailing" constant="160" id="hBg-XN-N0O"/>
                             <constraint firstItem="Nzt-Oo-TQY" firstAttribute="top" secondItem="jd8-Vx-GGK" secondAttribute="top" id="hpt-Og-uoe"/>
                             <constraint firstItem="Nzt-Oo-TQY" firstAttribute="height" secondItem="jd8-Vx-GGK" secondAttribute="height" id="kJv-Oz-uJ6"/>
                             <constraint firstAttribute="bottom" secondItem="Nzt-Oo-TQY" secondAttribute="bottom" id="lEf-lv-Ih9"/>
@@ -47,6 +59,7 @@
                     </glkView>
                     <connections>
                         <outlet property="aimPad" destination="wgk-Ij-uCT" id="lRD-9T-u19"/>
+                        <outlet property="bombButton" destination="zrX-cm-G3D" id="7KV-eA-zgr"/>
                         <outlet property="movePad" destination="Nzt-Oo-TQY" id="Xs8-9N-Q8a"/>
                     </connections>
                 </glkViewController>
