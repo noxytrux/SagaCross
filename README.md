@@ -58,6 +58,15 @@ OpenGL extensions [GLEW](http://glew.sourceforge.net)
 
 # 2. Building  
 
+### iOS
+
+Before compiling you need to download [Xcode](https://developer.apple.com/xcode/)
+
+* Navigate to SagaCross/platform/iOS
+* Open SagaCross.xcodeproj
+* Press `cmd + r` to build and run
+
+
 ### macOS
 
 Before compiling and running you need to download additional libraries:
