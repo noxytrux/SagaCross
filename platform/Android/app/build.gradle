@@ -15,7 +15,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                cppFlags "-std=c++14"
+                cppFlags "-std=c++14 -frtti -fexceptions -Wno-narrowing"
+                arguments '-DANDROID_STL=c++_static'
             }
         }
     }
@@ -34,6 +35,10 @@ android {
 }
 
 dependencies {
+    //implementation files('../FMOD/lib/fmod.jar')
+    implementation('com.android.support:appcompat-v7:27.1.1') {
+        exclude module: 'support-v4'
+    }
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'
