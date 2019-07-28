@@ -32,6 +32,12 @@ namespace sc {
 			, _renderer(renderer) 
 			, _audio(audio)
 		{
+#if MOBILE
+            _backsize = 64;
+#else
+            _backsize = 32;
+#endif
+
 		}
 
 		virtual ~SCBaseScene() noexcept = default;
@@ -58,6 +64,7 @@ namespace sc {
 		SCSceneType _type;
 		std::shared_ptr<SCRendererInterface> _renderer;
 		std::shared_ptr<SCAudio> _audio;
+        uint32_t _backsize;
 	};
 
 }
