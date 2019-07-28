@@ -22,8 +22,10 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        // Used to load the 'native-lib' library on application startup.
         init {
+
+            System.loadLibrary("fmod")
+            System.loadLibrary("fmodL")
             System.loadLibrary("native-lib")
         }
     }
