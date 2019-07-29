@@ -50,6 +50,69 @@ void SCGLFWInput::update()
 {
 	glfwPollEvents();
 	sc_key_callback(_window);
+
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1) == GLFW_TRUE) {
+	
+		int axes_count;
+		const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
+
+		if (axes_count > 0) {
+		
+			xVec2 dir = xVec2(0);
+			float angle = 0;
+			float moveSpeed = 50.0f;
+
+			if (axes_count >= 2) {
+			
+				dir.x = axes[0] * moveSpeed;
+				dir.y = axes[1] * moveSpeed;
+			}
+
+			if (axes_count == 4) {
+
+				float rad = atan2(axes[2], axes[3]);
+
+				angle = (int)((rad * 180.0 / M_PI) + 360.0) % 360;
+			}
+
+			if (movementCallback) {
+
+				movementCallback(dir, angle);
+			}
+		}
+
+		int buttons_count;
+		const unsigned char* buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttons_count);
+
+		// 0-3 AOXB, 4,5 - R1, R2 
+		if (buttons_count >= 5) {
+		
+			if (buttons[5] == GLFW_PRESS) {
+				
+				if (mouseCallback) {
+
+					mouseCallback(0, 1, xVec2(0));
+				}
+			}
+
+			static bool trigger_stop = false;
+
+			if (buttons[4] == GLFW_PRESS && trigger_stop == false) {
+
+				trigger_stop = true;
+
+				if (mouseCallback) {
+
+					mouseCallback(1, 1, xVec2(0));
+				}
+			}
+			else if (buttons[4] == GLFW_RELEASE) {
+			
+				trigger_stop = false;
+			}
+		}
+ 
+	}
 }
 
 xVec2 SCGLFWInput::getMousePosition()
