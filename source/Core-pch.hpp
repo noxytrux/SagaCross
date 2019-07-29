@@ -79,12 +79,20 @@
     extern PFNGLBINDVERTEXARRAYOESPROC glBindVertexArrayOES;
     extern PFNGLGENVERTEXARRAYSOESPROC glGenVertexArraysOES;
     extern PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArraysOES;
+    extern PFNGLMAPBUFFEROESPROC glMapBufferOES;
+    extern PFNGLUNMAPBUFFEROESPROC glUnmapBufferOES;
 
     extern void eglBuildVertexArray();
 
     #define glBindVertexArray glBindVertexArrayOES
     #define glGenVertexArrays glGenVertexArraysOES
     #define glDeleteVertexArrays glDeleteVertexArraysOES
+
+    #define glMapBuffer glMapBufferOES
+    #define glUnmapBuffer glUnmapBufferOES
+    #define GL_WRITE_ONLY GL_WRITE_ONLY_OES
+    #define GL_POINT_SPRITE GL_POINT_SPRITE_OES
+    #define GLdouble double
 
 #elif defined(__linux__)
 
