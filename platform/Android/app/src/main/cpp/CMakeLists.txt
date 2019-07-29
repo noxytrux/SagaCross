@@ -119,28 +119,13 @@ include_directories( ${lib_game_src_DIR}/Math )
 set(source "${PROJECT_SOURCE_DIR}/../../../../../../resource")
 set(destination "${PROJECT_SOURCE_DIR}/../assets")
 
-file (GLOB_RECURSE resources "${source}/*.*")
+file (GLOB_RECURSE resources RELATIVE ${source} "${source}/*.*")
 
 foreach(resource ${resources})
 
     message( "File is: ${resource}" )
 
-#    get_filename_component(filename ${resource} NAME)
-#    get_filename_component(dir ${resource} DIRECTORY)
-#    get_filename_component(dirname ${dir} NAME)
-
-#    set (output "")
-
-#    while(NOT ${dirname} STREQUAL resources)
-#        get_filename_component(path_component ${dir} NAME)
-#        set (output "${path_component}/${output}")
-#        get_filename_component(dir ${dir} DIRECTORY)
-#        get_filename_component(dirname ${dir} NAME)
-#    endwhile()
-
-#    set(output "${destination}/${output}/${filename}")
-
-#    configure_file( ${resource} ${output} COPYONLY )
+    configure_file( ${source}/${resource} ${destination}/${resource} COPYONLY )
 
 endforeach()
 
