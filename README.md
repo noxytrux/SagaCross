@@ -33,6 +33,13 @@ Desktop:
 * LMB fire
 * RMB drop mine
 
+Joystick:
+
+* D-pad or left stick to move
+* Right stick to aim (analog)
+* R1 to drop mine
+* R2 to shoot 
+
 Mobile:
 
 * Touch and drag left side of screen to move  
