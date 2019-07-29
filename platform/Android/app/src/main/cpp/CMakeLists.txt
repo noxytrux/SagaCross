@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.6.0)
 
+set(CMAKE_VERBOSE_MAKEFILE on)
+
 set( lib_mod_src_DIR ${PROJECT_SOURCE_DIR}/../../../../../../libraries/FMOD )
 
 add_library( fmod-lib SHARED IMPORTED )
@@ -114,11 +116,33 @@ include_directories( ${lib_game_src_DIR} )
 include_directories( ${lib_game_src_DIR}/Timer )
 include_directories( ${lib_game_src_DIR}/Math )
 
-#set( RESOURCE_DIR ${PROJECT_SOURCE_DIR}/../../../../../../resource )
-#set( ASSETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/main/assets )
+set(source "${PROJECT_SOURCE_DIR}/../../../../../../resource")
+set(destination "${PROJECT_SOURCE_DIR}/../assets")
 
-#configure_file( ${RESOURCE_DIR}/* ${ASSETS_DIR}/Resource/ COPYONLY )
+file (GLOB_RECURSE resources "${source}/*.*")
 
+foreach(resource ${resources})
+
+    message( "File is: ${resource}" )
+
+#    get_filename_component(filename ${resource} NAME)
+#    get_filename_component(dir ${resource} DIRECTORY)
+#    get_filename_component(dirname ${dir} NAME)
+
+#    set (output "")
+
+#    while(NOT ${dirname} STREQUAL resources)
+#        get_filename_component(path_component ${dir} NAME)
+#        set (output "${path_component}/${output}")
+#        get_filename_component(dir ${dir} DIRECTORY)
+#        get_filename_component(dirname ${dir} NAME)
+#    endwhile()
+
+#    set(output "${destination}/${output}/${filename}")
+
+#    configure_file( ${resource} ${output} COPYONLY )
+
+endforeach()
 
 find_library( log-lib
               log )
