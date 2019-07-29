@@ -228,7 +228,7 @@ int SCApplication::run()
 
     if (_userunloop) {
 
-        while (!display->shouldClose()) {
+        while (!display->shouldClose() && _userunloop) {
 
             renderFrame();
         }
