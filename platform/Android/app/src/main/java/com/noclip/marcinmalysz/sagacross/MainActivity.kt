@@ -20,11 +20,17 @@ class MainActivity : AppCompatActivity() {
     val wrapper: SCGameWrapper = SCGameWrapper()
     val kWriteStorageCode = 1337
     var tapDetector: GestureDetector? = null
+
     var glView: SCGLView? = null
+    var aimPad: GamePad? = null
+    var movePad: GamePad? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        aimPad = findViewById(R.id.aimPad)
+        movePad = findViewById(R.id.movePad)
 
         //fullscreen
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -144,6 +150,77 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun copyFileOrDir(path: String) {
+
+        val assetManager = assets
+
+        var files: Array<String>? = null
+
+        try {
+
+            files = assetManager.list(path)
+
+        } catch (e: IOException) {
+
+            Log.e("[ERROR]", "Failed to get asset file list.", e)
+        }
+
+        if (files == null) {
+            return
+        }
+
+        val basePath = Environment.getExternalStorageDirectory().toString() + "/SagaCross"
+
+        if (files.size == 0) {
+
+            val filePath = basePath + "/" + path
+            val outFile = File(filePath)
+
+            try {
+
+                assetManager.open(path).use { input ->
+
+                    FileOutputStream(outFile).use { out ->
+
+                        copyFile(input, out)
+                    }
+                }
+
+            } catch (e: IOException) {
+
+                Log.e("[ERROR]", "Failed to copy asset file: $filePath", e)
+            }
+
+        } else {
+
+            val fullPath = basePath + "/" + path
+            val dir = File(fullPath)
+
+            if (!dir.exists()) {
+                dir.mkdir()
+            }
+
+            for (filename in files) {
+
+                Log.d("Files", "FileName:$filename")
+
+                if (filename.startsWith("images") || filename.startsWith("webkit")) {
+                    continue
+                }
+
+                if (path.isEmpty()) {
+
+                    copyFileOrDir(filename)
+
+                }
+                else {
+
+                    copyFileOrDir(path + "/" + filename)
+                }
+            }
+        }
+    }
+
     private fun copyAssets() {
 
         val text = "COPING ASSETS..."
@@ -153,50 +230,7 @@ class MainActivity : AppCompatActivity() {
         toast.setGravity(Gravity.TOP or Gravity.CENTER, 0, 0)
         toast.show()
 
-        val assetManager = assets
-
-        var files: Array<String>? = null
-
-        try {
-
-            files = assetManager.list("")
-
-        } catch (e: IOException) {
-
-            Log.e("[ERROR]", "Failed to get asset file list.", e)
-        }
-
-        if (files != null) {
-
-            Log.d("Files", "Size: " + files.size)
-
-            for (filename in files) {
-
-                Log.d("Files", "FileName:$filename")
-
-                if (filename.startsWith("images") || filename.startsWith("webkit") || filename.startsWith("sounds")) {
-                    continue
-                }
-
-                val outFile = File(Environment.getExternalStorageDirectory().toString() + "/SagaCross/", filename)
-
-                try {
-
-                    assetManager.open(filename).use { input ->
-
-                        FileOutputStream(outFile).use { out ->
-
-                            copyFile(input, out)
-                        }
-                    }
-
-                } catch (e: IOException) {
-
-                    Log.e("[ERROR]", "Failed to copy asset file: $filename", e)
-                }
-
-            }
-        }
+        copyFileOrDir("")
 
         val textFinish = "COPING ASSETS FINISHED."
 
@@ -216,7 +250,6 @@ class MainActivity : AppCompatActivity() {
             return true
         }
     }
-
 
     companion object {
 
