@@ -6,24 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <view android:layout_width="0dp" android:layout_height="0dp"
-          class="com.noclip.marcinmalysz.sagacross.GamePad"
-          id="@+id/view" android:id="@+id/movePad"
+    <com.noclip.marcinmalysz.sagacross.GamePad android:layout_width="0dp" android:layout_height="0dp"
+                    android:id="@+id/movePad"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintEnd_toStartOf="@+id/aimPad"
           app:layout_constraintWidth_default="percent"
-          app:layout_constraintWidth_percent="0.5"/>
+          app:layout_constraintWidth_percent="0.5">
+    </com.noclip.marcinmalysz.sagacross.GamePad>
 
-    <view android:layout_width="0dp" android:layout_height="0dp"
-          class="com.noclip.marcinmalysz.sagacross.GamePad"
-          id="@+id/view2" android:id="@+id/aimPad"
+    <com.noclip.marcinmalysz.sagacross.GamePad android:layout_width="0dp" android:layout_height="0dp"
+          android:id="@+id/aimPad"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintWidth_default="percent"
           app:layout_constraintWidth_percent="0.5"
           app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toEndOf="@+id/movePad"/>
+          app:layout_constraintStart_toEndOf="@+id/movePad">
+    </com.noclip.marcinmalysz.sagacross.GamePad>
 
 </android.support.constraint.ConstraintLayout>

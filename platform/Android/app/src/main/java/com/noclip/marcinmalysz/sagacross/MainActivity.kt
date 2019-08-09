@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         aimPad = findViewById(R.id.aimPad)
         movePad = findViewById(R.id.movePad)
 
+        aimPad?.padType = GamePad.PadType.PadAim
+        movePad?.padType = GamePad.PadType.PadMove
+
         //fullscreen
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         SCImmersiveMode.SetImmersiveMode(window)
