@@ -3,19 +3,20 @@ package com.noclip.marcinmalysz.sagacross
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.view.WindowManager
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Point
+import android.os.Debug
 import android.os.Environment
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
 import android.util.Log
-import android.view.GestureDetector
-import android.view.Gravity
-import android.view.MotionEvent
+import android.view.*
+import android.widget.FrameLayout
 import android.widget.Toast
 import java.io.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), GamePadDelegate {
 
     val wrapper: SCGameWrapper = SCGameWrapper()
     val kWriteStorageCode = 1337
@@ -29,17 +30,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        aimPad = findViewById(R.id.aimPad)
-        movePad = findViewById(R.id.movePad)
-
-        aimPad?.padType = GamePad.PadType.PadAim
-        movePad?.padType = GamePad.PadType.PadMove
-
         //fullscreen
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         SCImmersiveMode.SetImmersiveMode(window)
-
-        tapDetector = GestureDetector(this, SCGestureTapListener())
 
         //copy assets
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
@@ -54,13 +47,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         preapreForCopy()
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-
-        this.tapDetector?.onTouchEvent(event)
-
-        return super.onTouchEvent(event)
     }
 
     override fun onPostResume() {
@@ -91,7 +77,6 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("[STORAGE]", Environment.getExternalStorageDirectory().toString())
 
-        //TOOD: dodac plik .nomedia przy kopiowaniu
         val dir = File(Environment.getExternalStorageDirectory(), "SagaCross")
 
         if (!dir.exists()) {
@@ -136,7 +121,46 @@ class MainActivity : AppCompatActivity() {
 
         if (dir.exists()) {
 
-            //TODO: create here game engine
+            val display = this.windowManager.defaultDisplay
+            val size = Point()
+            display.getRealSize(size)
+            val widthPixels = size.x
+            val heightPixels = size.y
+
+            glView = SCGLView(this, true, 24, 8)
+
+            glView?.also {
+
+                it.preserveEGLContextOnPause = true
+                it.holder.setFixedSize(widthPixels, heightPixels)
+                it.wrapper = wrapper
+
+                val layout = this.findViewById<ConstraintLayout>(R.id.gameLayout)
+                val params = FrameLayout.LayoutParams(widthPixels, heightPixels)
+
+                layout.addView(it,0, params)
+
+                tapDetector = GestureDetector(it.context, SCGestureTapListener())
+
+                it.setOnTouchListener(object : View.OnTouchListener {
+
+                    override fun onTouch(v: View, event: MotionEvent): Boolean {
+
+                        tapDetector?.onTouchEvent(event)
+
+                        return true
+                    }
+                })
+
+//                aimPad = findViewById(R.id.aimPad)
+//                movePad = findViewById(R.id.movePad)
+//
+//                aimPad?.padType = GamePad.PadType.PadAim
+//                movePad?.padType = GamePad.PadType.PadMove
+//
+//                aimPad?.delegate = this
+//                movePad?.delegate = this
+            }
         }
     }
 
@@ -248,10 +272,27 @@ class MainActivity : AppCompatActivity() {
 
         override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
 
-            Log.d("[INFO]", "SCREEN TAPPED.")
+            wrapper.handleTouch(e.rawX, e.rawY, true)
 
             return true
         }
+    }
+
+    override fun gamePadDidFinish(gamePad: GamePad) {
+
+        if (gamePad == aimPad) {
+
+            wrapper.fireBullet()
+        }
+    }
+
+    override fun gamePadDidUpdate(gamePad: GamePad) {
+
+        val x = movePad?.x ?: 0.0f
+        val y = movePad?.y ?: 0.0f
+        val angle = aimPad?.angle ?: 0.0f
+
+        wrapper.handleMovement(x, y, angle)
     }
 
     companion object {

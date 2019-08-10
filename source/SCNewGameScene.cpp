@@ -66,11 +66,11 @@ SCSceneType SCNewGameScene::Render() {
 			_type = SceneTypeMenu;
 		}
 
-		const float mapsize = 400.0f / screenSize.width;
+		const float mapsize = (display->isSmallDisplay() ? 200.0f : 400.0f) / screenSize.width;
         float sepsize = (1.0f - mapsize) * 0.5f;
 	
 		static const float selectmapratio[] = { sepsize, mapsize };
-		nk_layout_row(ctx, NK_DYNAMIC, 300, 2, selectmapratio);
+		nk_layout_row(ctx, NK_DYNAMIC, (display->isSmallDisplay() ? 150.0f : 300.0f), 2, selectmapratio);
 
 		auto image = nk_style_item_image(_maps[_selectedmap]);
 

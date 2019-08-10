@@ -141,8 +141,6 @@ target_link_libraries( native-lib
                        -ljnigraphics
                        -landroid)
 
-#COPY SO LIBRARIES
-
 add_custom_command( TARGET native-lib POST_BUILD
                     COMMAND ${CMAKE_COMMAND} -E copy
                     ${lib_mod_src_DIR}/lib/Android/${ANDROID_ABI}/libfmod.so

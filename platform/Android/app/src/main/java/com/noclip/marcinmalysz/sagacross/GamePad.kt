@@ -14,12 +14,21 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import kotlin.math.*
 
+interface GamePadDelegate {
+
+    fun gamePadDidFinish(gamePad: GamePad)
+    fun gamePadDidUpdate(gamePad: GamePad)
+}
+
 class GamePad : RelativeLayout {
 
     enum class PadType {
         PadMove,
         PadAim
     }
+
+    //This is Kotlin you do not need to use WeakReference Retain cycle does not affect this just remove it later
+    public var delegate: GamePadDelegate? = null
 
     private var background: ImageView? = null
     private var pad: ImageView? = null
@@ -34,7 +43,23 @@ class GamePad : RelativeLayout {
     private var sx = 0.0f
     private var sy = 0.0f
 
+    //is this really bad idea to use it or
+    fun finalize() {
+
+        delegate = null
+    }
+
+    constructor(context: Context) : super(context) {
+
+        commonInit()
+    }
+
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+
+        commonInit()
+    }
+
+    private fun commonInit() {
 
         background = ImageView(this.context)
         pad = ImageView(this.context)
@@ -71,9 +96,9 @@ class GamePad : RelativeLayout {
 
         }
 
-        setOnTouchListener(object : View.OnTouchListener {
+        setOnTouchListener(object : OnTouchListener {
 
-            private val kMaximumLenght = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, resources.displayMetrics)
+            private val kMaximumLength = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, resources.displayMetrics)
 
             override fun onTouch(v: View, event: MotionEvent): Boolean {
 
@@ -127,11 +152,11 @@ class GamePad : RelativeLayout {
                             val b = cos(rad)
 
                             var len = sqrt(tx * tx + ty * ty)
-                                len = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, len, resources.displayMetrics)
+                            len = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, len, resources.displayMetrics)
 
-                            if (len > kMaximumLenght) {
+                            if (len > kMaximumLength) {
 
-                                len = kMaximumLenght
+                                len = kMaximumLength
                             }
 
                             velocity = PointF(a * len, b * len)
@@ -145,6 +170,8 @@ class GamePad : RelativeLayout {
                                 it.y = (cy + velocity.y) - it.layoutParams.height * 0.5f
                             }
                         }
+
+                        delegate?.gamePadDidUpdate(this@GamePad)
                     }
 
                     MotionEvent.ACTION_UP -> {
@@ -173,6 +200,9 @@ class GamePad : RelativeLayout {
 
                         angle = 0.0f
                         velocity = PointF(0.0f, 0.0f)
+
+                        delegate?.gamePadDidUpdate(this@GamePad)
+                        delegate?.gamePadDidFinish(this@GamePad)
                     }
                 }
 

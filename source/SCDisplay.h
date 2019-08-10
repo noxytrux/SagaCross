@@ -30,6 +30,7 @@ namespace sc {
 		virtual void setVsync(const bool vsync) = 0;
 
 		const SCScreenSize & getScreenSize() const { return _size; }
+		bool isSmallDisplay() const { return _size.width < 1024 || _size.height < 768; }
 
 		virtual const std::vector<SCScreenSize> getResolutions() = 0;
 

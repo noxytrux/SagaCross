@@ -8,6 +8,7 @@
 #define MAX_VERTEX_BUFFER 512 * 1024
 #define MAX_ELEMENT_BUFFER 128 * 1024
 
+#define NK_INCLUDE_FONT_BAKING
 #define NK_IMPLEMENTATION
 #include "nuklear_glfw_gl3.h"
 
@@ -217,7 +218,11 @@ SCOpenGLRenderable::~SCOpenGLRenderable() noexcept
 
 void SCOpenGLRenderable::loadFonts(const std::string &path)
 {
+#if defined(__ANDROID__)
+    auto orbitronPath = path + "Lato-Light.ttf";
+#else
 	auto orbitronPath = path + "orbitron-light.ttf";
+#endif
 
 	nk_glfw3_font_stash_begin(&_atlas);
 	_orbitron30 = nk_font_atlas_add_from_file(_atlas, orbitronPath.c_str(), 50, 0);

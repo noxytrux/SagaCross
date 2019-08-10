@@ -3,6 +3,7 @@ package com.noclip.marcinmalysz.sagacross
 import android.content.Context
 import android.graphics.PixelFormat
 import android.opengl.GLSurfaceView
+import android.os.Environment
 import android.view.SurfaceHolder
 
 import javax.microedition.khronos.egl.EGL10
@@ -12,6 +13,10 @@ import javax.microedition.khronos.egl.EGLDisplay
 import javax.microedition.khronos.opengles.GL10
 
 class SCGLView : GLSurfaceView {
+
+    var wrapper: SCGameWrapper? = null
+        get() = field
+        set(value) { field = value; renderer?.wrapper = value }
 
     private var renderer: Renderer? = null
 
@@ -97,7 +102,7 @@ class SCGLView : GLSurfaceView {
                 throw IllegalArgumentException("No configs match configSpec")
             }
 
-            val configs = arrayOf<EGLConfig>()
+            val configs = arrayOfNulls<EGLConfig>(numConfigs)
 
             egl.eglChooseConfig(display, s_configAttribs2, configs, numConfigs, num_config)
 
@@ -106,15 +111,19 @@ class SCGLView : GLSurfaceView {
 
         internal fun chooseConfig(
             egl: EGL10, display: EGLDisplay,
-            configs: Array<EGLConfig>
+            configs: Array<EGLConfig?>
         ): EGLConfig? {
+
             for (config in configs) {
+
+                val conf = config!!
+
                 val d = findConfigAttrib(
-                    egl, display, config,
+                    egl, display, conf,
                     EGL10.EGL_DEPTH_SIZE, 0
                 )
                 val s = findConfigAttrib(
-                    egl, display, config,
+                    egl, display, conf,
                     EGL10.EGL_STENCIL_SIZE, 0
                 )
 
@@ -124,19 +133,19 @@ class SCGLView : GLSurfaceView {
 
                 // We want an *exact* match for red/green/blue/alpha
                 val r = findConfigAttrib(
-                    egl, display, config,
+                    egl, display, conf,
                     EGL10.EGL_RED_SIZE, 0
                 )
                 val g = findConfigAttrib(
-                    egl, display, config,
+                    egl, display, conf,
                     EGL10.EGL_GREEN_SIZE, 0
                 )
                 val b = findConfigAttrib(
-                    egl, display, config,
+                    egl, display, conf,
                     EGL10.EGL_BLUE_SIZE, 0
                 )
                 val a = findConfigAttrib(
-                    egl, display, config,
+                    egl, display, conf,
                     EGL10.EGL_ALPHA_SIZE, 0
                 )
 
@@ -177,17 +186,20 @@ class SCGLView : GLSurfaceView {
     private class Renderer : GLSurfaceView.Renderer {
 
         internal var loaded = false
+        internal var wrapper: SCGameWrapper? = null
 
         override fun onDrawFrame(gl: GL10) {
 
             if (!loaded) return
 
-            //TODO: render here
+            wrapper?.renderGame()
         }
 
         override fun onSurfaceChanged(gl: GL10, width: Int, height: Int) {
 
-            //TODO: start engine here
+            val rootDir = Environment.getExternalStorageDirectory().toString() + "/SagaCross/"
+
+            wrapper?.initializeEngine(width, height, rootDir)
             loaded = true
         }
 

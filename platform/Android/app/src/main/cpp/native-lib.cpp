@@ -19,9 +19,9 @@ std::string jstringTostring(JNIEnv *env, jstring jStr){
 
 JNIEXPORT void JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_initializeEngine(JNIEnv* env, jobject object, jint width, jint height, jstring path)
 {
-    std::string rootPath = jstringTostring(env, path);
+    eglBuildVertexArray();
 
-    rootPath += "/resource/";
+    std::string rootPath = jstringTostring(env, path);
 
     std::string settingsPath = rootPath + "settings.bin";
 
