@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.graphics.PointF
+import android.support.v4.view.ViewCompat
 import android.util.TypedValue
 import java.io.IOException
 import android.view.MotionEvent
@@ -60,6 +61,8 @@ class GamePad : RelativeLayout {
     }
 
     private fun commonInit() {
+
+        id = ViewCompat.generateViewId()
 
         background = ImageView(this.context)
         pad = ImageView(this.context)

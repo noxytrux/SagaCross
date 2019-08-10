@@ -5,14 +5,10 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Point
-import android.os.Debug
 import android.os.Environment
-import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.*
-import android.widget.FrameLayout
 import android.widget.Toast
 import java.io.*
 
@@ -34,6 +30,8 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         SCImmersiveMode.SetImmersiveMode(window)
 
+        glView = findViewById(R.id.renderView)
+
         //copy assets
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
 
@@ -46,7 +44,29 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
             return
         }
 
+        aimPad = findViewById(R.id.aimPad)
+        movePad = findViewById(R.id.movePad)
+
+        movePad?.also {
+
+            it.padType = GamePad.PadType.PadMove
+            it.delegate = this
+        }
+
+        aimPad?.also {
+
+            it.padType = GamePad.PadType.PadAim
+            it.delegate = this
+        }
+
         preapreForCopy()
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+        glView?.onTouchEvent(event)
+
+        return super.onTouchEvent(event)
     }
 
     override fun onPostResume() {
@@ -121,24 +141,10 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
 
         if (dir.exists()) {
 
-            val display = this.windowManager.defaultDisplay
-            val size = Point()
-            display.getRealSize(size)
-            val widthPixels = size.x
-            val heightPixels = size.y
-
-            glView = SCGLView(this, true, 24, 8)
-
             glView?.also {
 
-                it.preserveEGLContextOnPause = true
-                it.holder.setFixedSize(widthPixels, heightPixels)
+                it.setupRenderer()
                 it.wrapper = wrapper
-
-                val layout = this.findViewById<ConstraintLayout>(R.id.gameLayout)
-                val params = FrameLayout.LayoutParams(widthPixels, heightPixels)
-
-                layout.addView(it,0, params)
 
                 tapDetector = GestureDetector(it.context, SCGestureTapListener())
 
@@ -151,15 +157,6 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
                         return true
                     }
                 })
-
-//                aimPad = findViewById(R.id.aimPad)
-//                movePad = findViewById(R.id.movePad)
-//
-//                aimPad?.padType = GamePad.PadType.PadAim
-//                movePad?.padType = GamePad.PadType.PadMove
-//
-//                aimPad?.delegate = this
-//                movePad?.delegate = this
             }
         }
     }
@@ -271,6 +268,8 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
     private inner class SCGestureTapListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+
+            Log.d("[INFO]", "TOUCH DETECTED!")
 
             wrapper.handleTouch(e.rawX, e.rawY, true)
 

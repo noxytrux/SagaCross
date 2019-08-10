@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.PixelFormat
 import android.opengl.GLSurfaceView
 import android.os.Environment
+import android.util.AttributeSet
 import android.view.SurfaceHolder
 
 import javax.microedition.khronos.egl.EGL10
@@ -19,6 +20,11 @@ class SCGLView : GLSurfaceView {
         set(value) { field = value; renderer?.wrapper = value }
 
     private var renderer: Renderer? = null
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+
+        init(true, 24, 8)
+    }
 
     constructor(context: Context) : super(context) {
 
@@ -47,6 +53,9 @@ class SCGLView : GLSurfaceView {
         )
 
         preserveEGLContextOnPause = true
+    }
+
+    fun setupRenderer() {
 
         renderer = Renderer()
 
