@@ -9,26 +9,27 @@
     <com.noclip.marcinmalysz.sagacross.SCGLView android:layout_width="match_parent"
                                                 android:layout_height="match_parent" android:id="@+id/renderView"
     />
-    <com.noclip.marcinmalysz.sagacross.GamePad android:layout_width="0dp" android:layout_height="0dp"
-                                               android:id="@+id/movePad"
-                                               app:layout_constraintWidth_default="percent"
-                                               app:layout_constraintWidth_percent="0.5"
-                                               app:layout_constraintStart_toStartOf="parent"
-                                               app:layout_constraintBottom_toBottomOf="parent"
-                                               app:layout_constraintHeight_default="percent"
-                                               app:layout_constraintHeight_percent="1.0"
-                                               app:layout_constraintTop_toTopOf="parent">
-    </com.noclip.marcinmalysz.sagacross.GamePad>
 
-    <com.noclip.marcinmalysz.sagacross.GamePad android:layout_width="0dp" android:layout_height="0dp"
-                                               android:id="@+id/aimPad"
-                                               app:layout_constraintWidth_default="percent"
-                                               app:layout_constraintWidth_percent="0.5"
-                                               app:layout_constraintEnd_toEndOf="parent"
-                                               app:layout_constraintHeight_default="percent"
-                                               app:layout_constraintHeight_percent="1.0"
-                                               app:layout_constraintTop_toTopOf="parent"
-                                               app:layout_constraintBottom_toBottomOf="parent">
-    </com.noclip.marcinmalysz.sagacross.GamePad>
+    <!--<com.noclip.marcinmalysz.sagacross.GamePad android:layout_width="0dp" android:layout_height="0dp"-->
+                                               <!--android:id="@+id/movePad"-->
+                                               <!--app:layout_constraintWidth_default="percent"-->
+                                               <!--app:layout_constraintWidth_percent="0.5"-->
+                                               <!--app:layout_constraintStart_toStartOf="parent"-->
+                                               <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                                               <!--app:layout_constraintHeight_default="percent"-->
+                                               <!--app:layout_constraintHeight_percent="1.0"-->
+                                               <!--app:layout_constraintTop_toTopOf="parent">-->
+    <!--</com.noclip.marcinmalysz.sagacross.GamePad>-->
+
+    <!--<com.noclip.marcinmalysz.sagacross.GamePad android:layout_width="0dp" android:layout_height="0dp"-->
+                                               <!--android:id="@+id/aimPad"-->
+                                               <!--app:layout_constraintWidth_default="percent"-->
+                                               <!--app:layout_constraintWidth_percent="0.5"-->
+                                               <!--app:layout_constraintEnd_toEndOf="parent"-->
+                                               <!--app:layout_constraintHeight_default="percent"-->
+                                               <!--app:layout_constraintHeight_percent="1.0"-->
+                                               <!--app:layout_constraintTop_toTopOf="parent"-->
+                                               <!--app:layout_constraintBottom_toBottomOf="parent">-->
+    <!--</com.noclip.marcinmalysz.sagacross.GamePad>-->
 
 </android.support.constraint.ConstraintLayout>

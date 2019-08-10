@@ -23,7 +23,7 @@ class SCGLView : GLSurfaceView {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
 
-        init(true, 24, 8)
+        init(false, 24, 8)
     }
 
     constructor(context: Context) : super(context) {
@@ -37,6 +37,9 @@ class SCGLView : GLSurfaceView {
     }
 
     private fun init(translucent: Boolean, depth: Int, stencil: Int) {
+
+        isClickable = false
+        isFocusable = false
 
         if (translucent) {
             this.holder.setFormat(PixelFormat.TRANSLUCENT)

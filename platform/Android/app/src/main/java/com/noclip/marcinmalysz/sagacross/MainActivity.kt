@@ -44,8 +44,8 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
             return
         }
 
-        aimPad = findViewById(R.id.aimPad)
-        movePad = findViewById(R.id.movePad)
+//        aimPad = findViewById(R.id.aimPad)
+//        movePad = findViewById(R.id.movePad)
 
         movePad?.also {
 
@@ -59,12 +59,14 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
             it.delegate = this
         }
 
+        tapDetector = GestureDetector(this, SCGestureTapListener())
+
         preapreForCopy()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        glView?.onTouchEvent(event)
+        this.tapDetector?.onTouchEvent(event)
 
         return super.onTouchEvent(event)
     }
@@ -145,18 +147,6 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
 
                 it.setupRenderer()
                 it.wrapper = wrapper
-
-                tapDetector = GestureDetector(it.context, SCGestureTapListener())
-
-                it.setOnTouchListener(object : View.OnTouchListener {
-
-                    override fun onTouch(v: View, event: MotionEvent): Boolean {
-
-                        tapDetector?.onTouchEvent(event)
-
-                        return true
-                    }
-                })
             }
         }
     }
