@@ -9,7 +9,10 @@ import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.*
+import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
 
 class MainActivity : AppCompatActivity(), GamePadDelegate {
@@ -21,6 +24,7 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
     var glView: SCGLView? = null
     var aimPad: GamePad? = null
     var movePad: GamePad? = null
+    var bombBtn: ImageButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +48,10 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
             return
         }
 
-//        aimPad = findViewById(R.id.aimPad)
-//        movePad = findViewById(R.id.movePad)
+        val padLayout = findViewById<FrameLayout>(R.id.padsLatout)
+
+        aimPad = GamePad(this, padsLatout)
+        movePad = GamePad(this, padsLatout)
 
         movePad?.also {
 
@@ -61,12 +67,20 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
 
         tapDetector = GestureDetector(this, SCGestureTapListener())
 
+        bombBtn = findViewById(R.id.bombBtn)
+        bombBtn?.setOnClickListener { _ ->
+
+            wrapper.dropMine()
+        }
+
         preapreForCopy()
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+    override fun onTouchEvent(event: MotionEvent): Boolean {
 
-        this.tapDetector?.onTouchEvent(event)
+        tapDetector?.onTouchEvent(event)
+        aimPad?.onTouchEvent(event)
+        movePad?.onTouchEvent(event)
 
         return super.onTouchEvent(event)
     }
@@ -277,8 +291,8 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
 
     override fun gamePadDidUpdate(gamePad: GamePad) {
 
-        val x = movePad?.x ?: 0.0f
-        val y = movePad?.y ?: 0.0f
+        val x = movePad?.velocity?.x ?: 0.0f
+        val y = movePad?.velocity?.y ?: 0.0f
         val angle = aimPad?.angle ?: 0.0f
 
         wrapper.handleMovement(x, y, angle)
