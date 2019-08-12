@@ -6,15 +6,19 @@ import android.widget.RelativeLayout
 import android.widget.ImageView
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.graphics.PointF
 import android.support.constraint.ConstraintLayout
 import android.support.v4.view.ViewCompat
+import android.util.Log
 import android.util.TypedValue
+import android.view.GestureDetector
 import java.io.IOException
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
+import java.util.jar.Attributes
 import kotlin.math.*
 
 interface GamePadDelegate {
@@ -23,18 +27,16 @@ interface GamePadDelegate {
     fun gamePadDidUpdate(gamePad: GamePad)
 }
 
-class GamePad {
+class GamePad : FrameLayout {
 
     enum class PadType {
         PadMove,
         PadAim
     }
 
-    private var context:Context? = null
-    private var layout:ConstraintLayout? = null
-
     //This is Kotlin you do not need to use WeakReference Retain cycle does not affect this just remove it later
     var delegate: GamePadDelegate? = null
+    var tapDetector: GestureDetector? = null
 
     private var background: ImageView? = null
     private var pad: ImageView? = null
@@ -55,10 +57,12 @@ class GamePad {
         delegate = null
     }
 
-    constructor(context: Context, layout: ConstraintLayout){
+    constructor(context: Context) : super(context) {
 
-        this.context = context
-        this.layout= layout
+        commonInit()
+    }
+
+    constructor(context: Context, attr: AttributeSet) : super(context, attr) {
 
         commonInit()
     }
@@ -68,8 +72,8 @@ class GamePad {
         background = ImageView(this.context)
         pad = ImageView(this.context)
 
-        layout?.addView(background)
-        layout?.addView(pad)
+        addView(background)
+        addView(pad)
 
         val metrics = context?.resources?.displayMetrics
 
@@ -103,33 +107,26 @@ class GamePad {
         }
     }
 
-    fun onTouchEvent(event: MotionEvent) {
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+
+        tapDetector?.onTouchEvent(event)
 
         val metrics = context?.resources?.displayMetrics
         val kMaximumLength = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, metrics)
 
-        val index:Int = event.actionIndex
-        val size = layout!!.layoutParams.width * 0.5f
+        val action = event.action and MotionEvent.ACTION_MASK
 
-        if (padType == PadType.PadMove && event.getX(index) > size) {
-            return
-        }
-
-        if (padType == PadType.PadAim && event.getX(index) < size) {
-            return
-        }
-
-        when (event.action) {
+        when (action) {
 
             MotionEvent.ACTION_DOWN -> {
 
-                sx = event.getX(index)
-                sy = event.getY(index)
+                sx = event.getX()
+                sy = event.getY()
 
                 background?.also {
 
-                    it.x = event.getX(index) - it.layoutParams.width * 0.5f
-                    it.y = event.getY(index) - it.layoutParams.height * 0.5f
+                    it.x = event.getX() - it.layoutParams.width * 0.5f
+                    it.y = event.getY() - it.layoutParams.height * 0.5f
 
                     it.animate().apply {
                         interpolator = LinearInterpolator()
@@ -142,8 +139,8 @@ class GamePad {
 
                 pad?.also {
 
-                    it.x = event.getX(index) - it.layoutParams.width * 0.5f
-                    it.y = event.getY(index) - it.layoutParams.height * 0.5f
+                    it.x = event.getX() - it.layoutParams.width * 0.5f
+                    it.y = event.getY() - it.layoutParams.height * 0.5f
 
                     it.animate().apply {
                         interpolator = LinearInterpolator()
@@ -159,8 +156,8 @@ class GamePad {
 
                 pad?.also {
 
-                    val tx = event.getX(index) - sx
-                    val ty = event.getY(index) - sy
+                    val tx = event.getX() - sx
+                    val ty = event.getY() - sy
 
                     val rad = atan2(tx, ty)
                     angle = ((rad * 180.0f / PI.toFloat()) + 360.0f).rem(360)
@@ -223,6 +220,7 @@ class GamePad {
             }
         }
 
+        return true
     }
 
     private fun updatePadImage() {

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Point
+import android.graphics.Rect
 import android.os.Environment
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
@@ -49,24 +51,31 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
             return
         }
 
+
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getRealSize(size)
+
         val padLayout = findViewById<ConstraintLayout>(R.id.gameLayout)
 
-        aimPad = GamePad(this, padLayout)
-        movePad = GamePad(this, padLayout)
+        tapDetector = GestureDetector(this, SCGestureTapListener())
+
+        aimPad = findViewById(R.id.aimPad)
+        movePad = findViewById(R.id.movePad)
 
         movePad?.also {
 
             it.padType = GamePad.PadType.PadMove
             it.delegate = this
+            it.tapDetector = tapDetector
         }
 
         aimPad?.also {
 
             it.padType = GamePad.PadType.PadAim
             it.delegate = this
+            it.tapDetector = tapDetector
         }
-
-        tapDetector = GestureDetector(this, SCGestureTapListener())
 
         bombBtn = findViewById(R.id.bombBtn)
         bombBtn?.setOnClickListener { _ ->
@@ -75,15 +84,6 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
         }
 
         preapreForCopy()
-    }
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-
-        tapDetector?.onTouchEvent(event)
-        aimPad?.onTouchEvent(event)
-        movePad?.onTouchEvent(event)
-
-        return super.onTouchEvent(event)
     }
 
     override fun onPostResume() {
