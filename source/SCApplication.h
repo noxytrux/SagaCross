@@ -23,6 +23,10 @@ namespace sc {
 		const std::shared_ptr<SCInputInteface> &getInput() const { return _input; }
         bool isRenderingGame() const;
 
+	#if defined(__ANDROID__)
+		const std::shared_ptr<SCAudio> &getAudio() const { return _audio; }
+	#endif
+
 	private:
 
 		const std::string getResourcePath() const;

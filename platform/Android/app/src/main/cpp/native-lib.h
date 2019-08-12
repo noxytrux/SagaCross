@@ -12,6 +12,8 @@ JNIEXPORT void JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_hand
 JNIEXPORT void JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_fireBullet(JNIEnv *env, jobject object);
 JNIEXPORT void JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_dropMine(JNIEnv *env, jobject object);
 JNIEXPORT jboolean JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_renderingGame(JNIEnv *env, jobject object);
+JNIEXPORT void JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_mute(JNIEnv *env, jobject object);
+JNIEXPORT void JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_unmute(JNIEnv *env, jobject object);
 
 }
 
