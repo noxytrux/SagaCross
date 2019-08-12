@@ -6,22 +6,28 @@ import android.widget.RelativeLayout
 import android.widget.ImageView
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.graphics.PointF
+import android.support.constraint.ConstraintLayout
 import android.support.v4.view.ViewCompat
+import android.util.Log
 import android.util.TypedValue
+import android.view.GestureDetector
 import java.io.IOException
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
+import android.widget.FrameLayout
+import java.util.jar.Attributes
 import kotlin.math.*
 
 interface GamePadDelegate {
 
-    fun gamePadDidFinish(gamePad: GamePad)
-    fun gamePadDidUpdate(gamePad: GamePad)
+    fun onPadFinish(gamePad: GamePad)
+    fun onPadUpdate(gamePad: GamePad)
 }
 
-class GamePad : RelativeLayout {
+class GamePad : FrameLayout {
 
     enum class PadType {
         PadMove,
@@ -29,7 +35,9 @@ class GamePad : RelativeLayout {
     }
 
     //This is Kotlin you do not need to use WeakReference Retain cycle does not affect this just remove it later
-    public var delegate: GamePadDelegate? = null
+    var delegate: GamePadDelegate? = null
+    var tapDetector: GestureDetector? = null
+    var alloInteraction: Boolean = true
 
     private var background: ImageView? = null
     private var pad: ImageView? = null
@@ -55,14 +63,12 @@ class GamePad : RelativeLayout {
         commonInit()
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+    constructor(context: Context, attr: AttributeSet) : super(context, attr) {
 
         commonInit()
     }
 
     private fun commonInit() {
-
-        id = ViewCompat.generateViewId()
 
         background = ImageView(this.context)
         pad = ImageView(this.context)
@@ -70,7 +76,9 @@ class GamePad : RelativeLayout {
         addView(background)
         addView(pad)
 
-        val bgSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 128.0f, resources.displayMetrics).toInt()
+        val metrics = context?.resources?.displayMetrics
+
+        val bgSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 128.0f, metrics).toInt()
 
         background?.also {
 
@@ -80,7 +88,7 @@ class GamePad : RelativeLayout {
             it.alpha = 0.0f
         }
 
-        val padSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, resources.displayMetrics).toInt()
+        val padSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, metrics).toInt()
 
         pad?.also {
 
@@ -98,120 +106,130 @@ class GamePad : RelativeLayout {
         catch (ignored: IOException) {
 
         }
+    }
 
-        setOnTouchListener(object : OnTouchListener {
+    override fun onTouchEvent(event: MotionEvent): Boolean {
 
-            private val kMaximumLength = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, resources.displayMetrics)
+        tapDetector?.onTouchEvent(event)
 
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
+        if (!alloInteraction) {
 
-                when (event.action) {
+            background?.also { it.alpha = 0.0f }
+            pad?.also { it.alpha = 0.0f }
 
-                    MotionEvent.ACTION_DOWN -> {
+            return true
+        }
 
-                        sx = event.x
-                        sy = event.y
+        val metrics = context?.resources?.displayMetrics
+        val kMaximumLength = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, metrics)
 
-                        background?.also {
+        val action = event.action and MotionEvent.ACTION_MASK
 
-                            it.x = event.x - it.layoutParams.width * 0.5f
-                            it.y = event.y - it.layoutParams.height * 0.5f
+        when (action) {
 
-                            it.animate().apply {
-                                interpolator = LinearInterpolator()
-                                duration = 250
-                                alpha(1.0f)
-                                startDelay = 0
-                                start()
-                            }
-                        }
+            MotionEvent.ACTION_DOWN -> {
 
-                        pad?.also {
+                sx = event.getX()
+                sy = event.getY()
 
-                            it.x = event.x - it.layoutParams.width * 0.5f
-                            it.y = event.y - it.layoutParams.height * 0.5f
+                background?.also {
 
-                            it.animate().apply {
-                                interpolator = LinearInterpolator()
-                                duration = 250
-                                alpha(1.0f)
-                                startDelay = 0
-                                start()
-                            }
-                        }
-                    }
+                    it.x = event.getX() - it.layoutParams.width * 0.5f
+                    it.y = event.getY() - it.layoutParams.height * 0.5f
 
-                    MotionEvent.ACTION_MOVE -> {
-
-                        pad?.also {
-
-                            val tx = event.x - sx
-                            val ty = event.y - sy
-
-                            val rad = atan2(tx, ty)
-                            angle = ((rad * 180.0f / PI.toFloat()) + 360.0f).rem(360)
-
-                            val a = sin(rad)
-                            val b = cos(rad)
-
-                            var len = sqrt(tx * tx + ty * ty)
-                            len = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, len, resources.displayMetrics)
-
-                            if (len > kMaximumLength) {
-
-                                len = kMaximumLength
-                            }
-
-                            velocity = PointF(a * len, b * len)
-
-                            background?.also { bg ->
-
-                                val cx = bg.x + bg.layoutParams.width * 0.5f
-                                val cy = bg.y + bg.layoutParams.height * 0.5f
-
-                                it.x = (cx + velocity.x) - it.layoutParams.width * 0.5f
-                                it.y = (cy + velocity.y) - it.layoutParams.height * 0.5f
-                            }
-                        }
-
-                        delegate?.gamePadDidUpdate(this@GamePad)
-                    }
-
-                    MotionEvent.ACTION_UP -> {
-
-                        background?.also {
-
-                            it.animate().apply {
-                                interpolator = LinearInterpolator()
-                                duration = 250
-                                alpha(0.0f)
-                                startDelay = 0
-                                start()
-                            }
-                        }
-
-                        pad?.also {
-
-                            it.animate().apply {
-                                interpolator = LinearInterpolator()
-                                duration = 250
-                                alpha(0.0f)
-                                startDelay = 0
-                                start()
-                            }
-                        }
-
-                        angle = 0.0f
-                        velocity = PointF(0.0f, 0.0f)
-
-                        delegate?.gamePadDidUpdate(this@GamePad)
-                        delegate?.gamePadDidFinish(this@GamePad)
+                    it.animate().apply {
+                        interpolator = LinearInterpolator()
+                        duration = 250
+                        alpha(1.0f)
+                        startDelay = 0
+                        start()
                     }
                 }
 
-                return true
+                pad?.also {
+
+                    it.x = event.getX() - it.layoutParams.width * 0.5f
+                    it.y = event.getY() - it.layoutParams.height * 0.5f
+
+                    it.animate().apply {
+                        interpolator = LinearInterpolator()
+                        duration = 250
+                        alpha(1.0f)
+                        startDelay = 0
+                        start()
+                    }
+                }
             }
-        })
+
+            MotionEvent.ACTION_MOVE -> {
+
+                pad?.also {
+
+                    val tx = event.getX() - sx
+                    val ty = event.getY() - sy
+
+                    val rad = atan2(tx, ty)
+                    angle = ((rad * 180.0f / PI.toFloat()) + 360.0f).rem(360)
+
+                    val a = sin(rad)
+                    val b = cos(rad)
+
+                    var len = sqrt(tx * tx + ty * ty)
+                    len = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, len, metrics)
+
+                    if (len > kMaximumLength) {
+
+                        len = kMaximumLength
+                    }
+
+                    velocity = PointF(a * len, b * len)
+
+                    background?.also { bg ->
+
+                        val cx = bg.x + bg.layoutParams.width * 0.5f
+                        val cy = bg.y + bg.layoutParams.height * 0.5f
+
+                        it.x = (cx + velocity.x) - it.layoutParams.width * 0.5f
+                        it.y = (cy + velocity.y) - it.layoutParams.height * 0.5f
+                    }
+                }
+
+                delegate?.onPadUpdate(this@GamePad)
+            }
+
+            MotionEvent.ACTION_UP -> {
+
+                background?.also {
+
+                    it.animate().apply {
+                        interpolator = LinearInterpolator()
+                        duration = 250
+                        alpha(0.0f)
+                        startDelay = 0
+                        start()
+                    }
+                }
+
+                pad?.also {
+
+                    it.animate().apply {
+                        interpolator = LinearInterpolator()
+                        duration = 250
+                        alpha(0.0f)
+                        startDelay = 0
+                        start()
+                    }
+                }
+
+                angle = 0.0f
+                velocity = PointF(0.0f, 0.0f)
+
+                delegate?.onPadUpdate(this@GamePad)
+                delegate?.onPadFinish(this@GamePad)
+            }
+        }
+
+        return true
     }
 
     private fun updatePadImage() {
@@ -231,8 +249,8 @@ class GamePad : RelativeLayout {
 
     @Throws(IOException::class)
     private fun getBitmapFromAsset(strName: String): Bitmap {
-        val assetManager = context.assets
-        val istr = assetManager.open(strName)
+        val assetManager = context?.assets
+        val istr = assetManager?.open(strName)
         return BitmapFactory.decodeStream(istr)
     }
 }

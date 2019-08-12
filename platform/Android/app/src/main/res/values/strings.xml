@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SagaCross</string>
+    <string name="bombimage">bombimage</string>
 </resources>
