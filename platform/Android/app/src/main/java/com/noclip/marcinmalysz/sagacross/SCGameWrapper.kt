@@ -9,4 +9,6 @@ class SCGameWrapper {
     external fun fireBullet()
     external fun dropMine()
     external fun renderingGame() : Boolean
+    external fun mute()
+    external fun unmute()
 }

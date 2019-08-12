@@ -96,9 +96,16 @@ class MainActivity : AppCompatActivity(), GamePadDelegate, SCGLViewDelegate {
         return super.onTouchEvent(event)
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        wrapper.mute()
+    }
+
     override fun onPostResume() {
         super.onPostResume()
 
+        wrapper.unmute()
         SCImmersiveMode.SetImmersiveMode(window)
     }
 
@@ -313,6 +320,7 @@ class MainActivity : AppCompatActivity(), GamePadDelegate, SCGLViewDelegate {
         val visible = wrapper.renderingGame()
 
         bombBtn?.alpha = if (visible) { 1.0f } else { 0.0f }
+        bombBtn?.isClickable = visible
         aimPad?.alpha  = if (visible) { 1.0f } else { 0.0f }
         movePad?.alpha = if (visible) { 1.0f } else { 0.0f }
     }

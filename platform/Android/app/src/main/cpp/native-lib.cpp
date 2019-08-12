@@ -105,3 +105,30 @@ JNIEXPORT jboolean JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_
     return application->isRenderingGame();
 }
 
+JNIEXPORT void JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_mute(JNIEnv *env, jobject object)
+{
+    if (!application) {
+        return;
+    }
+
+    if (settings->isMuted()) {
+        return;
+    }
+
+    auto audio = application->getAudio();
+    audio->mute();
+}
+
+JNIEXPORT void JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_unmute(JNIEnv *env, jobject object)
+{
+    if (!application) {
+        return;
+    }
+
+    if (settings->isMuted()) {
+        return;
+    }
+
+    auto audio = application->getAudio();
+    audio->unmute();
+}
