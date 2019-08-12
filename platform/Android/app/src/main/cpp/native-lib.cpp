@@ -68,7 +68,10 @@ JNIEXPORT void JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_hand
 
     auto input = std::dynamic_pointer_cast<SCMobileInput>(application->getInput());
 
-    input->movementCallback(xVec2(dx, dy), angle);
+    float a = static_cast<float>(angle);
+    xVec2 dir = xVec2(dx, dy);
+
+    input->movementCallback(dir, a);
 }
 
 JNIEXPORT void JNICALL Java_com_noclip_marcinmalysz_sagacross_SCGameWrapper_fireBullet(JNIEnv *env, jobject object)

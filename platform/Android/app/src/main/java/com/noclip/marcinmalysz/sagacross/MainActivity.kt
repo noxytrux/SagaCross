@@ -18,7 +18,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
 
-class MainActivity : AppCompatActivity(), GamePadDelegate {
+class MainActivity : AppCompatActivity(), GamePadDelegate, SCGLViewDelegate {
 
     val wrapper: SCGameWrapper = SCGameWrapper()
     val kWriteStorageCode = 1337
@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
             return
         }
 
-
         val display = windowManager.defaultDisplay
         val size = Point()
         display.getRealSize(size)
@@ -83,7 +82,18 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
             wrapper.dropMine()
         }
 
+        onViewDraw()
         preapreForCopy()
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+        if (!wrapper.renderingGame()) {
+
+            return tapDetector!!.onTouchEvent(event)
+        }
+
+        return super.onTouchEvent(event)
     }
 
     override fun onPostResume() {
@@ -162,6 +172,7 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
 
                 it.setupRenderer()
                 it.wrapper = wrapper
+                it.delegate = this
             }
         }
     }
@@ -274,15 +285,13 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
 
         override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
 
-            Log.d("[INFO]", "TOUCH DETECTED!")
-
             wrapper.handleTouch(e.rawX, e.rawY, true)
 
             return true
         }
     }
 
-    override fun gamePadDidFinish(gamePad: GamePad) {
+    override fun onPadFinish(gamePad: GamePad) {
 
         if (gamePad == aimPad) {
 
@@ -290,13 +299,22 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
         }
     }
 
-    override fun gamePadDidUpdate(gamePad: GamePad) {
+    override fun onPadUpdate(gamePad: GamePad) {
 
         val x = movePad?.velocity?.x ?: 0.0f
         val y = movePad?.velocity?.y ?: 0.0f
         val angle = aimPad?.angle ?: 0.0f
 
         wrapper.handleMovement(x, y, angle)
+    }
+
+    override fun onViewDraw() {
+
+        val visible = wrapper.renderingGame()
+
+        bombBtn?.alpha = if (visible) { 1.0f } else { 0.0f }
+        aimPad?.alpha  = if (visible) { 1.0f } else { 0.0f }
+        movePad?.alpha = if (visible) { 1.0f } else { 0.0f }
     }
 
     companion object {

@@ -137,7 +137,7 @@ namespace sc {
 		virtual bool Give(const std::shared_ptr<SCVehicleObj> &obj, const std::shared_ptr<SCAudio> &audio) override
 		{
 
-			char & L = std::dynamic_pointer_cast<SCTank>(obj)->live;
+			int & L = std::dynamic_pointer_cast<SCTank>(obj)->live;
 
 			L += 40;
 

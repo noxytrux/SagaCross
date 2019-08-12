@@ -13,11 +13,20 @@ import javax.microedition.khronos.egl.EGLContext
 import javax.microedition.khronos.egl.EGLDisplay
 import javax.microedition.khronos.opengles.GL10
 
+interface SCGLViewDelegate {
+
+    fun onViewDraw()
+}
+
 class SCGLView : GLSurfaceView {
 
     var wrapper: SCGameWrapper? = null
         get() = field
         set(value) { field = value; renderer?.wrapper = value }
+
+    var delegate: SCGLViewDelegate? = null
+        get() = field
+        set(value) { field = value; renderer?.delegate = value }
 
     private var renderer: Renderer? = null
 
@@ -199,11 +208,13 @@ class SCGLView : GLSurfaceView {
 
         internal var loaded = false
         internal var wrapper: SCGameWrapper? = null
+        internal var delegate: SCGLViewDelegate? = null
 
         override fun onDrawFrame(gl: GL10) {
 
             if (!loaded) return
 
+            delegate?.onViewDraw()
             wrapper?.renderGame()
         }
 

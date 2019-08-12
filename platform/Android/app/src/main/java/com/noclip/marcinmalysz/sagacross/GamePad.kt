@@ -23,8 +23,8 @@ import kotlin.math.*
 
 interface GamePadDelegate {
 
-    fun gamePadDidFinish(gamePad: GamePad)
-    fun gamePadDidUpdate(gamePad: GamePad)
+    fun onPadFinish(gamePad: GamePad)
+    fun onPadUpdate(gamePad: GamePad)
 }
 
 class GamePad : FrameLayout {
@@ -37,6 +37,7 @@ class GamePad : FrameLayout {
     //This is Kotlin you do not need to use WeakReference Retain cycle does not affect this just remove it later
     var delegate: GamePadDelegate? = null
     var tapDetector: GestureDetector? = null
+    var alloInteraction: Boolean = true
 
     private var background: ImageView? = null
     private var pad: ImageView? = null
@@ -110,6 +111,14 @@ class GamePad : FrameLayout {
     override fun onTouchEvent(event: MotionEvent): Boolean {
 
         tapDetector?.onTouchEvent(event)
+
+        if (!alloInteraction) {
+
+            background?.also { it.alpha = 0.0f }
+            pad?.also { it.alpha = 0.0f }
+
+            return true
+        }
 
         val metrics = context?.resources?.displayMetrics
         val kMaximumLength = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, metrics)
@@ -185,7 +194,7 @@ class GamePad : FrameLayout {
                     }
                 }
 
-                delegate?.gamePadDidUpdate(this@GamePad)
+                delegate?.onPadUpdate(this@GamePad)
             }
 
             MotionEvent.ACTION_UP -> {
@@ -215,8 +224,8 @@ class GamePad : FrameLayout {
                 angle = 0.0f
                 velocity = PointF(0.0f, 0.0f)
 
-                delegate?.gamePadDidUpdate(this@GamePad)
-                delegate?.gamePadDidFinish(this@GamePad)
+                delegate?.onPadUpdate(this@GamePad)
+                delegate?.onPadFinish(this@GamePad)
             }
         }
 
