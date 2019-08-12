@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Environment
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.*
@@ -48,10 +49,10 @@ class MainActivity : AppCompatActivity(), GamePadDelegate {
             return
         }
 
-        val padLayout = findViewById<FrameLayout>(R.id.padsLatout)
+        val padLayout = findViewById<ConstraintLayout>(R.id.gameLayout)
 
-        aimPad = GamePad(this, padsLatout)
-        movePad = GamePad(this, padsLatout)
+        aimPad = GamePad(this, padLayout)
+        movePad = GamePad(this, padLayout)
 
         movePad?.also {
 

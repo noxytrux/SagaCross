@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.graphics.PointF
+import android.support.constraint.ConstraintLayout
 import android.support.v4.view.ViewCompat
 import android.util.TypedValue
 import java.io.IOException
@@ -30,7 +31,7 @@ class GamePad {
     }
 
     private var context:Context? = null
-    private var layout:FrameLayout? = null
+    private var layout:ConstraintLayout? = null
 
     //This is Kotlin you do not need to use WeakReference Retain cycle does not affect this just remove it later
     var delegate: GamePadDelegate? = null
@@ -54,7 +55,7 @@ class GamePad {
         delegate = null
     }
 
-    constructor(context: Context, layout: FrameLayout){
+    constructor(context: Context, layout: ConstraintLayout){
 
         this.context = context
         this.layout= layout
@@ -107,9 +108,16 @@ class GamePad {
         val metrics = context?.resources?.displayMetrics
         val kMaximumLength = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, metrics)
 
-        val index:Int = if(padType == PadType.PadMove) 0 else 1
+        val index:Int = event.actionIndex
+        val size = layout!!.layoutParams.width * 0.5f
 
-        if (event.pointerCount == 0 && index == 1) return
+        if (padType == PadType.PadMove && event.getX(index) > size) {
+            return
+        }
+
+        if (padType == PadType.PadAim && event.getX(index) < size) {
+            return
+        }
 
         when (event.action) {
 
