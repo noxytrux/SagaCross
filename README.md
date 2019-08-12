@@ -33,6 +33,13 @@ Desktop:
 * LMB fire
 * RMB drop mine
 
+Joystick:
+
+* D-pad or left stick to move
+* Right stick to aim (analog)
+* R1 to drop mine
+* R2 to shoot 
+
 Mobile:
 
 * Touch and drag left side of screen to move  
@@ -57,6 +64,23 @@ Window creation and input [GLFW](http://www.glfw.org)
 OpenGL extensions [GLEW](http://glew.sourceforge.net)
 
 # 2. Building  
+
+### iOS
+
+Before compiling you need to download [Xcode](https://developer.apple.com/xcode/)
+
+* Navigate to SagaCross/platform/iOS
+* Open SagaCross.xcodeproj
+* Press `cmd + r` to build and run
+
+### Android
+
+Before compiling you need to download additional tools in android studio: `CMake, LLDB, NDK`
+
+* Open Android studio
+* Navigate to SagaCross/platform/
+* Choose Android folder
+* Press `shift + F10" or play button to build 
 
 ### macOS
 

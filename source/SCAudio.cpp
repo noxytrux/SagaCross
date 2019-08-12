@@ -19,7 +19,7 @@ SCAudio::SCAudio(const std::string &path) : _path(path) {
 		std::cerr << "FMOD lib version " << _version << " doesn't match header version " << FMOD_VERSION << std::endl;
 	}
 
-#ifdef __linux__
+#if defined(__linux__) && !defined(__ANDROID__)
 
 	_result = _system->setOutput(FMOD_OUTPUTTYPE_ALSA);
 	this->checkResult(_result);

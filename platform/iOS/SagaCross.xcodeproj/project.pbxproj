@@ -1,0 +1,695 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1C460E6622EA0268009F03C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C460E6522EA0268009F03C1 /* AppDelegate.swift */; };
+		1C460E6822EA0268009F03C1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C460E6722EA0268009F03C1 /* ViewController.swift */; };
+		1C460E6B22EA0268009F03C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C460E6922EA0268009F03C1 /* Main.storyboard */; };
+		1C460E6D22EA0269009F03C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C460E6C22EA0269009F03C1 /* Assets.xcassets */; };
+		1C460E7022EA0269009F03C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C460E6E22EA0269009F03C1 /* LaunchScreen.storyboard */; };
+		1C4B764E22EA10150089E8E5 /* glMatrix4x4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B75F022EA10150089E8E5 /* glMatrix4x4.cpp */; };
+		1C4B764F22EA10150089E8E5 /* SCDebugScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B75F922EA10150089E8E5 /* SCDebugScene.cpp */; };
+		1C4B765022EA10150089E8E5 /* SCMenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B75FC22EA10150089E8E5 /* SCMenuScene.cpp */; };
+		1C4B765222EA10150089E8E5 /* BasePathExtraction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B75FF22EA10150089E8E5 /* BasePathExtraction.cpp */; };
+		1C4B765322EA10150089E8E5 /* SCSettingsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B760122EA10150089E8E5 /* SCSettingsScene.cpp */; };
+		1C4B765422EA10150089E8E5 /* SCNewGameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B760222EA10150089E8E5 /* SCNewGameScene.cpp */; };
+		1C4B765522EA10150089E8E5 /* SCRenderScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B760522EA10150089E8E5 /* SCRenderScene.cpp */; };
+		1C4B765722EA10150089E8E5 /* DarwinTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B760D22EA10150089E8E5 /* DarwinTimer.cpp */; };
+		1C4B765922EA10150089E8E5 /* GameTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B761122EA10150089E8E5 /* GameTimer.cpp */; };
+		1C4B765A22EA10150089E8E5 /* SCSceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B761422EA10150089E8E5 /* SCSceneManager.cpp */; };
+		1C4B765B22EA10150089E8E5 /* SCTank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B761522EA10150089E8E5 /* SCTank.cpp */; };
+		1C4B765C22EA10150089E8E5 /* xMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B761E22EA10150089E8E5 /* xMath.cpp */; };
+		1C4B765D22EA10150089E8E5 /* xVec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B762622EA10150089E8E5 /* xVec3.cpp */; };
+		1C4B765E22EA10150089E8E5 /* SCDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B762B22EA10150089E8E5 /* SCDisplay.cpp */; };
+		1C4B765F22EA10150089E8E5 /* SCSparkles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B762C22EA10150089E8E5 /* SCSparkles.cpp */; };
+		1C4B766022EA10150089E8E5 /* glTextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B762F22EA10150089E8E5 /* glTextureLoader.cpp */; };
+		1C4B766222EA10150089E8E5 /* SCEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B763422EA10150089E8E5 /* SCEntity.cpp */; };
+		1C4B766422EA10150089E8E5 /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B763922EA10150089E8E5 /* ShaderProgram.cpp */; };
+		1C4B766522EA10150089E8E5 /* SCAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B763A22EA10150089E8E5 /* SCAudio.cpp */; };
+		1C4B766622EA10150089E8E5 /* SCVehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B763B22EA10150089E8E5 /* SCVehicle.cpp */; };
+		1C4B766722EA10150089E8E5 /* SCRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B764222EA10150089E8E5 /* SCRenderer.cpp */; };
+		1C4B766822EA10150089E8E5 /* SCSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B764322EA10150089E8E5 /* SCSettings.cpp */; };
+		1C4B766922EA10150089E8E5 /* SCOpenGLRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B764722EA10150089E8E5 /* SCOpenGLRenderer.cpp */; };
+		1C4B766A22EA10150089E8E5 /* Core-pch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B764822EA10150089E8E5 /* Core-pch.cpp */; };
+		1C4B766B22EA10150089E8E5 /* SCApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B764922EA10150089E8E5 /* SCApplication.cpp */; };
+		1C4B78E722EA2C940089E8E5 /* SCGameWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B78E622EA2C940089E8E5 /* SCGameWrapper.mm */; };
+		1C4B78EA22EA2EAB0089E8E5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B78E922EA2EAB0089E8E5 /* OpenGLES.framework */; };
+		1C4B78F122EA2ECF0089E8E5 /* libfmod_iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B78ED22EA2ECF0089E8E5 /* libfmod_iphoneos.a */; };
+		1C4B78F222EA2ECF0089E8E5 /* libfmodL_iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B78EE22EA2ECF0089E8E5 /* libfmodL_iphoneos.a */; };
+		1C4B78F822EA36B30089E8E5 /* SCMobileDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B78F622EA36B30089E8E5 /* SCMobileDisplay.cpp */; };
+		1C4B78FB22EA3E960089E8E5 /* SCMobileInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B78F922EA3E960089E8E5 /* SCMobileInput.cpp */; };
+		1C4B78FF22EA44290089E8E5 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B78FE22EA44290089E8E5 /* AudioToolbox.framework */; };
+		1C4B790122EA44300089E8E5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B790022EA44300089E8E5 /* CoreAudio.framework */; };
+		1C4B790322EA44400089E8E5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B790222EA443F0089E8E5 /* AVFoundation.framework */; };
+		1C4B790422EA44630089E8E5 /* libfmod_iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B78EC22EA2ECF0089E8E5 /* libfmod_iphonesimulator.a */; };
+		1C4B790522EA44630089E8E5 /* libfmodL_iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4B78EB22EA2ECF0089E8E5 /* libfmodL_iphonesimulator.a */; };
+		1C50280622ED796C008A6B75 /* icon1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C50280522ED796C008A6B75 /* icon1024.png */; };
+		1C65CDE222EB7B9600B594E3 /* resource in Resources */ = {isa = PBXBuildFile; fileRef = 1C65CDE122EB7B9600B594E3 /* resource */; };
+		1C65CDE522EB989B00B594E3 /* GamePad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C65CDE422EB989B00B594E3 /* GamePad.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1C460E6222EA0268009F03C1 /* SagaCross.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SagaCross.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C460E6522EA0268009F03C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1C460E6722EA0268009F03C1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1C460E6A22EA0268009F03C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1C460E6C22EA0269009F03C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1C460E6F22EA0269009F03C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1C460E7122EA0269009F03C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1C4B75EB22EA10150089E8E5 /* SCFastWaterMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFastWaterMesh.h; sourceTree = "<group>"; };
+		1C4B75EC22EA10150089E8E5 /* SCVehicle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCVehicle.hpp; sourceTree = "<group>"; };
+		1C4B75ED22EA10150089E8E5 /* SCTank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCTank.h; sourceTree = "<group>"; };
+		1C4B75EE22EA10150089E8E5 /* SCSphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSphere.h; sourceTree = "<group>"; };
+		1C4B75EF22EA10150089E8E5 /* SCCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCamera.h; sourceTree = "<group>"; };
+		1C4B75F022EA10150089E8E5 /* glMatrix4x4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = glMatrix4x4.cpp; sourceTree = "<group>"; };
+		1C4B75F122EA10150089E8E5 /* SCRandomMeshPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRandomMeshPoint.h; sourceTree = "<group>"; };
+		1C4B75F222EA10150089E8E5 /* SCRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRendererInterface.h; sourceTree = "<group>"; };
+		1C4B75F322EA10150089E8E5 /* SCApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCApplication.h; sourceTree = "<group>"; };
+		1C4B75F422EA10150089E8E5 /* SCMeshInstanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMeshInstanceManager.h; sourceTree = "<group>"; };
+		1C4B75F522EA10150089E8E5 /* SCFastMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFastMesh.h; sourceTree = "<group>"; };
+		1C4B75F722EA10150089E8E5 /* SCSparkles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSparkles.h; sourceTree = "<group>"; };
+		1C4B75F822EA10150089E8E5 /* SCBaseScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCBaseScene.hpp; sourceTree = "<group>"; };
+		1C4B75F922EA10150089E8E5 /* SCDebugScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCDebugScene.cpp; sourceTree = "<group>"; };
+		1C4B75FA22EA10150089E8E5 /* SCDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDisplay.h; sourceTree = "<group>"; };
+		1C4B75FB22EA10150089E8E5 /* json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
+		1C4B75FC22EA10150089E8E5 /* SCMenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCMenuScene.cpp; sourceTree = "<group>"; };
+		1C4B75FE22EA10150089E8E5 /* Core-pch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "Core-pch.hpp"; sourceTree = "<group>"; };
+		1C4B75FF22EA10150089E8E5 /* BasePathExtraction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasePathExtraction.cpp; sourceTree = "<group>"; };
+		1C4B760022EA10150089E8E5 /* growable_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = growable_array.h; sourceTree = "<group>"; };
+		1C4B760122EA10150089E8E5 /* SCSettingsScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCSettingsScene.cpp; sourceTree = "<group>"; };
+		1C4B760222EA10150089E8E5 /* SCNewGameScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCNewGameScene.cpp; sourceTree = "<group>"; };
+		1C4B760422EA10150089E8E5 /* SCFrustum.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCFrustum.hpp; sourceTree = "<group>"; };
+		1C4B760522EA10150089E8E5 /* SCRenderScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCRenderScene.cpp; sourceTree = "<group>"; };
+		1C4B760622EA10150089E8E5 /* glTextureLoader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = glTextureLoader.hpp; sourceTree = "<group>"; };
+		1C4B760822EA10150089E8E5 /* SCRenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRenderable.h; sourceTree = "<group>"; };
+		1C4B760922EA10150089E8E5 /* nuklear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuklear.h; sourceTree = "<group>"; };
+		1C4B760B22EA10150089E8E5 /* GameTimer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GameTimer.hpp; sourceTree = "<group>"; };
+		1C4B760D22EA10150089E8E5 /* DarwinTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DarwinTimer.cpp; sourceTree = "<group>"; };
+		1C4B760F22EA10150089E8E5 /* DarwinTimer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DarwinTimer.hpp; sourceTree = "<group>"; };
+		1C4B761122EA10150089E8E5 /* GameTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameTimer.cpp; sourceTree = "<group>"; };
+		1C4B761322EA10150089E8E5 /* SCHeightMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHeightMap.h; sourceTree = "<group>"; };
+		1C4B761422EA10150089E8E5 /* SCSceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCSceneManager.cpp; sourceTree = "<group>"; };
+		1C4B761522EA10150089E8E5 /* SCTank.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCTank.cpp; sourceTree = "<group>"; };
+		1C4B761622EA10150089E8E5 /* SCFastAnimatedMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFastAnimatedMesh.h; sourceTree = "<group>"; };
+		1C4B761722EA10150089E8E5 /* ShaderProgram.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShaderProgram.hpp; sourceTree = "<group>"; };
+		1C4B761822EA10150089E8E5 /* SCFastOceanMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFastOceanMesh.h; sourceTree = "<group>"; };
+		1C4B761A22EA10150089E8E5 /* xMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xMath.h; sourceTree = "<group>"; };
+		1C4B761B22EA10150089E8E5 /* xSimpleTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xSimpleTypes.h; sourceTree = "<group>"; };
+		1C4B761C22EA10150089E8E5 /* xPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xPlane.h; sourceTree = "<group>"; };
+		1C4B761D22EA10150089E8E5 /* xQuat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xQuat.h; sourceTree = "<group>"; };
+		1C4B761E22EA10150089E8E5 /* xMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xMath.cpp; sourceTree = "<group>"; };
+		1C4B761F22EA10150089E8E5 /* xf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xf.h; sourceTree = "<group>"; };
+		1C4B762022EA10150089E8E5 /* xVec3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xVec3.h; sourceTree = "<group>"; };
+		1C4B762122EA10150089E8E5 /* x9F32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x9F32.h; sourceTree = "<group>"; };
+		1C4B762222EA10150089E8E5 /* xMat34.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xMat34.h; sourceTree = "<group>"; };
+		1C4B762322EA10150089E8E5 /* xVec2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xVec2.h; sourceTree = "<group>"; };
+		1C4B762422EA10150089E8E5 /* xMat33.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xMat33.h; sourceTree = "<group>"; };
+		1C4B762522EA10150089E8E5 /* MathTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathTypes.h; sourceTree = "<group>"; };
+		1C4B762622EA10150089E8E5 /* xVec3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xVec3.cpp; sourceTree = "<group>"; };
+		1C4B762722EA10150089E8E5 /* x.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x.h; sourceTree = "<group>"; };
+		1C4B762822EA10150089E8E5 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		1C4B762922EA10150089E8E5 /* SCGround.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCGround.h; sourceTree = "<group>"; };
+		1C4B762A22EA10150089E8E5 /* SCFastCutoffMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFastCutoffMesh.h; sourceTree = "<group>"; };
+		1C4B762B22EA10150089E8E5 /* SCDisplay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCDisplay.cpp; sourceTree = "<group>"; };
+		1C4B762C22EA10150089E8E5 /* SCSparkles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCSparkles.cpp; sourceTree = "<group>"; };
+		1C4B762D22EA10150089E8E5 /* SCRenderScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCRenderScene.hpp; sourceTree = "<group>"; };
+		1C4B762E22EA10150089E8E5 /* SCParticleLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCParticleLayer.h; sourceTree = "<group>"; };
+		1C4B762F22EA10150089E8E5 /* glTextureLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = glTextureLoader.cpp; sourceTree = "<group>"; };
+		1C4B763022EA10150089E8E5 /* SCSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSettings.h; sourceTree = "<group>"; };
+		1C4B763122EA10150089E8E5 /* SCSceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSceneManager.h; sourceTree = "<group>"; };
+		1C4B763322EA10150089E8E5 /* SCVegetation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVegetation.h; sourceTree = "<group>"; };
+		1C4B763422EA10150089E8E5 /* SCEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCEntity.cpp; sourceTree = "<group>"; };
+		1C4B763522EA10150089E8E5 /* EnumOptionMacro.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EnumOptionMacro.hpp; sourceTree = "<group>"; };
+		1C4B763722EA10150089E8E5 /* SCBonus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBonus.h; sourceTree = "<group>"; };
+		1C4B763822EA10150089E8E5 /* SCInputInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCInputInterface.h; sourceTree = "<group>"; };
+		1C4B763922EA10150089E8E5 /* ShaderProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgram.cpp; sourceTree = "<group>"; };
+		1C4B763A22EA10150089E8E5 /* SCAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCAudio.cpp; sourceTree = "<group>"; };
+		1C4B763B22EA10150089E8E5 /* SCVehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCVehicle.cpp; sourceTree = "<group>"; };
+		1C4B763C22EA10150089E8E5 /* glMatrix4x4.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = glMatrix4x4.hpp; sourceTree = "<group>"; };
+		1C4B763D22EA10150089E8E5 /* SCOpenGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCOpenGLRenderer.h; sourceTree = "<group>"; };
+		1C4B763E22EA10150089E8E5 /* SCBulletManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBulletManager.h; sourceTree = "<group>"; };
+		1C4B763F22EA10150089E8E5 /* SCNonCopyable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCNonCopyable.hpp; sourceTree = "<group>"; };
+		1C4B764022EA10150089E8E5 /* SCEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEntity.h; sourceTree = "<group>"; };
+		1C4B764122EA10150089E8E5 /* nuklear_glfw_gl3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuklear_glfw_gl3.h; sourceTree = "<group>"; };
+		1C4B764222EA10150089E8E5 /* SCRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCRenderer.cpp; sourceTree = "<group>"; };
+		1C4B764322EA10150089E8E5 /* SCSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCSettings.cpp; sourceTree = "<group>"; };
+		1C4B764422EA10150089E8E5 /* SCDebugScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCDebugScene.hpp; sourceTree = "<group>"; };
+		1C4B764522EA10150089E8E5 /* SCAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAudio.h; sourceTree = "<group>"; };
+		1C4B764622EA10150089E8E5 /* SCMenuScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCMenuScene.hpp; sourceTree = "<group>"; };
+		1C4B764722EA10150089E8E5 /* SCOpenGLRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCOpenGLRenderer.cpp; sourceTree = "<group>"; };
+		1C4B764822EA10150089E8E5 /* Core-pch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Core-pch.cpp"; sourceTree = "<group>"; };
+		1C4B764922EA10150089E8E5 /* SCApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCApplication.cpp; sourceTree = "<group>"; };
+		1C4B764A22EA10150089E8E5 /* BasePathExtraction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BasePathExtraction.hpp; sourceTree = "<group>"; };
+		1C4B764B22EA10150089E8E5 /* SCRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRenderer.h; sourceTree = "<group>"; };
+		1C4B764C22EA10150089E8E5 /* SCSettingsScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCSettingsScene.hpp; sourceTree = "<group>"; };
+		1C4B764D22EA10150089E8E5 /* SCNewGameScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCNewGameScene.hpp; sourceTree = "<group>"; };
+		1C4B78E522EA2C940089E8E5 /* SCGameWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCGameWrapper.h; sourceTree = "<group>"; };
+		1C4B78E622EA2C940089E8E5 /* SCGameWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SCGameWrapper.mm; sourceTree = "<group>"; };
+		1C4B78E922EA2EAB0089E8E5 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		1C4B78EB22EA2ECF0089E8E5 /* libfmodL_iphonesimulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfmodL_iphonesimulator.a; path = ../../libraries/FMOD/lib/iOS/libfmodL_iphonesimulator.a; sourceTree = "<group>"; };
+		1C4B78EC22EA2ECF0089E8E5 /* libfmod_iphonesimulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfmod_iphonesimulator.a; path = ../../libraries/FMOD/lib/iOS/libfmod_iphonesimulator.a; sourceTree = "<group>"; };
+		1C4B78ED22EA2ECF0089E8E5 /* libfmod_iphoneos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfmod_iphoneos.a; path = ../../libraries/FMOD/lib/iOS/libfmod_iphoneos.a; sourceTree = "<group>"; };
+		1C4B78EE22EA2ECF0089E8E5 /* libfmodL_iphoneos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfmodL_iphoneos.a; path = ../../libraries/FMOD/lib/iOS/libfmodL_iphoneos.a; sourceTree = "<group>"; };
+		1C4B78F522EA30100089E8E5 /* SagaCross-prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SagaCross-prefix.pch"; sourceTree = "<group>"; };
+		1C4B78F622EA36B30089E8E5 /* SCMobileDisplay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SCMobileDisplay.cpp; sourceTree = "<group>"; };
+		1C4B78F722EA36B30089E8E5 /* SCMobileDisplay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCMobileDisplay.h; sourceTree = "<group>"; };
+		1C4B78F922EA3E960089E8E5 /* SCMobileInput.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SCMobileInput.cpp; sourceTree = "<group>"; };
+		1C4B78FA22EA3E960089E8E5 /* SCMobileInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCMobileInput.h; sourceTree = "<group>"; };
+		1C4B78FE22EA44290089E8E5 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		1C4B790022EA44300089E8E5 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		1C4B790222EA443F0089E8E5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		1C4B790622EA48E00089E8E5 /* SagaCross-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SagaCross-Bridging-Header.h"; sourceTree = "<group>"; };
+		1C50280522ED796C008A6B75 /* icon1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon1024.png; path = ../../../../resource/icons/icon1024.png; sourceTree = "<group>"; };
+		1C65CDE122EB7B9600B594E3 /* resource */ = {isa = PBXFileReference; lastKnownFileType = folder; name = resource; path = ../../../../resource; sourceTree = "<group>"; };
+		1C65CDE422EB989B00B594E3 /* GamePad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePad.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1C460E5F22EA0268009F03C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C4B790422EA44630089E8E5 /* libfmod_iphonesimulator.a in Frameworks */,
+				1C4B790522EA44630089E8E5 /* libfmodL_iphonesimulator.a in Frameworks */,
+				1C4B790322EA44400089E8E5 /* AVFoundation.framework in Frameworks */,
+				1C4B790122EA44300089E8E5 /* CoreAudio.framework in Frameworks */,
+				1C4B78FF22EA44290089E8E5 /* AudioToolbox.framework in Frameworks */,
+				1C4B78F122EA2ECF0089E8E5 /* libfmod_iphoneos.a in Frameworks */,
+				1C4B78F222EA2ECF0089E8E5 /* libfmodL_iphoneos.a in Frameworks */,
+				1C4B78EA22EA2EAB0089E8E5 /* OpenGLES.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1C460E5922EA0268009F03C1 = {
+			isa = PBXGroup;
+			children = (
+				1C460E6422EA0268009F03C1 /* SagaCross */,
+				1C460E6322EA0268009F03C1 /* Products */,
+				1C4B78E822EA2EAB0089E8E5 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		1C460E6322EA0268009F03C1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1C460E6222EA0268009F03C1 /* SagaCross.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1C460E6422EA0268009F03C1 /* SagaCross */ = {
+			isa = PBXGroup;
+			children = (
+				1C4B75E922EA0FFA0089E8E5 /* Game */,
+				1C460E6522EA0268009F03C1 /* AppDelegate.swift */,
+				1C460E6722EA0268009F03C1 /* ViewController.swift */,
+				1C460E6922EA0268009F03C1 /* Main.storyboard */,
+				1C460E6C22EA0269009F03C1 /* Assets.xcassets */,
+				1C460E6E22EA0269009F03C1 /* LaunchScreen.storyboard */,
+				1C460E7122EA0269009F03C1 /* Info.plist */,
+				1C4B78F522EA30100089E8E5 /* SagaCross-prefix.pch */,
+				1C4B790622EA48E00089E8E5 /* SagaCross-Bridging-Header.h */,
+				1C65CDE422EB989B00B594E3 /* GamePad.swift */,
+			);
+			path = SagaCross;
+			sourceTree = "<group>";
+		};
+		1C4B75E922EA0FFA0089E8E5 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				1C50280522ED796C008A6B75 /* icon1024.png */,
+				1C65CDE122EB7B9600B594E3 /* resource */,
+				1C4B75EA22EA10150089E8E5 /* source */,
+				1C4B78E522EA2C940089E8E5 /* SCGameWrapper.h */,
+				1C4B78E622EA2C940089E8E5 /* SCGameWrapper.mm */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		1C4B75EA22EA10150089E8E5 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				1C4B75FF22EA10150089E8E5 /* BasePathExtraction.cpp */,
+				1C4B764A22EA10150089E8E5 /* BasePathExtraction.hpp */,
+				1C4B764822EA10150089E8E5 /* Core-pch.cpp */,
+				1C4B75FE22EA10150089E8E5 /* Core-pch.hpp */,
+				1C4B763522EA10150089E8E5 /* EnumOptionMacro.hpp */,
+				1C4B75F022EA10150089E8E5 /* glMatrix4x4.cpp */,
+				1C4B763C22EA10150089E8E5 /* glMatrix4x4.hpp */,
+				1C4B762F22EA10150089E8E5 /* glTextureLoader.cpp */,
+				1C4B760622EA10150089E8E5 /* glTextureLoader.hpp */,
+				1C4B760022EA10150089E8E5 /* growable_array.h */,
+				1C4B75FB22EA10150089E8E5 /* json.hpp */,
+				1C4B761922EA10150089E8E5 /* Math */,
+				1C4B764122EA10150089E8E5 /* nuklear_glfw_gl3.h */,
+				1C4B760922EA10150089E8E5 /* nuklear.h */,
+				1C4B764922EA10150089E8E5 /* SCApplication.cpp */,
+				1C4B75F322EA10150089E8E5 /* SCApplication.h */,
+				1C4B763A22EA10150089E8E5 /* SCAudio.cpp */,
+				1C4B764522EA10150089E8E5 /* SCAudio.h */,
+				1C4B75F822EA10150089E8E5 /* SCBaseScene.hpp */,
+				1C4B763722EA10150089E8E5 /* SCBonus.h */,
+				1C4B763E22EA10150089E8E5 /* SCBulletManager.h */,
+				1C4B75EF22EA10150089E8E5 /* SCCamera.h */,
+				1C4B75F922EA10150089E8E5 /* SCDebugScene.cpp */,
+				1C4B764422EA10150089E8E5 /* SCDebugScene.hpp */,
+				1C4B762B22EA10150089E8E5 /* SCDisplay.cpp */,
+				1C4B75FA22EA10150089E8E5 /* SCDisplay.h */,
+				1C4B763422EA10150089E8E5 /* SCEntity.cpp */,
+				1C4B764022EA10150089E8E5 /* SCEntity.h */,
+				1C4B761622EA10150089E8E5 /* SCFastAnimatedMesh.h */,
+				1C4B762A22EA10150089E8E5 /* SCFastCutoffMesh.h */,
+				1C4B75F522EA10150089E8E5 /* SCFastMesh.h */,
+				1C4B761822EA10150089E8E5 /* SCFastOceanMesh.h */,
+				1C4B75EB22EA10150089E8E5 /* SCFastWaterMesh.h */,
+				1C4B760422EA10150089E8E5 /* SCFrustum.hpp */,
+				1C4B762922EA10150089E8E5 /* SCGround.h */,
+				1C4B761322EA10150089E8E5 /* SCHeightMap.h */,
+				1C4B763822EA10150089E8E5 /* SCInputInterface.h */,
+				1C4B75FC22EA10150089E8E5 /* SCMenuScene.cpp */,
+				1C4B764622EA10150089E8E5 /* SCMenuScene.hpp */,
+				1C4B75F422EA10150089E8E5 /* SCMeshInstanceManager.h */,
+				1C4B78F622EA36B30089E8E5 /* SCMobileDisplay.cpp */,
+				1C4B78F722EA36B30089E8E5 /* SCMobileDisplay.h */,
+				1C4B78F922EA3E960089E8E5 /* SCMobileInput.cpp */,
+				1C4B78FA22EA3E960089E8E5 /* SCMobileInput.h */,
+				1C4B760222EA10150089E8E5 /* SCNewGameScene.cpp */,
+				1C4B764D22EA10150089E8E5 /* SCNewGameScene.hpp */,
+				1C4B763F22EA10150089E8E5 /* SCNonCopyable.hpp */,
+				1C4B764722EA10150089E8E5 /* SCOpenGLRenderer.cpp */,
+				1C4B763D22EA10150089E8E5 /* SCOpenGLRenderer.h */,
+				1C4B762E22EA10150089E8E5 /* SCParticleLayer.h */,
+				1C4B75F122EA10150089E8E5 /* SCRandomMeshPoint.h */,
+				1C4B760822EA10150089E8E5 /* SCRenderable.h */,
+				1C4B764222EA10150089E8E5 /* SCRenderer.cpp */,
+				1C4B764B22EA10150089E8E5 /* SCRenderer.h */,
+				1C4B75F222EA10150089E8E5 /* SCRendererInterface.h */,
+				1C4B760522EA10150089E8E5 /* SCRenderScene.cpp */,
+				1C4B762D22EA10150089E8E5 /* SCRenderScene.hpp */,
+				1C4B761422EA10150089E8E5 /* SCSceneManager.cpp */,
+				1C4B763122EA10150089E8E5 /* SCSceneManager.h */,
+				1C4B764322EA10150089E8E5 /* SCSettings.cpp */,
+				1C4B763022EA10150089E8E5 /* SCSettings.h */,
+				1C4B760122EA10150089E8E5 /* SCSettingsScene.cpp */,
+				1C4B764C22EA10150089E8E5 /* SCSettingsScene.hpp */,
+				1C4B762C22EA10150089E8E5 /* SCSparkles.cpp */,
+				1C4B75F722EA10150089E8E5 /* SCSparkles.h */,
+				1C4B75EE22EA10150089E8E5 /* SCSphere.h */,
+				1C4B761522EA10150089E8E5 /* SCTank.cpp */,
+				1C4B75ED22EA10150089E8E5 /* SCTank.h */,
+				1C4B763322EA10150089E8E5 /* SCVegetation.h */,
+				1C4B763B22EA10150089E8E5 /* SCVehicle.cpp */,
+				1C4B75EC22EA10150089E8E5 /* SCVehicle.hpp */,
+				1C4B763922EA10150089E8E5 /* ShaderProgram.cpp */,
+				1C4B761722EA10150089E8E5 /* ShaderProgram.hpp */,
+				1C4B762822EA10150089E8E5 /* stb_image.h */,
+				1C4B760A22EA10150089E8E5 /* Timer */,
+			);
+			name = source;
+			path = ../../../../source;
+			sourceTree = "<group>";
+		};
+		1C4B760A22EA10150089E8E5 /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				1C4B760B22EA10150089E8E5 /* GameTimer.hpp */,
+				1C4B760D22EA10150089E8E5 /* DarwinTimer.cpp */,
+				1C4B760F22EA10150089E8E5 /* DarwinTimer.hpp */,
+				1C4B761122EA10150089E8E5 /* GameTimer.cpp */,
+			);
+			path = Timer;
+			sourceTree = "<group>";
+		};
+		1C4B761922EA10150089E8E5 /* Math */ = {
+			isa = PBXGroup;
+			children = (
+				1C4B761A22EA10150089E8E5 /* xMath.h */,
+				1C4B761B22EA10150089E8E5 /* xSimpleTypes.h */,
+				1C4B761C22EA10150089E8E5 /* xPlane.h */,
+				1C4B761D22EA10150089E8E5 /* xQuat.h */,
+				1C4B761E22EA10150089E8E5 /* xMath.cpp */,
+				1C4B761F22EA10150089E8E5 /* xf.h */,
+				1C4B762022EA10150089E8E5 /* xVec3.h */,
+				1C4B762122EA10150089E8E5 /* x9F32.h */,
+				1C4B762222EA10150089E8E5 /* xMat34.h */,
+				1C4B762322EA10150089E8E5 /* xVec2.h */,
+				1C4B762422EA10150089E8E5 /* xMat33.h */,
+				1C4B762522EA10150089E8E5 /* MathTypes.h */,
+				1C4B762622EA10150089E8E5 /* xVec3.cpp */,
+				1C4B762722EA10150089E8E5 /* x.h */,
+			);
+			path = Math;
+			sourceTree = "<group>";
+		};
+		1C4B78E822EA2EAB0089E8E5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1C4B790222EA443F0089E8E5 /* AVFoundation.framework */,
+				1C4B790022EA44300089E8E5 /* CoreAudio.framework */,
+				1C4B78FE22EA44290089E8E5 /* AudioToolbox.framework */,
+				1C4B78ED22EA2ECF0089E8E5 /* libfmod_iphoneos.a */,
+				1C4B78EC22EA2ECF0089E8E5 /* libfmod_iphonesimulator.a */,
+				1C4B78EE22EA2ECF0089E8E5 /* libfmodL_iphoneos.a */,
+				1C4B78EB22EA2ECF0089E8E5 /* libfmodL_iphonesimulator.a */,
+				1C4B78E922EA2EAB0089E8E5 /* OpenGLES.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1C460E6122EA0268009F03C1 /* SagaCross */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C460E7422EA0269009F03C1 /* Build configuration list for PBXNativeTarget "SagaCross" */;
+			buildPhases = (
+				1C460E5E22EA0268009F03C1 /* Sources */,
+				1C460E5F22EA0268009F03C1 /* Frameworks */,
+				1C460E6022EA0268009F03C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SagaCross;
+			productName = SagaCross;
+			productReference = 1C460E6222EA0268009F03C1 /* SagaCross.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1C460E5A22EA0268009F03C1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1020;
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = "Marcin Małysz";
+				TargetAttributes = {
+					1C460E6122EA0268009F03C1 = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
+				};
+			};
+			buildConfigurationList = 1C460E5D22EA0268009F03C1 /* Build configuration list for PBXProject "SagaCross" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1C460E5922EA0268009F03C1;
+			productRefGroup = 1C460E6322EA0268009F03C1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1C460E6122EA0268009F03C1 /* SagaCross */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1C460E6022EA0268009F03C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C65CDE222EB7B9600B594E3 /* resource in Resources */,
+				1C460E7022EA0269009F03C1 /* LaunchScreen.storyboard in Resources */,
+				1C460E6D22EA0269009F03C1 /* Assets.xcassets in Resources */,
+				1C50280622ED796C008A6B75 /* icon1024.png in Resources */,
+				1C460E6B22EA0268009F03C1 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1C460E5E22EA0268009F03C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C4B766222EA10150089E8E5 /* SCEntity.cpp in Sources */,
+				1C4B78F822EA36B30089E8E5 /* SCMobileDisplay.cpp in Sources */,
+				1C4B766622EA10150089E8E5 /* SCVehicle.cpp in Sources */,
+				1C4B764F22EA10150089E8E5 /* SCDebugScene.cpp in Sources */,
+				1C4B765722EA10150089E8E5 /* DarwinTimer.cpp in Sources */,
+				1C4B766722EA10150089E8E5 /* SCRenderer.cpp in Sources */,
+				1C4B765322EA10150089E8E5 /* SCSettingsScene.cpp in Sources */,
+				1C4B765022EA10150089E8E5 /* SCMenuScene.cpp in Sources */,
+				1C4B765522EA10150089E8E5 /* SCRenderScene.cpp in Sources */,
+				1C4B765B22EA10150089E8E5 /* SCTank.cpp in Sources */,
+				1C4B766822EA10150089E8E5 /* SCSettings.cpp in Sources */,
+				1C4B765422EA10150089E8E5 /* SCNewGameScene.cpp in Sources */,
+				1C4B766422EA10150089E8E5 /* ShaderProgram.cpp in Sources */,
+				1C4B766022EA10150089E8E5 /* glTextureLoader.cpp in Sources */,
+				1C4B766A22EA10150089E8E5 /* Core-pch.cpp in Sources */,
+				1C4B766922EA10150089E8E5 /* SCOpenGLRenderer.cpp in Sources */,
+				1C4B78FB22EA3E960089E8E5 /* SCMobileInput.cpp in Sources */,
+				1C4B765E22EA10150089E8E5 /* SCDisplay.cpp in Sources */,
+				1C4B766B22EA10150089E8E5 /* SCApplication.cpp in Sources */,
+				1C4B765A22EA10150089E8E5 /* SCSceneManager.cpp in Sources */,
+				1C4B766522EA10150089E8E5 /* SCAudio.cpp in Sources */,
+				1C4B765922EA10150089E8E5 /* GameTimer.cpp in Sources */,
+				1C4B765222EA10150089E8E5 /* BasePathExtraction.cpp in Sources */,
+				1C4B765D22EA10150089E8E5 /* xVec3.cpp in Sources */,
+				1C4B765C22EA10150089E8E5 /* xMath.cpp in Sources */,
+				1C65CDE522EB989B00B594E3 /* GamePad.swift in Sources */,
+				1C4B78E722EA2C940089E8E5 /* SCGameWrapper.mm in Sources */,
+				1C4B765F22EA10150089E8E5 /* SCSparkles.cpp in Sources */,
+				1C460E6822EA0268009F03C1 /* ViewController.swift in Sources */,
+				1C460E6622EA0268009F03C1 /* AppDelegate.swift in Sources */,
+				1C4B764E22EA10150089E8E5 /* glMatrix4x4.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		1C460E6922EA0268009F03C1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1C460E6A22EA0268009F03C1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1C460E6E22EA0269009F03C1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1C460E6F22EA0269009F03C1 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1C460E7222EA0269009F03C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1C460E7322EA0269009F03C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1C460E7522EA0269009F03C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_COMMA = NO;
+				CODE_SIGN_STYLE = Automatic;
+				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = 5TSZE6ES9Y;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SagaCross/SagaCross-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"GLES_SILENCE_DEPRECATION=1",
+				);
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../libraries/FMOD/inc/";
+				INFOPLIST_FILE = SagaCross/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../libraries/FMOD/lib/iOS/";
+				PRODUCT_BUNDLE_IDENTIFIER = com.noclip.marcinmalysz.SagaCross;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/$(SWIFT_MODULE_NAME)-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1C460E7622EA0269009F03C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_COMMA = NO;
+				CODE_SIGN_STYLE = Automatic;
+				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = 5TSZE6ES9Y;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SagaCross/SagaCross-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "GLES_SILENCE_DEPRECATION=1";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../libraries/FMOD/inc/";
+				INFOPLIST_FILE = SagaCross/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../libraries/FMOD/lib/iOS/";
+				PRODUCT_BUNDLE_IDENTIFIER = com.noclip.marcinmalysz.SagaCross;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/$(SWIFT_MODULE_NAME)-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1C460E5D22EA0268009F03C1 /* Build configuration list for PBXProject "SagaCross" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C460E7222EA0269009F03C1 /* Debug */,
+				1C460E7322EA0269009F03C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1C460E7422EA0269009F03C1 /* Build configuration list for PBXNativeTarget "SagaCross" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C460E7522EA0269009F03C1 /* Debug */,
+				1C460E7622EA0269009F03C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1C460E5A22EA0268009F03C1 /* Project object */;
+}

@@ -17,6 +17,6 @@ void main(void)
     vec4 color1   = texture(texWaterCausticsSecond, uv1 * 16.0);
     vec4 caustic  = (color0 + color1);
 
-	Out_Color = (0.5 * outcolor) * (outcolor.a * 0.5) + caustic;
+	Out_Color =  (0.5 * outcolor) + (0.5 * caustic);
 }
 

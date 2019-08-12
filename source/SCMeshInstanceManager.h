@@ -60,8 +60,8 @@ namespace sc {
 					
 					auto ptr = std::make_shared<SCFastOceanMesh>(filePath, _renderer);
 
-					ptr->caustic = textureLoader.loadFile(path + "textures/mesh_greece-sea-surface.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
-					ptr->causticSecond = textureLoader.loadFile(path + "textures/mesh_greece-sea-surface_rotated.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
+					ptr->caustic = textureLoader.loadFile(path + "textures/mesh_greece-sea-surface.png", GL_LINEAR, 0, GL_REPEAT, false);
+					ptr->causticSecond = textureLoader.loadFile(path + "textures/mesh_greece-sea-surface_rotated.png", GL_LINEAR, 0, GL_REPEAT, false);
 
 					s = ptr;
 
@@ -71,7 +71,7 @@ namespace sc {
 				case SCMeshTypeWater: {
 					auto ptr = std::make_shared<SCFastWaterMesh>(filePath, _renderer);
 
-					ptr->tex = textureLoader.loadFile("textures/fx_water-stream.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
+					ptr->tex = textureLoader.loadFile("textures/fx_water-stream.png", GL_LINEAR, 0, GL_REPEAT, false);
 
 					s = ptr;
 

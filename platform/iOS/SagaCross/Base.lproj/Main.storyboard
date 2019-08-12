@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QFE-fY-Bkh">
+    <device id="retina6_1" orientation="landscape">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--GLKit View Controller-->
+        <scene sceneID="bJr-u1-3rU">
+            <objects>
+                <glkViewController preferredFramesPerSecond="30" id="QFE-fY-Bkh" customClass="ViewController" customModule="SagaCross" customModuleProvider="target" sceneMemberID="viewController">
+                    <glkView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" enableSetNeedsDisplay="NO" id="jd8-Vx-GGK">
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgk-Ij-uCT" customClass="GamePad" customModule="SagaCross" customModuleProvider="target">
+                                <rect key="frame" x="448" y="0.0" width="448" height="414"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nzt-Oo-TQY" customClass="GamePad" customModule="SagaCross" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="448" height="414"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zrX-cm-G3D">
+                                <rect key="frame" x="628" y="289" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="kyC-mC-h4D"/>
+                                    <constraint firstAttribute="width" constant="64" id="mTS-ZR-OmQ"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="bombDeployWithSender:" destination="QFE-fY-Bkh" eventType="touchUpInside" id="2Cm-sU-rKV"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Nzt-Oo-TQY" firstAttribute="width" secondItem="jd8-Vx-GGK" secondAttribute="width" multiplier="0.5" id="5Sc-Bp-dUX"/>
+                            <constraint firstItem="wgk-Ij-uCT" firstAttribute="top" secondItem="pfs-u2-Mv1" secondAttribute="top" id="5sm-Ee-Xm1"/>
+                            <constraint firstAttribute="bottom" secondItem="wgk-Ij-uCT" secondAttribute="bottom" id="6hN-g0-ATp"/>
+                            <constraint firstItem="pfs-u2-Mv1" firstAttribute="bottom" secondItem="zrX-cm-G3D" secondAttribute="bottom" constant="40" id="8D7-tq-hTH"/>
+                            <constraint firstAttribute="trailing" secondItem="wgk-Ij-uCT" secondAttribute="trailing" id="AiY-kO-9ZT"/>
+                            <constraint firstItem="wgk-Ij-uCT" firstAttribute="height" secondItem="jd8-Vx-GGK" secondAttribute="height" id="CTL-Mv-pig"/>
+                            <constraint firstItem="wgk-Ij-uCT" firstAttribute="leading" secondItem="Nzt-Oo-TQY" secondAttribute="trailing" id="FlU-58-AeL"/>
+                            <constraint firstItem="Nzt-Oo-TQY" firstAttribute="leading" secondItem="jd8-Vx-GGK" secondAttribute="leading" id="dQp-uD-svA"/>
+                            <constraint firstItem="pfs-u2-Mv1" firstAttribute="trailing" secondItem="zrX-cm-G3D" secondAttribute="trailing" constant="160" id="hBg-XN-N0O"/>
+                            <constraint firstItem="Nzt-Oo-TQY" firstAttribute="top" secondItem="jd8-Vx-GGK" secondAttribute="top" id="hpt-Og-uoe"/>
+                            <constraint firstItem="Nzt-Oo-TQY" firstAttribute="height" secondItem="jd8-Vx-GGK" secondAttribute="height" id="kJv-Oz-uJ6"/>
+                            <constraint firstAttribute="bottom" secondItem="Nzt-Oo-TQY" secondAttribute="bottom" id="lEf-lv-Ih9"/>
+                            <constraint firstItem="wgk-Ij-uCT" firstAttribute="width" secondItem="jd8-Vx-GGK" secondAttribute="width" multiplier="0.5" id="son-uv-zcU"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="pfs-u2-Mv1"/>
+                        <connections>
+                            <outlet property="delegate" destination="QFE-fY-Bkh" id="Cc9-HR-8vq"/>
+                        </connections>
+                    </glkView>
+                    <connections>
+                        <outlet property="aimPad" destination="wgk-Ij-uCT" id="lRD-9T-u19"/>
+                        <outlet property="bombButton" destination="zrX-cm-G3D" id="7KV-eA-zgr"/>
+                        <outlet property="movePad" destination="Nzt-Oo-TQY" id="Xs8-9N-Q8a"/>
+                    </connections>
+                </glkViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mfO-BM-dv8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-779.46428571428567" y="-900.00000000000011"/>
+        </scene>
+    </scenes>
+</document>

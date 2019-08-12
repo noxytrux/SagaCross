@@ -38,3 +38,6 @@ bin/
 platform/iOS/SagaCross/DerivedData/
 platform/iOS/SagaCross/SagaCross.xcodeproj/xcuserdata/
 platform/iOS/SagaCross/SagaCross.xcodeproj/project.xcworkspace/xcuserdata/
+
+#android
+platform/Android/app/src/main/assets/

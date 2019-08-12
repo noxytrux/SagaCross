@@ -50,10 +50,10 @@ SCSceneType SCMenuScene::Render() {
 		
 		auto fonts = _renderer->getFontList();
 		auto margin = 30;
-
-		//separator
-		nk_layout_row_static(ctx, 80, screenSize.width - margin, 1);
-		nk_spacing(ctx, 1);
+		
+        //separator
+        nk_layout_row_static(ctx, display->isSmallDisplay() ? 20 : 80, screenSize.width - margin, 1);
+        nk_spacing(ctx, 1);
 
 		//logo
 		nk_style_set_font(ctx, &fonts[0]->handle);

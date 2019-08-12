@@ -1,7 +1,15 @@
 #include "SCApplication.h"
 #include "SCOpenGLRenderer.h"
+
+#if defined(MOBILE) && !defined(__EMSCRIPTEN__)
+#include "SCMobileDisplay.h"
+#include "SCMobileInput.h"
+#else
 #include "SCGLFWDisplay.h"
 #include "SCGLFWInput.h"
+#endif
+
+#include "stb_image.h"
 
 #if defined(__linux__)
 #include <limits.h>
@@ -26,7 +34,7 @@ static std::shared_ptr<SCDisplay> makeDisplay(const std::shared_ptr<SCSettings> 
 #else 
 
 	#ifdef MOBILE
-
+        return std::make_shared<SCMobileDisplay>(settings->getWidht(), settings->getHeight(), settings->isFullScreen());
 	#else 
 		return std::make_shared<SCGLFWDisplay>(settings->getWidht(), settings->getHeight(), settings->isFullScreen());
 	#endif 
@@ -44,7 +52,7 @@ static std::shared_ptr<SCInputInteface> makeInput(const std::shared_ptr<SCDispla
 #else 
 
 	#ifdef MOBILE
-
+        return std::make_shared<SCMobileInput>(display->getContext());
 	#else 
 		return std::make_shared<SCGLFWInput>(display->getContext());
 	#endif 
@@ -52,24 +60,31 @@ static std::shared_ptr<SCInputInteface> makeInput(const std::shared_ptr<SCDispla
 #endif
 }
 
-SCApplication::SCApplication() 
-	: _settings(nullptr)
+SCApplication::SCApplication(const std::shared_ptr<SCSettings> &settings, const std::string &rootPath)
+	: _settings(settings)
+    , _resourcePath(rootPath)
 	, _renderer(nullptr)
 	, _userunloop(true)
 	, _input(nullptr)
 {
-	auto filename = getResourcePath() + "settings.bin";
-
-	_settings = std::make_shared<SCSettings>(filename);
-
-	if (!_settings->load()) {
-		_settings->save();
-	}
-
 	auto display = makeDisplay(_settings);
 
 	display->makeWindow();
 	display->setVsync(_settings->isVsyncEnabled());
+
+#if !defined(MOBILE) && !defined(__EMSCRIPTEN__)
+
+	GLFWimage images[2];
+
+	images[0].pixels = stbi_load((getResourcePath() + "icons/icon152.png").c_str(), &images[0].width, &images[0].height, 0, 4);
+	images[1].pixels = stbi_load((getResourcePath() + "icons/icon40.png").c_str(), &images[1].width, &images[1].height, 0, 4);
+
+	glfwSetWindowIcon(static_cast<GLFWwindow*>(display->getContext()), 2, images);
+
+	stbi_image_free(images[0].pixels);
+	stbi_image_free(images[1].pixels);
+
+#endif
 
 	auto renderer = std::make_shared<SCOpenGLRenderable>(display, _settings, getResourcePath());
 	renderer->loadFonts(getResourcePath());
@@ -93,24 +108,14 @@ SCApplication::~SCApplication() noexcept
 
 }
 
-const std::string SCApplication::getResourcePath()
+const std::string SCApplication::getResourcePath() const
 {
+    return _resourcePath;
+}
 
-#if defined(__linux__)
-
-	char result[PATH_MAX];
-
-	ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
-	std::string path = std::string(result, (count > 0) ? count : 0);
-
-	return path.substr(0, path.find_last_of("\\/")) + "/resource/";
-
-#else 
-
-	return "resource/";
-
-#endif
-
+bool SCApplication::isRenderingGame() const
+{
+    return _sceneManager->getCurrentScenePointer()->isRenderingGame();
 }
 
 void SCApplication::renderFrame()
@@ -221,10 +226,18 @@ int SCApplication::run()
 #else
 	auto display = _renderer->getDisplay();
 
-	while (!display->shouldClose() && _userunloop) {
-	
-		renderFrame();
-	}
+    if (_userunloop) {
+
+        while (!display->shouldClose() && _userunloop) {
+
+            renderFrame();
+        }
+
+    }
+    else {
+
+        renderFrame();
+    }
 #endif
 
 	return EXIT_SUCCESS;

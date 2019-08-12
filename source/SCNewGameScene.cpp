@@ -60,17 +60,17 @@ SCSceneType SCNewGameScene::Render() {
 		ctx->style.button.hover = nk_style_item_image(_backbtn);
 		ctx->style.button.active = nk_style_item_image(_backbtn);
 
-		nk_layout_row_static(ctx, 32, 32, 1);
+		nk_layout_row_static(ctx, _backsize, _backsize, 1);
 		if (nk_button_label(ctx, "")) {
 
 			_type = SceneTypeMenu;
 		}
 
-		const float mapsize = 400.0f / screenSize.width;
+		const float mapsize = (display->isSmallDisplay() ? 200.0f : 400.0f) / screenSize.width;
         float sepsize = (1.0f - mapsize) * 0.5f;
 	
 		static const float selectmapratio[] = { sepsize, mapsize };
-		nk_layout_row(ctx, NK_DYNAMIC, 300, 2, selectmapratio);
+		nk_layout_row(ctx, NK_DYNAMIC, (display->isSmallDisplay() ? 150.0f : 300.0f), 2, selectmapratio);
 
 		auto image = nk_style_item_image(_maps[_selectedmap]);
 
@@ -193,7 +193,7 @@ void SCNewGameScene::Init() {
 
 	_buttonnormal = nk_subimage_id(_btnntex, 212, 42, nk_rect(0, 0, 212, 42));
 	_buttonactive = nk_subimage_id(_btnatex, 212, 42, nk_rect(0, 0, 212, 42));
-	_backbtn = nk_subimage_id(_btnbacktex, 32, 32, nk_rect(0, 0, 32, 32));
+	_backbtn = nk_subimage_id(_btnbacktex, _backsize, _backsize, nk_rect(0, 0, _backsize, _backsize));
 	_lhsbtn = nk_subimage_id(_leftbtntex, 64, 64, nk_rect(0, 0, 64, 64));
 	_rhsbtn = nk_subimage_id(_rightbtntex, 64, 64, nk_rect(0, 0, 64, 64));
 

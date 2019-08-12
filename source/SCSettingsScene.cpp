@@ -59,7 +59,7 @@ SCSceneType SCSettingsScene::Render() {
 		ctx->style.button.hover = nk_style_item_image(_backbtn);
 		ctx->style.button.active = nk_style_item_image(_backbtn);
 
-		nk_layout_row_static(ctx, 32, 32, 1);
+		nk_layout_row_static(ctx, _backsize, _backsize, 1);
 		if (nk_button_label(ctx, "")) {
 
 			_type = SceneTypeMenu;
@@ -86,7 +86,7 @@ SCSceneType SCSettingsScene::Render() {
 		nk_layout_row(ctx, NK_DYNAMIC, 40, 3, ratio);
 
 		if (_selectedResolution >= resolutions.size()) {
-			_selectedResolution = resolutions.size() - 1;
+			_selectedResolution = static_cast<uint32_t>(resolutions.size() - 1);
 		}
 
 		if (display->allowMultipleResolutions()) {
@@ -217,7 +217,7 @@ void SCSettingsScene::Init() {
 
 	_buttonnormal = nk_subimage_id(_btnntex, 212, 42, nk_rect(0, 0, 212, 42));
 	_buttonactive = nk_subimage_id(_btnatex, 212, 42, nk_rect(0, 0, 212, 42));
-	_backbtn = nk_subimage_id(_btnbacktex, 32, 32, nk_rect(0, 0, 32, 32));
+	_backbtn = nk_subimage_id(_btnbacktex, _backsize, _backsize, nk_rect(0, 0, _backsize, _backsize));
 
 	auto ctx = _renderer->getUIContext();
 

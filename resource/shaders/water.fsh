@@ -23,6 +23,6 @@ void main(void)
     vec4 color1   = texture2D(texWaterCausticsSecond, uv1 * 16.0);
     vec4 caustic  = (color0 + color1);
 
-	gl_FragColor = (0.5 * outcolor) * (outcolor.a * 0.5) + caustic;
+	gl_FragColor = (0.5 * outcolor) + (0.5 * caustic);
 }
 

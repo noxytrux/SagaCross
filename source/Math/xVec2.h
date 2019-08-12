@@ -11,14 +11,9 @@ class xVec2
 {
 public:
 
-	xVec2()
-	{
-	}
-    
-    xVec2( xVec2 const &t){
-        x = t.x;
-        y = t.y;
-    }
+    xVec2() : xVec2(0, 0) {}
+    xVec2(float v) : xVec2(v, v) {}
+    xVec2( xVec2 const &t) : xVec2(t.x, t.y) {}
 
 	xVec2( float xx, float yy )
 	{
@@ -31,7 +26,7 @@ public:
 		*this = a + ( b - a )*coef;
 	}
 
-	 xVec2 &operator =(const xVec2 &b )
+    xVec2 &operator =(const xVec2 &b )
 	{
 		if( this == &b )
 			return *this;
@@ -41,17 +36,17 @@ public:
 		return *this;
 	}
 
-	 xVec2 operator +(const xVec2 &b )
+    xVec2 operator +(const xVec2 &b )
 	{
 		return xVec2(x+b.x,y+b.y);
 	}
 
-	 xVec2 operator -(const xVec2 &b )
+    xVec2 operator -(const xVec2 &b )
 	{
 		return xVec2(x-b.x,y-b.y);
 	}
 
-	 xVec2 operator *( float b )
+    xVec2 operator *( float b )
 	{
 		xVec2 tmp;
 		tmp.x = x * b;

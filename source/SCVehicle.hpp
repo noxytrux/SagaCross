@@ -20,7 +20,7 @@ namespace sc {
 		float Pos[3];
 		float Rot;
 		bool active;
-		char live;
+		int live;
 
 		GLubyte color[3];
 

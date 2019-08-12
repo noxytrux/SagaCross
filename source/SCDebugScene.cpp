@@ -45,9 +45,12 @@ SCSceneType SCDebugScene::Render() {
 
     _renderer->Projection.setPerspective(45.0, (float)screenSize.width / (float)screenSize.height, 0.1f, 6000.0f);
 
+#ifndef MOBILE
     camera->FreeCam(renderer->getDisplay());
-    //camera->Apply();
-
+#else
+    camera->Apply();
+#endif
+    
     auto frustum = _renderer->getFrustum();
     
     frustum->modelview = _renderer->ModelView.getMatrix();
@@ -80,7 +83,7 @@ SCSceneType SCDebugScene::Render() {
         ctx->style.button.hover = nk_style_item_image(_backbtn);
         ctx->style.button.active = nk_style_item_image(_backbtn);
 
-        nk_layout_row_static(ctx, 32, 32, 1);
+        nk_layout_row_static(ctx, _backsize, _backsize, 1);
         if (nk_button_label(ctx, "")) {
 
             _type = SceneTypeMenu;
@@ -100,7 +103,7 @@ void SCDebugScene::Init() {
 
     auto btnbackpath = _rootPath + "textures/menubtn.png";
     _btnbacktex = textureLoader.loadFile(btnbackpath, GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
-    _backbtn = nk_subimage_id(_btnbacktex, 32, 32, nk_rect(0, 0, 32, 32));
+    _backbtn = nk_subimage_id(_btnbacktex, _backsize, _backsize, nk_rect(0, 0, _backsize, _backsize));
 
 	//get game info 
 	auto settings = _renderer->getSettings();
