@@ -150,6 +150,11 @@ namespace sc {
             glBindBuffer(GL_ARRAY_BUFFER, vVBO);
         }
 
+		void Reset() {
+		
+			S.clear();
+		}
+
 		void Clear() {
 
 			S.clear();

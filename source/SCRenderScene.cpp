@@ -285,7 +285,7 @@ SCSceneType SCRenderScene::Render() {
                 if (showWinImage) {
 
                     glBindTexture(GL_TEXTURE_2D, win);
-                    renderer->DebugBlit( screenSize.width / 2.0 - 256 , 0 , 512, 512 );
+                    renderer->DebugBlit( screenSize.width / 2.0 - 128, 50 , 256, 256 );
                 }
 
                 wsk -> ai = true;
@@ -350,7 +350,29 @@ SCSceneType SCRenderScene::Render() {
             _type = SceneTypeMenu;
         }
 
-        //TODO: add here pads for mobile UI
+		if (loseSound || playerWinGame) {
+		
+			ctx->style.button.normal = nk_style_item_image(_buttonnormal);
+			ctx->style.button.hover = nk_style_item_image(_buttonactive);
+			ctx->style.button.active = nk_style_item_image(_buttonactive);
+			
+			nk_layout_row_static(ctx, 160, screenSize.width, 1);
+			nk_spacing(ctx, 1);
+
+			float btnsize = 425.0f / (float)screenSize.width;
+			float sidesize = (1.0f - btnsize) * 0.5f;
+
+			static const float ratio[] = { sidesize, btnsize, sidesize };
+
+			nk_layout_row(ctx, NK_DYNAMIC, 85, 3, ratio);
+
+			nk_spacing(ctx, 1);
+			if (nk_button_label(ctx, "RESTART")) {
+
+				restartGame();
+			}
+			nk_spacing(ctx, 1);
+		}
     }
     nk_end(ctx);
 
@@ -365,9 +387,17 @@ void SCRenderScene::Init() {
 	_audio->pauseMusic();
 
     auto btnbackpath = _rootPath + "textures/menubtn.png";
-    _btnbacktex = textureLoader.loadFile(btnbackpath, GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
-    _backbtn = nk_subimage_id(_btnbacktex, _backsize, _backsize, nk_rect(0, 0, _backsize, _backsize));
+	auto btnnpath = _rootPath + "gui_screen-button.png";
+	auto btnapath = _rootPath + "gui_screen-button-p.png";
 
+    _btnbacktex = textureLoader.loadFile(btnbackpath, GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
+	_btnntex = textureLoader.loadFile(btnnpath, GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
+	_btnatex = textureLoader.loadFile(btnapath, GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
+
+	_backbtn = nk_subimage_id(_btnbacktex, _backsize, _backsize, nk_rect(0, 0, _backsize, _backsize));
+	_buttonnormal = nk_subimage_id(_btnntex, 425, 85, nk_rect(0, 0, 425, 85));
+	_buttonactive = nk_subimage_id(_btnatex, 425, 85, nk_rect(0, 0, 425, 85));
+	
     std::dynamic_pointer_cast<SCOpenGLRenderable>(_renderer)->blank = textureLoader.loadFile(_rootPath + "textures/blank.png", GL_LINEAR, 0, GL_CLAMP_TO_EDGE, false);
 
 	//get game info 
@@ -704,6 +734,48 @@ void SCRenderScene::changePlayer() {
     }
 }
 
+void SCRenderScene::restartGame() {
+
+	Bullets->RemoveAllObjects();
+	Bonuses->Clear();
+	rocks->ResetAll();
+
+	Sparcles.Reset();
+	ParticleSmoke.Reset();
+	LightSparcles.Reset();
+	TankSmoke.Reset();
+	TankSmokeWater.Reset();
+	TankSmokeGrass.Reset();
+	TreeParticles.Reset();
+	HouseParticles.Reset();
+
+	Timer = 5.0f;
+	select = 0;
+
+	camera->LookAt = ai[0]->obj->Pos;
+
+	for (int i = 0; i < ai.size(); i++) {
+
+		auto tank = std::dynamic_pointer_cast<SCTank>(ai[i]->obj);
+
+		if (i == 0) tank->ai = false;
+
+		auto rnd = mapRandomPoint->GetRandomPoint();
+
+		tank->ResetTank();
+		tank->Pos[0] = rnd.x;
+		tank->Pos[2] = rnd.z;
+	}
+
+	_audio->loadMusic("music/mapmusic_01.mp3");
+	_audio->playMusic();
+
+	SCAudio::SoundID ready = _audio->loadSound("sounds/ready0.wav");
+	_audio->playSound(ready, xVec3(0.0), 1.0f);
+
+	playerWinGame = false;
+	loseSound = false;
+}
 
 //TODO: enable this later on (multiplayer)
 /*

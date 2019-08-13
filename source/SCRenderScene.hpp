@@ -43,11 +43,17 @@ namespace sc {
         void dropMine();
         void Shoot();
         void changePlayer();
+		void restartGame();
 
 	private:
 
         GLuint _btnbacktex;
-        struct nk_image _backbtn;
+		GLuint _btnntex;
+		GLuint _btnatex;
+
+		struct nk_image _backbtn;
+		struct nk_image _buttonnormal;
+		struct nk_image _buttonactive;
 
         std::shared_ptr<SCBonusManager> Bonuses;
         std::shared_ptr<SCBulletManager> Bullets;
