@@ -247,6 +247,9 @@ namespace sc {
 
                 glDeleteBuffers(1, &expVBO);
                 glDeleteVertexArrays(1, &expVAO);
+
+				expVBO = 0;
+				expVAO = 0;
             }
 
 			bool Draw()
@@ -369,8 +372,8 @@ namespace sc {
 
 		void RemoveAllObjects() {
 
-			exp.clear();
 			bullets.clear();
+			exp.clear();
 		}
 
 		void DrawClouds(float dt)
