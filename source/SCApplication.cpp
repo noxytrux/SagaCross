@@ -73,7 +73,7 @@ SCApplication::SCApplication(const std::shared_ptr<SCSettings> &settings, const 
 	display->setVsync(_settings->isVsyncEnabled());
 
 #if !defined(MOBILE) && !defined(__EMSCRIPTEN__)
-
+#if GLFW_VERSION_MINOR >= 2
 	GLFWimage images[2];
 
 	images[0].pixels = stbi_load((getResourcePath() + "icons/icon152.png").c_str(), &images[0].width, &images[0].height, 0, 4);
@@ -83,7 +83,7 @@ SCApplication::SCApplication(const std::shared_ptr<SCSettings> &settings, const 
 
 	stbi_image_free(images[0].pixels);
 	stbi_image_free(images[1].pixels);
-
+#endif
 #endif
 
 	auto renderer = std::make_shared<SCOpenGLRenderable>(display, _settings, getResourcePath());
