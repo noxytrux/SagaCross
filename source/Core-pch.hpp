@@ -122,6 +122,8 @@
 
     #endif
 
+	#include <unistd.h>
+	#include <linux/limits.h>
         #include <GLFW/glfw3.h>
 
 	#ifndef GLFW_TRUE
