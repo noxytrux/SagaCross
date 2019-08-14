@@ -165,6 +165,7 @@ extern bool FLT_EQUAL(float a, float b);
 #include <set>
 #include <cstdint>
 #include <cmath>
+#include <limits>
 
 #include "EnumOptionMacro.hpp"
 #include "MathTypes.h"
