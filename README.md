@@ -11,8 +11,6 @@ You can play web demo version [here](http://noxytrux.github.io/sagacross/)
 ## Gallery
 
 ![1](../master/screenshots/1.jpg)
-![2](../master/screenshots/2.jpg)
-![3](../master/screenshots/3.jpg)
 
 ## System requirements:
 
